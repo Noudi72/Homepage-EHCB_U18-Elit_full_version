@@ -65,78 +65,6 @@
       .logo { width: 60px; }
       .title { font-size: 1.35rem; }
     }
-    /* News Section Styles */
-    #news-section {
-      max-width: 900px;
-      margin: 0 auto 40px auto;
-      background: #002b5c;
-      border-radius: 16px;
-      padding: 24px 28px;
-      box-shadow: 0 4px 16px #000a;
-      color: #fff;
-      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
-    }
-    #news-section h2 {
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      color: #ffd600;
-      text-align: center;
-    }
-    #news-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 20px 0;
-      max-height: 300px;
-      overflow-y: auto;
-      border: 1px solid #ffd600;
-      border-radius: 12px;
-      background: #02306b;
-    }
-    #news-list li {
-      padding: 12px 16px;
-      border-bottom: 1px solid #ffd600aa;
-      font-size: 1rem;
-    }
-    #news-list li:last-child {
-      border-bottom: none;
-    }
-    #news-upload {
-      display: none;
-      margin-top: 12px;
-    }
-    #news-upload label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-      color: #ffd600;
-    }
-    #news-upload textarea {
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid #ffd600;
-      padding: 10px;
-      font-size: 1rem;
-      resize: vertical;
-      background: #02306b;
-      color: #fff;
-      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
-    }
-    #news-upload button {
-      margin-top: 10px;
-      background: #ffd600;
-      color: #002b5c;
-      border: none;
-      border-radius: 16px;
-      padding: 14px 28px;
-      font-weight: bold;
-      font-size: 1.1rem;
-      cursor: pointer;
-      box-shadow: 0 2px 12px #002b5c88;
-      transition: background 0.15s;
-    }
-    #news-upload button:hover, #news-upload button:focus {
-      background: #e6c700;
-    }
   </style>
 </head>
 <body>
@@ -153,7 +81,7 @@
   <main>
     <div class="main-buttons">
       <a href="kalender.html" class="main-btn" id="btn-kalender">MIH Kalender U18</a>
-      <a href="#" class="main-btn" id="btn-news">News & Info</a>
+      <a href="news.html" class="main-btn" id="btn-news">News & Info</a>
       <!-- KORREKTER LINK ZU CARDIO-APP: -->
       <a href="https://noudi72.github.io/Cardio-App-EHCB-U18/" class="main-btn" id="btn-cardio" target="_blank">Cardio-Programme</a>
       <a href="https://script.google.com/macros/s/AKfycbzkS395JUZ8Su4uxit44p8dZCKRbGDNs12fjZTdlkx_zKyTNY-9yrvymGuSedxe_pcinw/exec" class="main-btn" id="btn-sponser" target="_blank">Sponser Sport Food</a>
@@ -161,15 +89,6 @@
       <a href="feedback.html" class="main-btn" id="btn-feedback">Spieler Reflexion</a>
       <a href="dashboard.html" class="main-btn" id="btn-dashboard">Coach Dashboard</a>
     </div>
-    <section id="news-section" style="display:none;">
-      <h2>News & Info</h2>
-      <ul id="news-list"></ul>
-      <div id="news-upload">
-        <label for="news-input">Neue News hinzufügen:</label>
-        <textarea id="news-input" rows="3" placeholder="Hier News eingeben..."></textarea>
-        <button id="news-submit">Hinzufügen</button>
-      </div>
-    </section>
   </main>
   <section class="yellow-slogan" id="slogan">
     "OUR STRENGTH IS OUR UNITY!"
@@ -248,18 +167,6 @@
 
     // Init
     setLang(getUserLang());
-
-    // Toggle news section visibility on btn-news click
-    const newsBtn = document.getElementById('btn-news');
-    const newsSection = document.getElementById('news-section');
-    newsBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (newsSection.style.display === 'none' || newsSection.style.display === '') {
-        newsSection.style.display = 'block';
-      } else {
-        newsSection.style.display = 'none';
-      }
-    });
 
     // Firebase and News Module Setup
     // Default isAdmin = false
