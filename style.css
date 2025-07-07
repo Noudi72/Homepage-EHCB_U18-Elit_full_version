@@ -84,8 +84,23 @@ h1, #main-title {
     padding: 9px 16px 7px 12px;
     font-size: 1.04rem;
   }
-  .logo { width: 100px; } /* angepasst */
+  .logo { width: 100px; } /* Logo mobil einheitlich */
   h1, #main-title { font-size: 1.18rem;}
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: 1.3rem 0.8rem 1.1rem 0.8rem;
+    font-size: 0.97rem;
+  }
+  .yellow-slogan {
+    font-size: 1.28rem;
+    padding: 1.1rem;
+  }
+  nav .nav-cards {
+    gap: 0.5rem;
+  }
+  .logo { width: 100px; } /* Logo mobil einheitlich */
 }
 
 nav {
@@ -220,19 +235,4 @@ footer {
   font-size: 1.06rem;
   letter-spacing: 0.5px;
   border-top: 7px solid var(--ehc-rot);
-}
-
-@media (max-width: 600px) {
-  .card {
-    padding: 1.3rem 0.8rem 1.1rem 0.8rem;
-    font-size: 0.97rem;
-  }
-  .yellow-slogan {
-    font-size: 1.28rem;
-    padding: 1.1rem;
-  }
-  nav .nav-cards {
-    gap: 0.5rem;
-  }
-  .logo { width: 100px; } /* falls du hier auch .logo hast */
 }
