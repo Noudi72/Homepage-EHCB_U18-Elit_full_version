@@ -45,29 +45,23 @@
       color: #002b5c;
     }
     header {
-      background: var(--ehc-blue);
-      color: var(--ehc-white);
       text-align: center;
-      padding: 24px 0 8px 0;
+      padding: 32px 0 18px 0;
     }
-    .header-flex {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 22px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .header-flex .logo { height: 56px; }
     .logo {
       height: 68px;
       margin: 0 auto 14px auto;
       display: block;
     }
-    h1 { font-size: 2.2rem; font-weight: 800; margin: 0; letter-spacing: 2px; color: var(--ehc-white);}
-    .yellow-line { width: 85px; height: 5px; background: var(--ehc-yellow); border-radius: 8px; margin: 20px auto 10px auto;}
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin: 0 0 14px 0;
+      letter-spacing: 2px;
+      color: var(--ehc-white);
+    }
     .lang-switch {
-      display: flex; justify-content: center; align-items: center; gap: 13px; margin: 14px 0 5px 0; z-index: 10;
+      display: flex; justify-content: center; gap: 13px; margin: 20px 0 4px 0;
     }
     .lang-switch button {
       background: #eee; color: #002b5c; border: none; font-weight: 700;
@@ -159,8 +153,7 @@
   </div>
   <header>
     <img src="wikinger.png" class="logo" alt="Logo" />
-    <h1 style="text-align:center;">EHC BIEL-BIENNE U18-ELIT</h1>
-    <div class="yellow-line"></div>
+    <h1 id="main-title">EHC BIEL-BIENNE U18-ELIT</h1>
     <div class="lang-switch" id="lang-switch">
       <button onclick="changeLanguage('de')" id="btn-de">DE</button>
       <button onclick="changeLanguage('fr')" id="btn-fr">FR</button>

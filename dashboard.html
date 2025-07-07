@@ -50,25 +50,22 @@
     /* Kopfbereich: Logo, Titel, Sprachumschaltung zentriert */
     header {
       text-align: center;
-      padding: 12px 0 12px 0;
+      padding: 32px 0 18px 0;
     }
     .logo {
       width: 80px;
-      margin: 0 auto 12px auto;
+      margin: 0 auto 14px auto;
       display: block;
     }
     h1 {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 800;
-      margin: 0 0 7px 0;
+      margin: 0 0 14px 0;
       letter-spacing: 2px;
       color: var(--ehc-white);
     }
     .lang-switch {
-      display: flex;
-      justify-content: center;
-      gap: 13px;
-      margin: 20px 0 10px 0;
+      display: flex; justify-content: center; gap: 13px; margin: 20px 0 4px 0;
     }
     .lang-switch button {
       background: #eee; color: #002b5c; border: none; font-weight: 700;
@@ -131,10 +128,10 @@
       text-align:center;
     }
     .dashboard-header-flex {
-      display: flex; align-items: center; gap: 12px; justify-content: center; margin-bottom: 24px;
+      display: none;
     }
-    .dashboard-header-flex img { height: 44px;}
-    .dashboard-header-flex h2 { font-size: 2.1rem; margin:0; color:var(--ehc-yellow);}
+    .dashboard-header-flex img { display: none; }
+    .dashboard-header-flex h2 { display: none; }
     #filterForm {
       display: flex;
       gap: 18px;
@@ -324,7 +321,7 @@
 </head>
 <body>
   <div class="top-bar">
-    <a class="back-link" href="index.html" id="backBtn">← Zurück / Back</a>
+    <a class="back-btn" href="index.html" id="backBtn">← Zurück / Back</a>
   </div>
   <header>
     <img src="wikinger.png" class="logo" alt="Logo" />
@@ -347,10 +344,8 @@
     </section>
     <!-- Dashboard Content (hidden by default) -->
     <div id="dashboard-section" style="display:none;">
-      <div class="dashboard-header-flex">
-        <img src="wikinger.png" alt="Logo" />
-        <h2 id="dashboardTitle">📊 Coach Dashboard</h2>
-      </div>
+      <!-- dashboard-header-flex entfernt -->
+      <h2 id="dashboardTitle" style="color:var(--ehc-yellow);text-align:center;font-size:2.1rem;margin:0 0 24px 0;">📊 Coach Dashboard</h2>
       <form id="filterForm">
         <label for="date" id="labelDate">Datum:</label>
         <input type="date" id="date" name="date">

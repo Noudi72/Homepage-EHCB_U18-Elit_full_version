@@ -25,69 +25,49 @@
       color: var(--ehcb-blue);
       min-height: 100vh;
     }
-    .page-header {
+    header {
       text-align: center;
-      background: var(--ehcb-blue);
-      color: var(--ehcb-yellow);
-      padding: 2.2rem 1rem 1.2rem 1rem;
-      margin-bottom: 0.8rem;
-      position: relative;
+      padding: 32px 0 18px 0;
     }
-    .page-header .logo {
+    .logo {
+      width: 80px;
+      margin: 0 auto 14px auto;
       display: block;
-      margin: 0 auto 8px auto;
-      height: 65px;
     }
-    .page-header h1 {
-      margin: 0 0 10px 0;
-      font-size: 2.1rem;
-      font-family: 'Oswald', Arial, sans-serif;
-      letter-spacing: 1px;
-      color: var(--ehcb-yellow);
-      font-weight: bold;
-    }
-    .lang-switcher {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin: 20px 0 0 0;
-    }
-    .lang-switcher button {
-      background: var(--ehcb-yellow);
+    #main-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin: 0 0 14px 0;
+      letter-spacing: 2px;
       color: var(--ehcb-blue);
-      border: none;
-      padding: 0.42rem 1.05rem;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 1.09rem;
-      cursor: pointer;
-      transition: background 0.12s, color 0.12s;
     }
-    .lang-switcher button.active {
-      background: #002d5b;
-      color: #ffc700;
-      box-shadow: 0 2px 8px #0001;
+    .lang-switch {
+      display: flex; justify-content: center; gap: 13px; margin: 20px 0 4px 0;
+    }
+    .lang-switch button {
+      background: #eee; color: #002b5c; border: none; font-weight: 700;
+      border-radius: 7px; cursor: pointer; padding: 6px 26px 4px 26px; font-size: 1.1rem; transition: background 0.1s, color 0.1s;
+    }
+    .lang-switch .active {
+      background: #002b5c; color: #fff; box-shadow: 0 2px 8px #0001;
     }
     .back-btn {
       position: absolute;
-      top: 20px;
-      left: 18px;
-      z-index: 100;
-      background: var(--ehcb-blue);
-      color: var(--ehcb-yellow);
+      top: 28px;
+      left: 32px;
+      z-index: 10;
+      background: #002b5c;
+      color: #ffd600;
       font-weight: bold;
-      border: 2px solid var(--ehcb-yellow);
+      border: 2px solid #ffd600;
       border-radius: 10px;
-      padding: 10px 28px 8px 16px;
-      font-size: 1.13rem;
+      padding: 12px 32px 10px 20px;
+      font-size: 1.19rem;
       text-decoration: none;
-      transition: background .16s, color .16s;
-      box-shadow: 0 2px 10px #0002;
+      transition: background .18s, color .18s;
+      box-shadow: 0 2px 14px #0002;
     }
-    .back-btn:hover {
-      background: var(--ehcb-yellow);
-      color: var(--ehcb-blue);
-    }
+    .back-btn:hover { background: #ffd600; color: #002b5c; }
     .container {
       max-width: 900px;
       margin: 2.1rem auto 1.2rem auto;
@@ -268,25 +248,31 @@
     }
     .logout-btn:hover { background: #ffe066; color: #001a33;}
     @media (max-width: 700px) {
-      .page-header { padding: 1.1rem 0.5rem 0.7rem 0.5rem; }
+      .back-btn {
+        top: 15px;
+        left: 7px;
+        padding: 9px 16px 7px 12px;
+        font-size: 1.04rem;
+      }
+      .logo { width: 54px; }
+      #main-title { font-size: 1.18rem;}
       .container { padding: 0.5rem; }
       .news-list { flex-direction: column; gap: 1rem; }
       .news-card { min-width: 0; max-width: 100%; }
-      .back-btn { top: 7px; left: 6px; padding: 7px 10px 6px 8px; font-size: 1.01rem; }
     }
   </style>
 </head>
 <body>
-  <div class="page-header">
-    <a href="index.html" class="back-btn" id="backBtn">← Zurück</a>
-    <img src="wikinger.png" alt="Logo" class="logo"/>
-    <h1 id="headline">News & Info</h1>
-    <div class="lang-switcher">
-      <button id="langDE">DE</button>
-      <button id="langFR">FR</button>
-      <button id="langEN">EN</button>
+  <a class="back-btn" href="index.html" id="backBtn">← Zurück / Back</a>
+  <header>
+    <img src="wikinger.png" class="logo" alt="Logo" />
+    <h1 id="main-title">EHC BIEL-BIENNE U18-ELIT</h1>
+    <div class="lang-switch" id="lang-switch">
+      <button onclick="setLang('de')" id="btn-de">DE</button>
+      <button onclick="setLang('fr')" id="btn-fr">FR</button>
+      <button onclick="setLang('en')" id="btn-en">EN</button>
     </div>
-  </div>
+  </header>
   <div class="container">
     <section class="news-section">
       <h2 id="allNewsLabel" style="color:var(--ehcb-blue);margin-bottom:1.2rem;">Alle Trainings-PDFs</h2>
@@ -395,7 +381,10 @@
     currentLang = lang;
     localStorage.setItem('news_lang', lang);
     document.documentElement.lang = lang;
-    document.getElementById('headline').textContent = translations[lang].headline;
+    // Update headline in header
+    document.getElementById('main-title').textContent = "EHC BIEL-BIENNE U18-ELIT";
+    // Optionally, you can update a sub-headline or page headline if needed
+    // document.getElementById('headline').textContent = translations[lang].headline;
     document.getElementById('allNewsLabel').textContent = translations[lang].allNews;
     document.getElementById('uploadTitle').textContent = translations[lang].uploadTitle;
     document.getElementById('uploadInstr').textContent = translations[lang].uploadInstr;
@@ -407,6 +396,15 @@
     document.getElementById('loginBtn').textContent = translations[lang].loginBtn;
     document.getElementById('logoutBtn').textContent = translations[lang].logoutBtn;
     document.getElementById('backBtn').textContent = translations[lang].back;
+    // Update active language button
+    const langSwitch = document.getElementById('lang-switch');
+    if (langSwitch) {
+      Array.from(langSwitch.querySelectorAll('button')).forEach(btn => {
+        btn.classList.remove('active');
+      });
+      const btn = document.getElementById('btn-' + lang);
+      if (btn) btn.classList.add('active');
+    }
     renderNewsList(window._newsList || []);
   }
   function t(key) {
@@ -648,9 +646,7 @@
 
   // --- Init ---
   window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('langDE').onclick = () => setLang('de');
-    document.getElementById('langFR').onclick = () => setLang('fr');
-    document.getElementById('langEN').onclick = () => setLang('en');
+    // No longer need to add event listeners for old language buttons
     setLang(currentLang);
     document.getElementById('adminLoginForm').onsubmit = handleLogin;
     document.getElementById('logoutBtn').onclick = handleLogout;
