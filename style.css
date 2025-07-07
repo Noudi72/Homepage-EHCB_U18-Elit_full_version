@@ -6,6 +6,35 @@
   --font: 'Segoe UI', 'Roboto', Arial, sans-serif;
 }
 
+/* Einheitlicher Abstand Header, Logo, Sprachumschalter */
+.header-logo, .main-logo, #header-logo {
+  display: block;
+  margin: 40px auto 22px auto;
+  max-width: 120px;
+  height: auto;
+}
+.main-title, .page-title, h1#main-title {
+  margin-top: 0;
+  margin-bottom: 28px;
+}
+.lang-switcher, .language-switcher {
+  margin-bottom: 36px;
+  margin-top: 0;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+@media (max-width: 700px) {
+  .header-logo, .main-logo, #header-logo {
+    max-width: 85px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  .main-title, .page-title, h1#main-title { margin-bottom: 12px; }
+  .lang-switcher, .language-switcher { margin-bottom: 17px; gap: 7px; }
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -32,7 +61,7 @@ header, .main-header {
   width: 120px;
   max-width: 100%;
   height: auto;
-  margin: 0 auto 18px auto;
+  /* margin entfernt, da jetzt .main-logo/.header-logo oben gesetzt */
   display: block;
   filter: drop-shadow(0 5px 18px #0008);
 }
@@ -40,7 +69,7 @@ header, .main-header {
 .page-title, .main-title, h1#main-title {
   font-size: 2.2rem;
   font-weight: 900;
-  margin: 0 0 16px 0;
+  /* margin entfernt, da jetzt oben einheitlich gesetzt */
   letter-spacing: 1px;
   color: var(--ehc-gelb);
   text-align: center;
@@ -243,8 +272,7 @@ footer {
 
 /* Sprachumschalter einheitlich */
 .lang-switcher {
-  margin-top: 10px;
-  margin-bottom: 32px;
+  /* margin entfernt, da jetzt oben einheitlich gesetzt */
   display: flex;
   gap: 10px;
   justify-content: center;
@@ -273,9 +301,8 @@ footer {
   font-weight: 800;
 }
 @media (max-width: 700px) {
-  .logo, .main-logo { width: 85px; margin-bottom: 10px; }
-  .page-title, .main-title, h1#main-title { font-size: 1.15rem; margin-bottom: 9px;}
+  .logo, .main-logo { width: 85px; }
+  .page-title, .main-title, h1#main-title { font-size: 1.15rem; }
   header, .main-header { padding-top: 1.2rem; padding-bottom: 0.6rem; }
   .lang-btn { font-size: 1.03rem; padding: 7px 13px; }
-  .lang-switcher { gap: 7px; margin-bottom: 18px; }
 }
