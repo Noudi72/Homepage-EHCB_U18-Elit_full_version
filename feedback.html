@@ -64,11 +64,36 @@
       display: flex; justify-content: center; gap: 13px; margin: 20px 0 4px 0;
     }
     .lang-switch button {
-      background: #eee; color: #002b5c; border: none; font-weight: 700;
-      border-radius: 7px; cursor: pointer; padding: 6px 26px 4px 26px; font-size: 1.1rem; transition: background 0.1s, color 0.1s;
+      background: #ffe16b;
+      color: #002b5c;
+      border: none;
+      font-weight: 800;
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 7px 33px 5px 33px;
+      font-size: 1.17rem;
+      letter-spacing: 1px;
+      margin: 0 6px;
+      box-shadow: 0 2px 12px #0001;
+      transition: background 0.12s, color 0.12s;
+      outline: none;
     }
-    .lang-switch .active {
-      background: #002b5c; color: #fff; box-shadow: 0 2px 8px #0001;
+    .lang-switch button.active,
+    .lang-switch button:active {
+      background: #002b5c;
+      color: #ffe16b;
+      box-shadow: 0 2px 16px #0002;
+      border: 2.5px solid #ffe16b;
+    }
+    .lang-switch button:hover:not(.active) {
+      background: #ffd600;
+      color: #002b5c;
+    }
+    @media (max-width: 600px) {
+      .lang-switch button {
+        font-size: 1.01rem;
+        padding: 7px 18px 4px 18px;
+      }
     }
     .main-content {
       max-width: 500px; margin: 38px auto 0 auto; padding: 0 10px;
@@ -159,9 +184,9 @@
     <img src="wikinger.png" class="logo" alt="Logo" />
     <h1 id="main-title">EHC BIEL-BIENNE U18-ELIT</h1>
     <div class="lang-switch" id="lang-switch">
-      <button onclick="changeLanguage('de')" id="btn-de">DE</button>
-      <button onclick="changeLanguage('fr')" id="btn-fr">FR</button>
-      <button onclick="changeLanguage('en')" id="btn-en">EN</button>
+      <button onclick="changeLanguage('de')" id="btn-de" class="">DE</button>
+      <button onclick="changeLanguage('fr')" id="btn-fr" class="">FR</button>
+      <button onclick="changeLanguage('en')" id="btn-en" class="">EN</button>
     </div>
   </header>
   <div class="main-content">

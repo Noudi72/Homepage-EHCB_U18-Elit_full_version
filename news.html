@@ -42,15 +42,43 @@
       color: var(--ehcb-yellow);
       text-shadow: 2px 3px 8px #1a1a1a, 0 1px 0 #222;
     }
+    /* Sprachumschaltung wie auf index.html */
     .lang-switch {
-      display: flex; justify-content: center; gap: 13px; margin: 20px 0 4px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin: 18px 0 0 0;
     }
     .lang-switch button {
-      background: #eee; color: #002b5c; border: none; font-weight: 700;
-      border-radius: 7px; cursor: pointer; padding: 6px 26px 4px 26px; font-size: 1.1rem; transition: background 0.1s, color 0.1s;
+      min-width: 58px;
+      height: 38px;
+      padding: 0 22px;
+      background: #fff;
+      color: #002d5b;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.12rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0001;
+      transition: background 0.14s, color 0.14s, box-shadow 0.14s;
+      outline: none;
+      letter-spacing: 1px;
     }
-    .lang-switch .active {
-      background: #002b5c; color: #fff; box-shadow: 0 2px 8px #0001;
+    .lang-switch button.active,
+    .lang-switch button:focus.active {
+      background: #002d5b;
+      color: #ffc700;
+      box-shadow: 0 2px 12px #0015;
+    }
+    .lang-switch button:hover:not(.active) {
+      background: #e6f0fa;
+      color: #002d5b;
+    }
+    .lang-switch button:focus {
+      outline: 2px solid #ffc700;
+      outline-offset: 1px;
     }
     .back-btn {
       position: absolute;
@@ -334,9 +362,9 @@
     <img src="wikinger.png" class="logo" alt="Logo" />
     <h1 id="main-title">EHC BIEL-BIENNE U18-ELIT</h1>
     <div class="lang-switch" id="lang-switch">
-      <button onclick="setLang('de')" id="btn-de">DE</button>
-      <button onclick="setLang('fr')" id="btn-fr">FR</button>
-      <button onclick="setLang('en')" id="btn-en">EN</button>
+      <button id="btn-de" onclick="setLang('de')">DE</button>
+      <button id="btn-fr" onclick="setLang('fr')">FR</button>
+      <button id="btn-en" onclick="setLang('en')">EN</button>
     </div>
     <form id="adminLoginForm" class="admin-login-inline">
       <label for="adminPassword" id="passwordLabel" style="margin-right:8px;">🔒</label>
