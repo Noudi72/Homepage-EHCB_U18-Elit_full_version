@@ -12,6 +12,7 @@
       --ehc-red: #d0021b;
       --ehc-white: #fff;
       --ehc-shadow: 0 10px 40px #00183e44;
+      --ehc-gelb: #ffd600;
     }
     html, body {
       margin: 0; padding: 0;
@@ -22,19 +23,24 @@
     }
     header {
       text-align: center;
-      padding: 32px 0 18px 0;
+      padding: 2.5rem 1rem 1.0rem 1rem;
+      margin-bottom: 0.5rem;
     }
     .logo {
       width: 120px;
-      margin: 0 auto 30px auto;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto 18px auto;
       display: block;
+      filter: drop-shadow(0 5px 18px #0008);
     }
-    h1 {
-      font-size: 2rem;
-      font-weight: 800;
-      margin: 0 0 14px 0;
-      letter-spacing: 2px;
-      color: var(--ehc-white);
+    h1#main-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      margin: 0 0 16px 0;
+      letter-spacing: 1px;
+      color: var(--ehc-gelb);
+      text-align: center;
     }
     .lang-switcher {
       margin-top: 12px; 
@@ -63,9 +69,23 @@
       background: #d0021b;
       color: #fff;
     }
+    @media (max-width: 700px) {
+      .back-btn {
+        top: 15px;
+        left: 7px;
+        padding: 9px 16px 7px 12px;
+        font-size: 1.04rem;
+      }
+      .logo { width: 85px; margin-bottom: 10px; }
+      h1#main-title { font-size: 1.15rem; margin-bottom: 9px;}
+      header { padding-top: 1.2rem; padding-bottom: 0.6rem; }
+    }
     @media (max-width: 600px) {
-      .lang-btn { font-size: 1rem; padding: 6px 10px; }
-      .lang-switcher { gap: 7px; }
+      .main-content { padding: 0 2px;}
+      .card { font-size: 1.01rem; padding: 10px 1px 7px 1px;}
+      .logo { width: 100px; } /* <-- Wert angepasst */
+      h1 { font-size: 1.18rem;}
+      iframe { height: 320px; }
     }
     .main-content {
       max-width: 800px; margin: 30px auto 0 auto; padding: 0 6px;
@@ -129,21 +149,6 @@
       box-shadow: 0 2px 14px #0002;
     }
     .back-btn:hover { background: #ffd600; color: #002b5c; }
-    @media (max-width: 700px) {
-      .back-btn {
-        top: 15px;
-        left: 7px;
-        padding: 9px 16px 7px 12px;
-        font-size: 1.04rem;
-      }
-    }
-    @media (max-width: 600px) {
-      .main-content { padding: 0 2px;}
-      .card { font-size: 1.01rem; padding: 10px 1px 7px 1px;}
-      .logo { width: 100px; } /* <-- Wert angepasst */
-      h1 { font-size: 1.18rem;}
-      iframe { height: 320px; }
-    }
   </style>
 </head>
 <body>
