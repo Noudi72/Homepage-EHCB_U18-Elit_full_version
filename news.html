@@ -21,8 +21,8 @@
     html, body {
       margin: 0; padding: 0;
       font-family: 'Segoe UI', Arial, sans-serif;
-      background: var(--ehcb-grey);
-      color: var(--ehcb-blue);
+      background: #073166;
+      color: var(--ehcb-white);
       min-height: 100vh;
     }
     header {
@@ -39,7 +39,8 @@
       font-weight: 800;
       margin: 0 0 14px 0;
       letter-spacing: 2px;
-      color: var(--ehcb-blue);
+      color: var(--ehcb-yellow);
+      text-shadow: 2px 3px 8px #1a1a1a, 0 1px 0 #222;
     }
     .lang-switch {
       display: flex; justify-content: center; gap: 13px; margin: 20px 0 4px 0;
@@ -72,9 +73,13 @@
       max-width: 900px;
       margin: 2.1rem auto 1.2rem auto;
       padding: 1rem;
+      background: transparent !important;
+      color: #fff;
     }
     .news-section {
       margin-bottom: 2.5rem;
+      background: transparent !important;
+      color: #fff;
     }
     .news-list {
       display: flex;
@@ -218,6 +223,17 @@
       max-width: 350px;
       margin: 2rem auto;
       text-align: center;
+      color: #002d5b;
+    }
+    .admin-login-section h3,
+    .admin-login-section label {
+      color: #002d5b !important;
+      text-shadow: none;
+    }
+    .admin-login-section h3 {
+      color: #002d5b !important;
+      background: none !important;
+      text-shadow: none !important;
     }
     .admin-login-section input {
       width: 80%;
@@ -226,15 +242,25 @@
       border: 1px solid #ccc;
       border-radius: 4px;
       font-size: 1rem;
+      color: #002d5b;
+      background: #fff;
     }
     .admin-login-section button {
-      background: var(--ehcb-blue);
-      color: var(--ehcb-yellow);
+      background: #002b5c;
+      color: #ffc700;
       border: none;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 1.4rem;
       border-radius: 4px;
       font-weight: bold;
       cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 1px 3px #0002;
+      margin-top: 0.6rem;
+      transition: background 0.15s, color 0.15s;
+    }
+    .admin-login-section button:hover {
+      background: #ffc700;
+      color: #002b5c;
     }
     .logout-btn {
       margin-top: 1.5rem;
@@ -260,6 +286,32 @@
       .news-list { flex-direction: column; gap: 1rem; }
       .news-card { min-width: 0; max-width: 100%; }
     }
+    /* Weiße Schrift für Filter-/Sortierbereich und Labels */
+    .news-section h2,
+    .news-section label,
+    .news-section select,
+    .news-section option,
+    .news-section input,
+    .news-section textarea {
+      color: #fff;
+    }
+    /* Placeholder weiß für Suchfeld */
+    #newsSearchInput::placeholder {
+      color: #fff;
+      opacity: 1;
+    }
+    /* Label im Uploadbereich außerhalb Cards */
+    #uploadArea label,
+    #uploadArea h3,
+    #uploadArea #uploadInstr {
+      color: #fff !important;
+      text-shadow: none;
+    }
+    /* Überschriften außerhalb Cards */
+    .container h2, .container h3, .container label {
+      color: #fff;
+      text-shadow: none;
+    }
   </style>
 </head>
 <body>
@@ -275,10 +327,10 @@
   </header>
   <div class="container">
     <section class="news-section">
-      <h2 id="allNewsLabel" style="color:var(--ehcb-blue);margin-bottom:1.2rem;">Alle Trainings-PDFs</h2>
+      <h2 id="allNewsLabel" style="margin-bottom:1.2rem;">Alle Trainings-PDFs</h2>
       <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.8rem 1.2rem;margin-bottom:1.2rem;">
-        <input id="newsSearchInput" type="text" placeholder="Suche nach Titel oder Kommentar..." style="flex:1 1 220px;min-width:150px;max-width:350px;padding:0.4rem 0.8rem;border:1px solid #bbb;border-radius:4px;font-size:1rem;" autocomplete="off">
-        <select id="newsSortSelect" style="flex:0 0 170px;min-width:140px;padding:0.4rem 0.8rem;border:1px solid #bbb;border-radius:4px;font-size:1rem;">
+        <input id="newsSearchInput" type="text" placeholder="Suche nach Titel oder Kommentar..." style="flex:1 1 220px;min-width:150px;max-width:350px;padding:0.4rem 0.8rem;border:1px solid #bbb;border-radius:4px;font-size:1rem;background:transparent;color:#fff;" autocomplete="off">
+        <select id="newsSortSelect" style="flex:0 0 170px;min-width:140px;padding:0.4rem 0.8rem;border:1px solid #bbb;border-radius:4px;font-size:1rem;background:transparent;color:#fff;">
           <option value="newest">Neuestes zuerst</option>
           <option value="oldest">Ältestes zuerst</option>
           <option value="title">Titel A–Z</option>
@@ -295,8 +347,8 @@
       </form>
     </section>
     <section id="uploadArea" class="upload-section" style="display:none;">
-      <h3 id="uploadTitle" style="color:var(--ehcb-blue);margin-bottom:0.6rem;">PDF/Bild-Upload (nur für Admins)</h3>
-      <div id="uploadInstr" style="color:#333;margin-bottom:1.2rem;">Ziehe eine PDF- oder Bilddatei (PNG/JPEG) hierher oder klicke zum Auswählen.</div>
+      <h3 id="uploadTitle" style="margin-bottom:0.6rem;">PDF/Bild-Upload (nur für Admins)</h3>
+      <div id="uploadInstr" style="margin-bottom:1.2rem;">Ziehe eine PDF- oder Bilddatei (PNG/JPEG) hierher oder klicke zum Auswählen.</div>
       <form class="upload-form" id="uploadForm" autocomplete="off" style="margin-bottom:0;">
         <input type="file" id="pdfFile" accept="application/pdf,image/png,image/jpeg" style="display:none;" required>
         <div class="progress-bar"><div id="progressBarInner" class="progress-bar-inner"></div></div>
