@@ -99,6 +99,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            min-height: 270px; /* Einheitliche Höhe für alle News-Karten */
         }
         .news-card .title {
             color: var(--ehcb-blue);
@@ -383,6 +384,7 @@
             document.getElementById('uploadArea').style.display = show ? '' : 'none';
             document.getElementById('logoutBtn').style.display = show ? '' : 'none';
             document.getElementById('adminLoginSection').style.display = show ? 'none' : '';
+            // Immer News-Liste aktuell anzeigen
             renderNewsList(window._newsList || []);
         }
         function handleLogin(e) {
@@ -391,6 +393,7 @@
             if (pw === "Coach7274") {
                 isAdmin = true;
                 showAdminUI(true);
+                listenToNews(); // Immer News nach Login laden
             } else {
                 alert("Falsches Passwort / Wrong password / Mauvais mot de passe");
             }
@@ -398,6 +401,7 @@
         function handleLogout() {
             isAdmin = false;
             showAdminUI(false);
+            listenToNews(); // Nach Logout News laden
         }
         // --- PDF Upload ---
         // --- 2-Step Upload: Step 1: PDF Upload, Step 2: Meta Info ---
@@ -503,6 +507,7 @@
             }).then(() => {
                 resetUploadStep();
                 document.getElementById('saveMetaBtn').disabled = false;
+                listenToNews(); // Nach erfolgreichem Speichern News laden
             }).catch(() => {
                 alert(t('uploadError'));
                 document.getElementById('saveMetaBtn').disabled = false;
@@ -510,7 +515,7 @@
         }
         // --- News List Rendering ---
         function renderNewsList(newsList) {
-            window._newsList = newsList; // for language switch
+            window._newsList = newsList; // für Sprachumschaltung und Back
             const listDiv = document.getElementById('newsList');
             listDiv.innerHTML = "";
             if (!newsList.length) {
@@ -562,7 +567,9 @@
                     delBtn.onclick = () => {
                         if (confirm('Wirklich löschen?')) {
                             storage.refFromURL(item.url).delete().catch(()=>{});
-                            db.collection('news').doc(item.id).delete();
+                            db.collection('news').doc(item.id).delete().then(() => {
+                                listenToNews(); // Nach Löschen News neu laden
+                            });
                         }
                     };
                     card.appendChild(delBtn);
@@ -572,8 +579,14 @@
             });
         }
         // --- Live Firestore News List ---
+        // News-Listener-Referenz, damit wir ihn ggf. neu setzen können
+        let newsUnsubscribe = null;
         function listenToNews() {
-            db.collection('news').orderBy('timestamp', 'desc')
+            // Vorherigen Listener entfernen, damit keine Duplikate entstehen
+            if (typeof newsUnsubscribe === "function") {
+                newsUnsubscribe();
+            }
+            newsUnsubscribe = db.collection('news').orderBy('timestamp', 'desc')
             .onSnapshot((snapshot) => {
                 const newsList = [];
                 snapshot.forEach(doc => {
@@ -614,6 +627,12 @@
             document.getElementById('metaForm').onsubmit = handleMetaSave;
             resetUploadStep();
             listenToNews();
+
+            // News immer laden, auch nach "Zurück" (Back-Button)
+            window.addEventListener('pageshow', function(event) {
+                // pageshow wird auch bei bfcache ausgelöst
+                listenToNews();
+            });
         });
 </script>
 </html>
