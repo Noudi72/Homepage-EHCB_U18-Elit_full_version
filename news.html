@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -22,12 +20,9 @@
         };
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-        // Firestore DB (für News)
         const db = firebase.firestore();
-        // Firebase Storage (für PDF-Uploads)
         const storage = firebase.storage();
     </script>
-    <!-- EHCB Branding & Responsive Styles -->
     <style>
         :root {
             --ehcb-blue: #002d5b;
@@ -63,6 +58,20 @@
             border-radius: 4px;
             font-weight: bold;
             cursor: pointer;
+        }
+        .main-btn {
+            background: #002d5b;
+            color: #ffc700;
+            padding: 0.7rem 1.8rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+        }
+        .main-btn:hover {
+            background: #001a33;
+            color: #ffd700;
         }
         .container {
             max-width: 900px;
@@ -120,7 +129,34 @@
         .news-card .download-link:hover {
             background: #ffe066;
         }
-        /* Upload area */
+        .preview-link {
+            background: #fff;
+            color: #002d5b;
+            border: 2px solid #002d5b;
+            padding: 0.45rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            text-align: center;
+            margin-right: 0.5rem;
+            text-decoration: none;
+        }
+        .preview-link:hover {
+            background: #e6f0fa;
+        }
+        .delete-btn {
+            margin-left: 0.7rem;
+            background: #ff6565;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            padding: 0.45rem 1rem;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .delete-btn:hover {
+            background: #ff0000;
+        }
         .upload-section {
             background: var(--ehcb-white);
             border: 2px dashed var(--ehcb-blue);
@@ -226,6 +262,7 @@
             <button id="langEN">EN</button>
         </div>
     </header>
+    <a href="index.html" class="main-btn">← Zurück</a>
     <div class="container">
         <section class="news-section">
             <h2 id="allNewsLabel" style="color:var(--ehcb-blue);margin-bottom:1.2rem;">Alle Trainings-PDFs</h2>
@@ -331,7 +368,6 @@
             document.getElementById('passwordLabel').textContent = translations[lang].password;
             document.getElementById('loginBtn').textContent = translations[lang].loginBtn;
             document.getElementById('logoutBtn').textContent = translations[lang].logoutBtn;
-            // update news list
             renderNewsList(window._newsList || []);
         }
         function t(key) {
@@ -343,6 +379,7 @@
             document.getElementById('uploadArea').style.display = show ? '' : 'none';
             document.getElementById('logoutBtn').style.display = show ? '' : 'none';
             document.getElementById('adminLoginSection').style.display = show ? 'none' : '';
+            renderNewsList(window._newsList || []);
         }
         function handleLogin(e) {
             e.preventDefault();
@@ -395,7 +432,6 @@
             document.getElementById('uploadBtn').textContent = t('uploading');
             const progressBar = document.getElementById('progressBarInner');
             progressBar.style.width = "0%";
-            // Firebase Storage: upload file
             const ts = Date.now();
             const storageRef = storage.ref().child('news_pdfs/' + ts + '_' + file.name);
             const uploadTask = storageRef.put(file);
@@ -411,7 +447,6 @@
                 },
                 () => {
                     uploadTask.snapshot.ref.getDownloadURL().then((url) => {
-                        // Firestore: save meta info
                         db.collection('news').add({
                             title: title,
                             comment: comment,
@@ -454,15 +489,42 @@
                 const comment = document.createElement('div');
                 comment.className = 'comment';
                 comment.textContent = item.comment;
+
+                // Vorschau-Button
+                const preview = document.createElement('a');
+                preview.className = 'preview-link';
+                preview.href = item.url;
+                preview.target = "_blank";
+                preview.textContent = '👁 Vorschau';
+
+                // Download-Button
                 const link = document.createElement('a');
                 link.className = 'download-link';
                 link.href = item.url;
                 link.target = "_blank";
+                link.download = "";
                 link.textContent = t('download');
+
                 card.appendChild(title);
                 card.appendChild(date);
                 if (item.comment) card.appendChild(comment);
+                card.appendChild(preview);
                 card.appendChild(link);
+
+                // Delete nur für Admin
+                if (isAdmin && item.id) {
+                    const delBtn = document.createElement('button');
+                    delBtn.textContent = "🗑 Löschen";
+                    delBtn.className = 'delete-btn';
+                    delBtn.onclick = () => {
+                        if (confirm('Wirklich löschen?')) {
+                            storage.refFromURL(item.url).delete().catch(()=>{});
+                            db.collection('news').doc(item.id).delete();
+                        }
+                    };
+                    card.appendChild(delBtn);
+                }
+
                 listDiv.appendChild(card);
             });
         }
@@ -472,7 +534,7 @@
             .onSnapshot((snapshot) => {
                 const newsList = [];
                 snapshot.forEach(doc => {
-                    newsList.push(doc.data());
+                    newsList.push({ ...doc.data(), id: doc.id });
                 });
                 renderNewsList(newsList);
             });
@@ -494,11 +556,8 @@
             uploadArea.addEventListener('dragleave', handleDragLeave);
             uploadArea.addEventListener('drop', handleFileDrop);
             uploadArea.addEventListener('click', () => document.getElementById('pdfFile').click());
-            document.getElementById('pdfFile').addEventListener('change', (e) => {
-                // show file name (optional)
-            });
+            document.getElementById('pdfFile').addEventListener('change', (e) => {});
             document.getElementById('uploadForm').onsubmit = handleUpload;
-            // Listen to Firestore
             listenToNews();
         });
 </script>
