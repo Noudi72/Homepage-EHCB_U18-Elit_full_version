@@ -392,19 +392,21 @@
         renderNewsList(window._newsList || []);
     }
     function handleLogin(e) {
-        e.preventDefault();
-        const pw = document.getElementById('adminPassword').value;
-        if (pw === "Coach7274") {
-            isAdmin = true;
-            showAdminUI(true);
-        } else {
-            alert("Falsches Passwort / Wrong password / Mauvais mot de passe");
-        }
+    e.preventDefault();
+    const pw = document.getElementById('adminPassword').value;
+    if (pw === "Coach7274") {
+        isAdmin = true;
+        showAdminUI(true);
+        listenToNews();   // ← News-Listener nach Login immer neu aktivieren
+    } else {
+        alert("Falsches Passwort / Wrong password / Mauvais mot de passe");
     }
-    function handleLogout() {
-        isAdmin = false;
-        showAdminUI(false);
-    }
+}
+function handleLogout() {
+    isAdmin = false;
+    showAdminUI(false);
+    listenToNews();     // ← News-Listener nach Logout immer neu aktivieren
+}
 
     // --- File Upload/Meta/Drag&Drop
     let uploadedFileURL = null;
