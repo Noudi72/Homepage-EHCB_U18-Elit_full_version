@@ -306,11 +306,11 @@
     const translations = {
         de: {
             headline: "News & Info",
-            uploadTitle: "PDF-Upload (nur für Admins)",
-            uploadInstr: "Ziehe eine PDF-Datei hierher oder klicke zum Auswählen.",
+            uploadTitle: "PDF/Bild-Upload (nur für Admins)",
+            uploadInstr: "Ziehe eine PDF- oder Bilddatei (PNG/JPEG) hierher oder klicke zum Auswählen.",
             pdfTitle: "Titel",
             pdfComment: "Kommentar",
-            uploadBtn: "Hochladen",
+            uploadBtn: "Datei auswählen",
             uploading: "Wird hochgeladen...",
             loginHeadline: "Admin-Login",
             password: "Passwort",
@@ -619,6 +619,8 @@ function handleLogout() {
         uploadArea.addEventListener('click', (e) => {
             // Klicke nicht, wenn auf MetaForm geklickt wird
             if (e.target.closest('#metaForm')) return;
+            // Klicke nicht, wenn auf den Upload-Button geklickt wird (der handled separat)
+            if (e.target.closest('#uploadBtn')) return;
             document.getElementById('pdfFile').click();
         });
         document.getElementById('pdfFile').addEventListener('change', (e) => {
@@ -626,7 +628,8 @@ function handleLogout() {
                 handleFileSelected(e.target.files[0]);
             }
         });
-        document.getElementById('uploadBtn').onclick = () => {
+        document.getElementById('uploadBtn').onclick = (e) => {
+            e.stopPropagation();
             document.getElementById('pdfFile').click();
         };
         document.getElementById('metaForm').onsubmit = handleMetaSave;
