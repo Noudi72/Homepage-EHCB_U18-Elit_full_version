@@ -250,6 +250,19 @@
             }
             .container {
                 padding: 0.5rem;
+                .news-btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.6rem;
+    font-size: 1.1rem;
+    box-sizing: border-box;
+}
+.news-card .preview-link, .news-card .download-link, .news-card .delete-btn {
+    margin-right: 0;
+    margin-left: 0;
+}
+.news-card .download-link { margin-bottom: 0.6rem; }
+.news-card .delete-btn { margin-bottom: 0; }
             }
         }
     </style>
@@ -379,111 +392,108 @@
             return translations[currentLang][key] || key;
         }
         // --- Admin Login (Simple, client-side password check) ---
-        let isAdmin = false;
-        function showAdminUI(show) {
-            document.getElementById('uploadArea').style.display = show ? '' : 'none';
-            document.getElementById('logoutBtn').style.display = show ? '' : 'none';
-            document.getElementById('adminLoginSection').style.display = show ? 'none' : '';
-            // Immer News-Liste aktuell anzeigen
-            renderNewsList(window._newsList || []);
-        }
-        function handleLogin(e) {
-            e.preventDefault();
-            const pw = document.getElementById('adminPassword').value;
-            if (pw === "Coach7274") {
-                isAdmin = true;
-                showAdminUI(true);
-                listenToNews(); // Immer News nach Login laden
-            } else {
-                alert("Falsches Passwort / Wrong password / Mauvais mot de passe");
-            }
-        }
-        function handleLogout() {
-            isAdmin = false;
-            showAdminUI(false);
-            listenToNews(); // Nach Logout News laden
-        }
-        // --- PDF Upload ---
-        // --- 2-Step Upload: Step 1: PDF Upload, Step 2: Meta Info ---
-        let uploadedFileURL = null;
-        let uploadedFileName = null;
-        let uploadedStoragePath = null;
-        let uploadTaskRunning = false;
-        function resetUploadStep() {
-            uploadedFileURL = null;
-            uploadedFileName = null;
-            uploadedStoragePath = null;
-            uploadTaskRunning = false;
-            document.getElementById('pdfFile').value = "";
-            document.getElementById('progressBarInner').style.width = "0%";
-            document.getElementById('metaForm').style.display = "none";
-            document.getElementById('pdfTitle').value = "";
-            document.getElementById('pdfComment').value = "";
-            document.getElementById('uploadBtn').disabled = false;
-            document.getElementById('uploadBtn').textContent = t('uploadBtn');
-        }
-        function handleFileDrop(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.getElementById('uploadArea').classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            if (files.length) {
-                document.getElementById('pdfFile').files = files;
-                handlePDFFileSelected(files[0]);
-            }
-        }
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.getElementById('uploadArea').classList.add('dragover');
-        }
-        function handleDragLeave(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.getElementById('uploadArea').classList.remove('dragover');
-        }
-        // Step 1: PDF auswählen und hochladen
-        function handlePDFFileSelected(file) {
-            if (!file) return;
-            if (file.type !== "application/pdf") {
-                alert('Nur PDF-Dateien erlaubt! / PDF only!');
-                return;
-            }
-            if (uploadTaskRunning) return;
-            document.getElementById('uploadBtn').disabled = true;
-            document.getElementById('uploadBtn').textContent = t('uploading');
-            const progressBar = document.getElementById('progressBarInner');
-            progressBar.style.width = "0%";
-            const ts = Date.now();
-            const storagePath = 'news_pdfs/' + ts + '_' + file.name;
-            const storageRef = storage.ref().child(storagePath);
-            uploadTaskRunning = true;
-            const uploadTask = storageRef.put(file);
-            uploadTask.on('state_changed',
-                (snapshot) => {
-                    const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    progressBar.style.width = percent + "%";
-                },
-                (error) => {
-                    alert(t('uploadError'));
-                    document.getElementById('uploadBtn').disabled = false;
-                    document.getElementById('uploadBtn').textContent = t('uploadBtn');
-                    uploadTaskRunning = false;
-                },
-                () => {
-                    uploadTask.snapshot.ref.getDownloadURL().then((url) => {
-                        uploadedFileURL = url;
-                        uploadedFileName = file.name;
-                        uploadedStoragePath = storagePath;
-                        progressBar.style.width = "100%";
-                        // Zeige Meta-Formular (Schritt 2)
-                        document.getElementById('metaForm').style.display = '';
-                        document.getElementById('uploadBtn').textContent = t('uploadSuccess');
-                        setTimeout(() => { progressBar.style.width = "0%"; }, 1000);
+let isAdmin = false;
+function showAdminUI(show) {
+    document.getElementById('uploadArea').style.display = show ? '' : 'none';
+    document.getElementById('logoutBtn').style.display = show ? '' : 'none';
+    document.getElementById('adminLoginSection').style.display = show ? 'none' : '';
+    // Admin sieht immer aktuelle News (löschen erlaubt), Spieler nur Ansicht
+    renderNewsList(window._newsList || []);
+}
+function handleLogin(e) {
+    e.preventDefault();
+    const pw = document.getElementById('adminPassword').value;
+    if (pw === "Coach7274") {
+        isAdmin = true;
+        showAdminUI(true);
+    } else {
+        alert("Falsches Passwort / Wrong password / Mauvais mot de passe");
+    }
+}
+function handleLogout() {
+    isAdmin = false;
+    showAdminUI(false);
+}
+
+// --- News List Rendering ---
+function renderNewsList(newsList) {
+    window._newsList = newsList; // immer merken
+    const listDiv = document.getElementById('newsList');
+    listDiv.innerHTML = "";
+    if (!newsList.length) {
+        const p = document.createElement('p');
+        p.textContent = t('noNews');
+        listDiv.appendChild(p);
+        return;
+    }
+    newsList.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'news-card';
+        const title = document.createElement('div');
+        title.className = 'title';
+        title.textContent = item.title;
+        const date = document.createElement('div');
+        date.className = 'date';
+        const d = new Date(item.timestamp);
+        date.textContent = t('date') + ": " + d.toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' });
+        const comment = document.createElement('div');
+        comment.className = 'comment';
+        comment.textContent = item.comment;
+
+        // Vorschau-Button
+        const preview = document.createElement('a');
+        preview.className = 'preview-link news-btn';
+        preview.href = item.url;
+        preview.target = "_blank";
+        preview.textContent = '👁 Vorschau';
+
+        // Download-Button
+        const link = document.createElement('a');
+        link.className = 'download-link news-btn';
+        link.href = item.url;
+        link.target = "_blank";
+        link.download = "";
+        link.textContent = t('download');
+
+        card.appendChild(title);
+        card.appendChild(date);
+        if (item.comment) card.appendChild(comment);
+        card.appendChild(preview);
+        card.appendChild(link);
+
+        // Delete nur für Admin
+        if (isAdmin && item.id) {
+            const delBtn = document.createElement('button');
+            delBtn.textContent = "🗑 Löschen";
+            delBtn.className = 'delete-btn news-btn';
+            delBtn.onclick = () => {
+                if (confirm('Wirklich löschen?')) {
+                    storage.refFromURL(item.url).delete().catch(()=>{});
+                    db.collection('news').doc(item.id).delete().then(() => {
+                        // kein reload nötig, Firestore-Listener updated automatisch
                     });
                 }
-            );
+            };
+            card.appendChild(delBtn);
         }
+
+        listDiv.appendChild(card);
+    });
+}
+
+// --- Live Firestore News List (immer für alle!) ---
+newsUnsubscribe = null;
+function listenToNews() {
+    if (typeof newsUnsubscribe === "function") newsUnsubscribe();
+    newsUnsubscribe = db.collection('news').orderBy('timestamp', 'desc')
+        .onSnapshot((snapshot) => {
+            const newsList = [];
+            snapshot.forEach(doc => {
+                newsList.push({ ...doc.data(), id: doc.id });
+            });
+            renderNewsList(newsList);
+        });
+}
         // Step 2: Metadaten speichern
         function handleMetaSave(e) {
             e.preventDefault();
@@ -580,7 +590,7 @@
         }
         // --- Live Firestore News List ---
         // News-Listener-Referenz, damit wir ihn ggf. neu setzen können
-        let newsUnsubscribe = null;
+        // let newsUnsubscribe = null; // Entfernt, um doppelte Deklaration zu vermeiden
         function listenToNews() {
             // Vorherigen Listener entfernen, damit keine Duplikate entstehen
             if (typeof newsUnsubscribe === "function") {
