@@ -307,23 +307,17 @@
         }
 </style>
         /* Touch support for all main buttons */
-        @media (hover: none) and (pointer: coarse) {
-            .main-btn:active,
-            .news-card .download-link:active,
-            .news-card .preview-link:active,
-            .news-card .delete-btn:active,
-            #uploadBtn:active,
-            #saveMetaBtn:active,
-            .logout-btn:active {
-                /* Already defined above for :active, but media query ensures for mobile */
-            }
-            .main-btn:active,
-            #uploadBtn:active,
-            #saveMetaBtn:active {
-                /* fallback for mobile tap highlight */
-                filter: brightness(0.92);
-            }
-        }
+@media (hover: none) and (pointer: coarse) {
+    .main-btn:active,
+    .news-card .download-link:active,
+    .news-card .preview-link:active,
+    .news-card .delete-btn:active,
+    #uploadBtn:active,
+    #saveMetaBtn:active,
+    .logout-btn:active {
+        filter: brightness(0.92);
+    }
+}
 </head>
 <body>
     <header>
