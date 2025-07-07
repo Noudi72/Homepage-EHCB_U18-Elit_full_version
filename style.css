@@ -16,27 +16,34 @@ body {
 }
 
 
-header {
+/* ================= Einheitliche Abstände für Header, Logo, Titel, Sprachbuttons ================ */
+
+header, .main-header {
   background: var(--ehc-blau);
   color: #fff;
-  padding: 2.0rem 1rem 1.0rem 1rem;
+  padding: 2.5rem 1rem 1.0rem 1rem;
   text-align: center;
   border-bottom: 7px solid var(--ehc-rot);
   position: relative;
+  margin-bottom: 0.5rem;
 }
-.logo {
+
+.logo, .main-logo {
   width: 120px;
+  max-width: 100%;
   height: auto;
-  margin: 0 auto 30px auto;
+  margin: 0 auto 18px auto;
   display: block;
   filter: drop-shadow(0 5px 18px #0008);
 }
-h1, #main-title {
+
+.page-title, .main-title, h1#main-title {
   font-size: 2.2rem;
   font-weight: 900;
-  margin: 0 0 14px 0;
+  margin: 0 0 16px 0;
   letter-spacing: 1px;
   color: var(--ehc-gelb);
+  text-align: center;
 }
 .back-btn {
   position: absolute;
@@ -234,9 +241,10 @@ footer {
   color: var(--ehc-blau) !important;
 }
 
+/* Sprachumschalter einheitlich */
 .lang-switcher {
-  margin-top: 12px;
-  margin-bottom: 8px;
+  margin-top: 10px;
+  margin-bottom: 32px;
   display: flex;
   gap: 10px;
   justify-content: center;
@@ -245,23 +253,29 @@ footer {
   background: #fff;
   color: #002b5c;
   border: none;
-  border-radius: 8px;
-  padding: 7px 18px;
-  font-weight: bold;
-  font-size: 1rem;
+  border-radius: 12px;
+  padding: 10px 27px;
+  font-weight: 800;
+  font-size: 1.24rem;
   cursor: pointer;
   box-shadow: 0 1px 8px #2222;
   transition: background 0.18s, color 0.18s;
+  outline: none;
 }
 .lang-btn.active, .lang-btn:focus {
   background: #FFD600;
   color: #002b5c;
+  font-weight: 800;
 }
 .lang-btn:hover:not(.active) {
   background: #d0021b;
   color: #fff;
+  font-weight: 800;
 }
-@media (max-width: 600px) {
-  .lang-btn { font-size: 1rem; padding: 6px 10px; }
-  .lang-switcher { gap: 7px; }
+@media (max-width: 700px) {
+  .logo, .main-logo { width: 85px; margin-bottom: 10px; }
+  .page-title, .main-title, h1#main-title { font-size: 1.15rem; margin-bottom: 9px;}
+  header, .main-header { padding-top: 1.2rem; padding-bottom: 0.6rem; }
+  .lang-btn { font-size: 1.03rem; padding: 7px 13px; }
+  .lang-switcher { gap: 7px; margin-bottom: 18px; }
 }

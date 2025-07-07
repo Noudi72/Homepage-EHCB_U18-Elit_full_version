@@ -50,38 +50,46 @@
     /* Kopfbereich: Logo, Titel, Sprachumschaltung zentriert */
     header {
       text-align: center;
-      padding: 32px 0 18px 0;
+      padding: 2.5rem 1rem 1.0rem 1rem;
+      margin-bottom: 0.5rem;
     }
     .logo {
       width: 120px;
-      margin: 0 auto 30px auto;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto 18px auto;
       display: block;
+      filter: drop-shadow(0 5px 18px #0008);
     }
-    h1 {
+    h1#main-title {
       font-size: 2.2rem;
-      font-weight: 800;
-      margin: 0 0 14px 0;
-      letter-spacing: 2px;
-      color: var(--ehc-white);
+      font-weight: 900;
+      margin: 0 0 16px 0;
+      letter-spacing: 1px;
+      color: var(--ehc-yellow);
+      text-align: center;
     }
     .lang-switcher {
       margin-top: 12px; 
       margin-bottom: 8px; 
       display: flex; 
-      gap: 10px; 
+      gap: 16px; 
       justify-content: center;
     }
     .lang-btn {
       background: #fff; 
       color: #002b5c; 
       border: none; 
-      border-radius: 8px; 
-      padding: 7px 18px;
+      border-radius: 11px; 
+      padding: 8px 36px 7px 36px;
       font-weight: bold; 
-      font-size: 1rem; 
+      font-size: 1.13rem; 
       cursor: pointer; 
       box-shadow: 0 1px 8px #2222;
-      transition: background 0.18s;
+      transition: background 0.19s, color 0.19s, transform 0.14s;
+      outline: none;
+      letter-spacing: 1px;
+      margin-bottom: 0;
     }
     .lang-btn.active, .lang-btn:focus {
       background: #FFD600; 
@@ -90,12 +98,17 @@
     .lang-btn:hover:not(.active) {
       background: #d0021b;
       color: #fff;
+      transform: translateY(-2px) scale(1.04);
     }
     @media (max-width: 600px) {
       .lang-btn {
         font-size: 1.01rem;
         padding: 7px 18px 4px 18px;
       }
+      .lang-switcher { gap: 7px;}
+      .logo { width: 85px; margin-bottom: 10px; }
+      h1#main-title { font-size: 1.15rem; margin-bottom: 9px;}
+      header { padding-top: 1.2rem; padding-bottom: 0.6rem; }
     }
     .main-content {
       max-width: 900px; margin: 30px auto 0 auto; padding: 0 6px;
