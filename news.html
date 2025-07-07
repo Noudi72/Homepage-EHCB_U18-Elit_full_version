@@ -216,50 +216,38 @@
       width: 0%;
       transition: width 0.3s;
     }
-    .admin-login-section {
-      background: var(--ehcb-white);
-      border: 1px solid var(--ehcb-blue);
-      border-radius: 8px;
-      padding: 1.5rem 1rem;
-      max-width: 350px;
-      margin: 2rem auto;
-      text-align: center;
-      color: #002d5b;
-    }
-    .admin-login-section h3,
-    .admin-login-section label {
-      color: #002d5b !important;
-      text-shadow: none;
-    }
-    .admin-login-section h3 {
-      color: #002d5b !important;
-      background: none !important;
-      text-shadow: none !important;
-    }
-    .admin-login-section input {
-      width: 80%;
-      padding: 0.5rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1rem;
-      color: #002d5b;
+    .admin-login-inline {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin: 0.5rem 0 1.5rem 0;
       background: #fff;
+      border-radius: 7px;
+      padding: 6px 16px;
+      box-shadow: 0 1px 4px #0001;
     }
-    .admin-login-section button {
+    .admin-login-inline input {
+      border: 1px solid #bbb;
+      border-radius: 5px;
+      font-size: 1rem;
+      padding: 4px 9px;
+      width: 120px;
+      background: #fff;
+      color: #002d5b;
+    }
+    .admin-login-inline button {
       background: #002b5c;
       color: #ffc700;
       border: none;
-      padding: 0.5rem 1.4rem;
-      border-radius: 4px;
+      border-radius: 5px;
       font-weight: bold;
-      cursor: pointer;
       font-size: 1rem;
-      box-shadow: 0 1px 3px #0002;
-      margin-top: 0.6rem;
-      transition: background 0.15s, color 0.15s;
+      padding: 5px 18px;
+      cursor: pointer;
+      transition: background .13s, color .13s;
     }
-    .admin-login-section button:hover {
+    .admin-login-inline button:hover {
       background: #ffc700;
       color: #002b5c;
     }
@@ -337,6 +325,11 @@
       <button onclick="setLang('fr')" id="btn-fr">FR</button>
       <button onclick="setLang('en')" id="btn-en">EN</button>
     </div>
+    <form id="adminLoginForm" class="admin-login-inline">
+      <label for="adminPassword" style="margin-right:8px;">🔒</label>
+      <input type="password" id="adminPassword" placeholder="Admin Passwort" autocomplete="current-password" required>
+      <button id="loginBtn" type="submit">Login</button>
+    </form>
   </header>
   <div class="container">
     <section class="news-section">
@@ -350,14 +343,6 @@
         </select>
       </div>
       <div class="news-list" id="newsList"></div>
-    </section>
-    <section id="adminLoginSection" class="admin-login-section">
-      <h3 id="loginHeadline">Admin-Login</h3>
-      <form id="adminLoginForm">
-        <label id="passwordLabel" for="adminPassword">Passwort</label><br>
-        <input type="password" id="adminPassword" autocomplete="current-password" required><br>
-        <button id="loginBtn" type="submit">Login</button>
-      </form>
     </section>
     <section id="uploadArea" class="upload-section" style="display:none;">
       <h3 id="uploadTitle" style="margin-bottom:0.6rem;">PDF/Bild-Upload (nur für Admins)</h3>
@@ -494,7 +479,7 @@
   function showAdminUI(show) {
     document.getElementById('uploadArea').style.display = show ? '' : 'none';
     document.getElementById('logoutBtn').style.display = show ? '' : 'none';
-    document.getElementById('adminLoginSection').style.display = show ? 'none' : '';
+    document.getElementById('adminLoginForm').style.display = show ? 'none' : '';
     renderNewsList(window._newsList || []);
   }
   function handleLogin(e) {
