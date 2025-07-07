@@ -279,14 +279,18 @@
         <section id="uploadArea" class="upload-section" style="display:none;">
             <h3 id="uploadTitle" style="color:var(--ehcb-blue);margin-bottom:0.6rem;">PDF-Upload (nur für Admins)</h3>
             <div id="uploadInstr" style="color:#333;margin-bottom:1.2rem;">Ziehe eine PDF-Datei hierher oder klicke zum Auswählen.</div>
-            <form class="upload-form" id="uploadForm" autocomplete="off">
+            <form class="upload-form" id="uploadForm" autocomplete="off" style="margin-bottom:0;">
                 <input type="file" id="pdfFile" accept="application/pdf" style="display:none;" required>
+                <div class="progress-bar"><div id="progressBarInner" class="progress-bar-inner"></div></div>
+                <button id="uploadBtn" type="button">PDF auswählen</button>
+            </form>
+            <!-- Schritt 2: Metadaten-Formular, erst nach PDF-Upload sichtbar -->
+            <form class="upload-form" id="metaForm" autocomplete="off" style="display:none; margin-top:1.2rem;">
                 <label id="pdfTitleLabel" for="pdfTitle" style="float:left;">Titel</label><br>
-                <input type="text" id="pdfTitle" maxlength="60" required><br>
+                <input type="text" id="pdfTitle" maxlength="60"><br>
                 <label id="pdfCommentLabel" for="pdfComment" style="float:left;">Kommentar</label><br>
                 <textarea id="pdfComment" rows="2" maxlength="180"></textarea><br>
-                <div class="progress-bar"><div id="progressBarInner" class="progress-bar-inner"></div></div>
-                <button id="uploadBtn" type="submit">Hochladen</button>
+                <button id="saveMetaBtn" type="submit">Speichern</button>
             </form>
         </section>
         <button id="logoutBtn" class="logout-btn" style="display:none;">Logout</button>
@@ -396,6 +400,24 @@
             showAdminUI(false);
         }
         // --- PDF Upload ---
+        // --- 2-Step Upload: Step 1: PDF Upload, Step 2: Meta Info ---
+        let uploadedFileURL = null;
+        let uploadedFileName = null;
+        let uploadedStoragePath = null;
+        let uploadTaskRunning = false;
+        function resetUploadStep() {
+            uploadedFileURL = null;
+            uploadedFileName = null;
+            uploadedStoragePath = null;
+            uploadTaskRunning = false;
+            document.getElementById('pdfFile').value = "";
+            document.getElementById('progressBarInner').style.width = "0%";
+            document.getElementById('metaForm').style.display = "none";
+            document.getElementById('pdfTitle').value = "";
+            document.getElementById('pdfComment').value = "";
+            document.getElementById('uploadBtn').disabled = false;
+            document.getElementById('uploadBtn').textContent = t('uploadBtn');
+        }
         function handleFileDrop(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -403,6 +425,7 @@
             const files = e.dataTransfer.files;
             if (files.length) {
                 document.getElementById('pdfFile').files = files;
+                handlePDFFileSelected(files[0]);
             }
         }
         function handleDragOver(e) {
@@ -415,25 +438,22 @@
             e.stopPropagation();
             document.getElementById('uploadArea').classList.remove('dragover');
         }
-        function handleUpload(e) {
-            e.preventDefault();
-            const file = document.getElementById('pdfFile').files[0];
-            const title = document.getElementById('pdfTitle').value.trim();
-            const comment = document.getElementById('pdfComment').value.trim();
-            if (!file || !title) {
-                alert('Bitte Datei und Titel angeben! / Please select file and title!');
-                return;
-            }
+        // Step 1: PDF auswählen und hochladen
+        function handlePDFFileSelected(file) {
+            if (!file) return;
             if (file.type !== "application/pdf") {
                 alert('Nur PDF-Dateien erlaubt! / PDF only!');
                 return;
             }
+            if (uploadTaskRunning) return;
             document.getElementById('uploadBtn').disabled = true;
             document.getElementById('uploadBtn').textContent = t('uploading');
             const progressBar = document.getElementById('progressBarInner');
             progressBar.style.width = "0%";
             const ts = Date.now();
-            const storageRef = storage.ref().child('news_pdfs/' + ts + '_' + file.name);
+            const storagePath = 'news_pdfs/' + ts + '_' + file.name;
+            const storageRef = storage.ref().child(storagePath);
+            uploadTaskRunning = true;
             const uploadTask = storageRef.put(file);
             uploadTask.on('state_changed',
                 (snapshot) => {
@@ -444,26 +464,49 @@
                     alert(t('uploadError'));
                     document.getElementById('uploadBtn').disabled = false;
                     document.getElementById('uploadBtn').textContent = t('uploadBtn');
+                    uploadTaskRunning = false;
                 },
                 () => {
                     uploadTask.snapshot.ref.getDownloadURL().then((url) => {
-                        db.collection('news').add({
-                            title: title,
-                            comment: comment,
-                            url: url,
-                            timestamp: ts
-                        }).then(() => {
-                            progressBar.style.width = "100%";
-                            document.getElementById('uploadBtn').disabled = false;
-                            document.getElementById('uploadBtn').textContent = t('uploadBtn');
-                            document.getElementById('pdfFile').value = "";
-                            document.getElementById('pdfTitle').value = "";
-                            document.getElementById('pdfComment').value = "";
-                            setTimeout(() => { progressBar.style.width = "0%"; }, 1000);
-                        });
+                        uploadedFileURL = url;
+                        uploadedFileName = file.name;
+                        uploadedStoragePath = storagePath;
+                        progressBar.style.width = "100%";
+                        // Zeige Meta-Formular (Schritt 2)
+                        document.getElementById('metaForm').style.display = '';
+                        document.getElementById('uploadBtn').textContent = t('uploadSuccess');
+                        setTimeout(() => { progressBar.style.width = "0%"; }, 1000);
                     });
                 }
             );
+        }
+        // Step 2: Metadaten speichern
+        function handleMetaSave(e) {
+            e.preventDefault();
+            if (!uploadedFileURL) {
+                alert('Bitte zuerst eine PDF hochladen!');
+                return;
+            }
+            const title = document.getElementById('pdfTitle').value.trim();
+            const comment = document.getElementById('pdfComment').value.trim();
+            if (!title) {
+                alert('Bitte Titel angeben!');
+                return;
+            }
+            const ts = Date.now();
+            document.getElementById('saveMetaBtn').disabled = true;
+            db.collection('news').add({
+                title: title,
+                comment: comment,
+                url: uploadedFileURL,
+                timestamp: ts
+            }).then(() => {
+                resetUploadStep();
+                document.getElementById('saveMetaBtn').disabled = false;
+            }).catch(() => {
+                alert(t('uploadError'));
+                document.getElementById('saveMetaBtn').disabled = false;
+            });
         }
         // --- News List Rendering ---
         function renderNewsList(newsList) {
@@ -550,14 +593,26 @@
             document.getElementById('adminLoginForm').onsubmit = handleLogin;
             document.getElementById('logoutBtn').onclick = handleLogout;
             showAdminUI(false);
-            // Upload events
+            // Upload events (2-Schritt)
             const uploadArea = document.getElementById('uploadArea');
             uploadArea.addEventListener('dragover', handleDragOver);
             uploadArea.addEventListener('dragleave', handleDragLeave);
             uploadArea.addEventListener('drop', handleFileDrop);
-            uploadArea.addEventListener('click', () => document.getElementById('pdfFile').click());
-            document.getElementById('pdfFile').addEventListener('change', (e) => {});
-            document.getElementById('uploadForm').onsubmit = handleUpload;
+            uploadArea.addEventListener('click', (e) => {
+                // Klicke nicht, wenn auf MetaForm geklickt wird
+                if (e.target.closest('#metaForm')) return;
+                document.getElementById('pdfFile').click();
+            });
+            document.getElementById('pdfFile').addEventListener('change', (e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                    handlePDFFileSelected(e.target.files[0]);
+                }
+            });
+            document.getElementById('uploadBtn').onclick = () => {
+                document.getElementById('pdfFile').click();
+            };
+            document.getElementById('metaForm').onsubmit = handleMetaSave;
+            resetUploadStep();
             listenToNews();
         });
 </script>
