@@ -596,8 +596,10 @@ function handleLogout() {
         listenToNews();
         // News immer laden, auch nach "Zurück"
         window.addEventListener('pageshow', function(event) {
-            listenToNews();
-        });
+    if (event.persisted) {
+        window.location.reload();
+    }
+});
     });
 </script>
 </body>
