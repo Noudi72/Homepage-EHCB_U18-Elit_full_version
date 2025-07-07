@@ -259,6 +259,23 @@
     <div class="container">
         <section class="news-section">
             <h2 id="allNewsLabel" style="color:var(--ehcb-blue);margin-bottom:1.2rem;">Alle Trainings-PDFs</h2>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.8rem 1.2rem;margin-bottom:1.2rem;">
+                <input
+                    id="newsSearchInput"
+                    type="text"
+                    placeholder="Suche nach Titel oder Kommentar..."
+                    style="flex:1 1 220px;min-width:150px;max-width:350px;padding:0.4rem 0.8rem;border:1px solid #bbb;border-radius:4px;font-size:1rem;"
+                    autocomplete="off"
+                >
+                <select
+                    id="newsSortSelect"
+                    style="flex:0 0 170px;min-width:140px;padding:0.4rem 0.8rem;border:1px solid #bbb;border-radius:4px;font-size:1rem;"
+                >
+                    <option value="newest">Neuestes zuerst</option>
+                    <option value="oldest">Ältestes zuerst</option>
+                    <option value="title">Titel A–Z</option>
+                </select>
+            </div>
             <div class="news-list" id="newsList"></div>
         </section>
         <section id="adminLoginSection" class="admin-login-section">
@@ -502,17 +519,41 @@ function handleLogout() {
     }
 
     // --- News List Rendering ---
+    // --- Filter/Sort State ---
+    let newsFilterText = "";
+    let newsSortMode = "newest";
+
     function renderNewsList(newsList) {
         window._newsList = newsList; // für Sprachumschaltung und Back
+        // Filterung
+        let filtered = newsList;
+        if (newsFilterText && newsFilterText.trim().length > 0) {
+            const search = newsFilterText.trim().toLowerCase();
+            filtered = filtered.filter(item =>
+                (item.title && item.title.toLowerCase().includes(search)) ||
+                (item.comment && item.comment.toLowerCase().includes(search))
+            );
+        }
+        // Sortierung
+        let sorted = filtered.slice();
+        if (newsSortMode === "newest") {
+            sorted.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        } else if (newsSortMode === "oldest") {
+            sorted.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+        } else if (newsSortMode === "title") {
+            sorted.sort((a, b) =>
+                (a.title || "").localeCompare(b.title || "", currentLang, { sensitivity: "base" })
+            );
+        }
         const listDiv = document.getElementById('newsList');
         listDiv.innerHTML = "";
-        if (!newsList.length) {
+        if (!sorted.length) {
             const p = document.createElement('p');
             p.textContent = t('noNews');
             listDiv.appendChild(p);
             return;
         }
-        newsList.forEach(item => {
+        sorted.forEach(item => {
             const card = document.createElement('div');
             card.className = 'news-card';
             const title = document.createElement('div');
@@ -634,6 +675,32 @@ function handleLogout() {
         };
         document.getElementById('metaForm').onsubmit = handleMetaSave;
         resetUploadStep();
+        // Filter-/Sortier-Einstellungen initialisieren
+        const searchInput = document.getElementById('newsSearchInput');
+        const sortSelect = document.getElementById('newsSortSelect');
+        // Wiederherstellen falls vorher gesetzt
+        if (window.localStorage) {
+            const savedFilter = localStorage.getItem('newsFilterText');
+            const savedSort = localStorage.getItem('newsSortMode');
+            if (typeof savedFilter === "string") {
+                newsFilterText = savedFilter;
+                searchInput.value = savedFilter;
+            }
+            if (typeof savedSort === "string" && ["newest", "oldest", "title"].includes(savedSort)) {
+                newsSortMode = savedSort;
+                sortSelect.value = savedSort;
+            }
+        }
+        searchInput.addEventListener('input', function() {
+            newsFilterText = this.value;
+            if (window.localStorage) localStorage.setItem('newsFilterText', newsFilterText);
+            renderNewsList(window._newsList || []);
+        });
+        sortSelect.addEventListener('change', function() {
+            newsSortMode = this.value;
+            if (window.localStorage) localStorage.setItem('newsSortMode', newsSortMode);
+            renderNewsList(window._newsList || []);
+        });
         listenToNews();
         // News immer laden, auch nach "Zurück"
         window.addEventListener('pageshow', function(event) {
