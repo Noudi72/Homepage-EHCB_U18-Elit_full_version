@@ -60,34 +60,32 @@
       letter-spacing: 2px;
       color: var(--ehc-white);
     }
-    .lang-switch {
-      display: flex; justify-content: center; gap: 13px; margin: 20px 0 4px 0;
+    .lang-switcher {
+      margin-top: 12px; 
+      margin-bottom: 8px; 
+      display: flex; 
+      gap: 10px; 
+      justify-content: center;
     }
-    .lang-switch button {
-      background: #ffe16b;
+    .lang-btn {
+      background: #fff; 
+      color: #002b5c; 
+      border: none; 
+      border-radius: 8px; 
+      padding: 7px 18px;
+      font-weight: bold; 
+      font-size: 1rem; 
+      cursor: pointer; 
+      box-shadow: 0 1px 8px #2222;
+      transition: background 0.18s;
+    }
+    .lang-btn.active, .lang-btn:focus {
+      background: #FFD600; 
       color: #002b5c;
-      border: none;
-      font-weight: 800;
-      border-radius: 8px;
-      cursor: pointer;
-      padding: 7px 33px 5px 33px;
-      font-size: 1.17rem;
-      letter-spacing: 1px;
-      margin: 0 6px;
-      box-shadow: 0 2px 12px #0001;
-      transition: background 0.12s, color 0.12s;
-      outline: none;
     }
-    .lang-switch button.active,
-    .lang-switch button:active {
-      background: #002b5c;
-      color: #ffe16b;
-      box-shadow: 0 2px 16px #0002;
-      border: 2.5px solid #ffe16b;
-    }
-    .lang-switch button:hover:not(.active) {
-      background: #ffd600;
-      color: #002b5c;
+    @media (max-width: 600px) {
+      .lang-btn { font-size: 1rem; padding: 6px 10px; }
+      .lang-switcher { gap: 7px; }
     }
     @media (max-width: 600px) {
       .lang-switch button {
@@ -167,8 +165,6 @@
       .header-flex { flex-direction: column; gap: 7px;}
       .main-content { padding: 0 4px;}
       .card { font-size: 1.03rem; padding: 19px 5px 16px 5px;}
-      .lang-switch { gap: 8px; margin: 10px 0 8px 0;}
-      .lang-switch button { padding: 5px 12px 3px 12px; font-size: 1rem;}
       .logo {
         height: 100px; /* <-- Wert angepasst */
         margin-bottom: 18px;
@@ -183,10 +179,10 @@
   <header>
     <img src="wikinger.png" class="logo" alt="Logo" />
     <h1 id="main-title">EHC BIEL-BIENNE U18-ELIT</h1>
-    <div class="lang-switch" id="lang-switch">
-      <button onclick="changeLanguage('de')" id="btn-de" class="">DE</button>
-      <button onclick="changeLanguage('fr')" id="btn-fr" class="">FR</button>
-      <button onclick="changeLanguage('en')" id="btn-en" class="">EN</button>
+    <div class="lang-switcher">
+      <button class="lang-btn" id="btn-de">DE</button>
+      <button class="lang-btn" id="btn-fr">FR</button>
+      <button class="lang-btn" id="btn-en">EN</button>
     </div>
   </header>
   <div class="main-content">
@@ -392,7 +388,7 @@
     function changeLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('feedback_lang', lang);
-      document.querySelectorAll('.lang-switch button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
       document.getElementById('btn-' + lang).classList.add('active');
       const t = translations[lang];
 
@@ -443,7 +439,16 @@
       document.getElementById('submitBtn').textContent = t.submit;
       document.getElementById('slogan').textContent = t.slogan;
     }
-    window.addEventListener('DOMContentLoaded', () => { changeLanguage(currentLang); });
+    window.addEventListener('DOMContentLoaded', () => {
+      // Set up language button click events
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const lang = this.id.replace('btn-', '');
+          changeLanguage(lang);
+        });
+      });
+      changeLanguage(currentLang);
+    });
 
     const form = document.getElementById('feedbackForm');
     const message = document.getElementById('message');

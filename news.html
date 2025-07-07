@@ -43,42 +43,33 @@
       text-shadow: 2px 3px 8px #1a1a1a, 0 1px 0 #222;
     }
     /* Sprachumschaltung wie auf index.html */
-    .lang-switch {
-      display: flex;
+    /* (alte .lang-switch und .lang-switch button-Regeln entfernt) */
+    .lang-switcher {
+      margin-top: 12px; 
+      margin-bottom: 8px; 
+      display: flex; 
+      gap: 10px; 
       justify-content: center;
-      align-items: center;
-      gap: 12px;
-      margin: 18px 0 0 0;
     }
-    .lang-switch button {
-      min-width: 58px;
-      height: 38px;
-      padding: 0 22px;
-      background: #fff;
-      color: #002d5b;
-      border: none;
-      border-radius: 8px;
-      font-size: 1.12rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 2px 8px #0001;
-      transition: background 0.14s, color 0.14s, box-shadow 0.14s;
-      outline: none;
-      letter-spacing: 1px;
+    .lang-btn {
+      background: #fff; 
+      color: #002b5c; 
+      border: none; 
+      border-radius: 8px; 
+      padding: 7px 18px;
+      font-weight: bold; 
+      font-size: 1rem; 
+      cursor: pointer; 
+      box-shadow: 0 1px 8px #2222;
+      transition: background 0.18s;
     }
-    .lang-switch button.active,
-    .lang-switch button:focus.active {
-      background: #002d5b;
-      color: #ffc700;
-      box-shadow: 0 2px 12px #0015;
+    .lang-btn.active, .lang-btn:focus {
+      background: #FFD600; 
+      color: #002b5c;
     }
-    .lang-switch button:hover:not(.active) {
-      background: #e6f0fa;
-      color: #002d5b;
-    }
-    .lang-switch button:focus {
-      outline: 2px solid #ffc700;
-      outline-offset: 1px;
+    @media (max-width: 600px) {
+      .lang-btn { font-size: 1rem; padding: 6px 10px; }
+      .lang-switcher { gap: 7px; }
     }
     .back-btn {
       position: absolute;
@@ -361,10 +352,10 @@
   <header>
     <img src="wikinger.png" class="logo" alt="Logo" />
     <h1 id="main-title">EHC BIEL-BIENNE U18-ELIT</h1>
-    <div class="lang-switch" id="lang-switch">
-      <button id="btn-de" onclick="setLang('de')">DE</button>
-      <button id="btn-fr" onclick="setLang('fr')">FR</button>
-      <button id="btn-en" onclick="setLang('en')">EN</button>
+    <div class="lang-switcher">
+      <button class="lang-btn" id="btn-de">DE</button>
+      <button class="lang-btn" id="btn-fr">FR</button>
+      <button class="lang-btn" id="btn-en">EN</button>
     </div>
     <form id="adminLoginForm" class="admin-login-inline">
       <label for="adminPassword" id="passwordLabel" style="margin-right:8px;">🔒</label>
@@ -487,14 +478,9 @@
     document.getElementById('logoutBtn').textContent = translations[lang].logoutBtn;
     document.getElementById('backBtn').textContent = translations[lang].back;
     // Update active language button
-    const langSwitch = document.getElementById('lang-switch');
-    if (langSwitch) {
-      Array.from(langSwitch.querySelectorAll('button')).forEach(btn => {
-        btn.classList.remove('active');
-      });
-      const btn = document.getElementById('btn-' + lang);
-      if (btn) btn.classList.add('active');
-    }
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    const btn = document.getElementById('btn-' + lang);
+    if (btn) btn.classList.add('active');
     renderNewsList(window._newsList || []);
   }
   function t(key) {
@@ -736,7 +722,6 @@
 
   // --- Init ---
   window.addEventListener('DOMContentLoaded', () => {
-    // No longer need to add event listeners for old language buttons
     setLang(currentLang);
     document.getElementById('adminLoginForm').onsubmit = handleLogin;
     document.getElementById('logoutBtn').onclick = handleLogout;
@@ -792,6 +777,10 @@
       if (event.persisted) {
         window.location.reload();
       }
+    });
+    // Sprachbuttons-Initialisierung:
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.onclick = () => setLang(btn.id.replace('btn-',''));
     });
   });
 </script>
