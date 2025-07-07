@@ -9,20 +9,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCCvHZN1q72UQLqrkgWb-L5X6A4WesHqRw",
-            authDomain: "ehcb-news.firebaseapp.com",
-            projectId: "ehcb-news",
-            storageBucket: "ehcb-news.firebasestorage.app",
-            messagingSenderId: "250325515447",
-            appId: "1:250325515447:web:740fcc143a4a9cafb92132"
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const storage = firebase.storage();
-    </script>
     <style>
         :root {
             --ehcb-blue: #002d5b;
@@ -99,7 +85,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 270px; /* Einheitliche Höhe für alle News-Karten */
+            min-height: 270px;
         }
         .news-card .title {
             color: var(--ehcb-blue);
@@ -116,6 +102,13 @@
             margin-bottom: 0.8rem;
             color: #222;
         }
+        .news-card .download-link, .news-card .preview-link, .news-card .delete-btn {
+            display: block;
+            width: 100%;
+            margin: 0.4rem 0;
+            font-size: 1.1rem;
+            box-sizing: border-box;
+        }
         .news-card .download-link {
             background: var(--ehcb-yellow);
             color: var(--ehcb-blue);
@@ -130,7 +123,7 @@
         .news-card .download-link:hover {
             background: #ffe066;
         }
-        .preview-link {
+        .news-card .preview-link {
             background: #fff;
             color: #002d5b;
             border: 2px solid #002d5b;
@@ -138,14 +131,12 @@
             border-radius: 4px;
             font-weight: bold;
             text-align: center;
-            margin-right: 0.5rem;
             text-decoration: none;
         }
-        .preview-link:hover {
+        .news-card .preview-link:hover {
             background: #e6f0fa;
         }
-        .delete-btn {
-            margin-left: 0.7rem;
+        .news-card .delete-btn {
             background: #ff6565;
             color: #fff;
             border: none;
@@ -154,8 +145,9 @@
             padding: 0.45rem 1rem;
             cursor: pointer;
             font-size: 1rem;
+            margin-bottom: 0;
         }
-        .delete-btn:hover {
+        .news-card .delete-btn:hover {
             background: #ff0000;
         }
         .upload-section {
@@ -250,19 +242,6 @@
             }
             .container {
                 padding: 0.5rem;
-                .news-btn {
-    display: block;
-    width: 100%;
-    margin-bottom: 0.6rem;
-    font-size: 1.1rem;
-    box-sizing: border-box;
-}
-.news-card .preview-link, .news-card .download-link, .news-card .delete-btn {
-    margin-right: 0;
-    margin-left: 0;
-}
-.news-card .download-link { margin-bottom: 0.6rem; }
-.news-card .delete-btn { margin-bottom: 0; }
             }
         }
     </style>
@@ -309,294 +288,269 @@
         </section>
         <button id="logoutBtn" class="logout-btn" style="display:none;">Logout</button>
     </div>
-</body>
 <script>
-        // --- Sprachumschaltung ---
-        const translations = {
-            de: {
-                headline: "News & Info",
-                uploadTitle: "PDF-Upload (nur für Admins)",
-                uploadInstr: "Ziehe eine PDF-Datei hierher oder klicke zum Auswählen.",
-                pdfTitle: "Titel",
-                pdfComment: "Kommentar",
-                uploadBtn: "Hochladen",
-                uploading: "Wird hochgeladen...",
-                loginHeadline: "Admin-Login",
-                password: "Passwort",
-                loginBtn: "Login",
-                logoutBtn: "Logout",
-                uploadSuccess: "Upload erfolgreich!",
-                uploadError: "Fehler beim Upload.",
-                allNews: "Alle Trainings-PDFs",
-                download: "Download",
-                date: "Upload-Datum",
-                noNews: "Noch keine News/Infos vorhanden.",
-            },
-            fr: {
-                headline: "News & Infos",
-                uploadTitle: "Téléchargement PDF (admins seulement)",
-                uploadInstr: "Glissez un fichier PDF ici ou cliquez pour choisir.",
-                pdfTitle: "Titre",
-                pdfComment: "Commentaire",
-                uploadBtn: "Télécharger",
-                uploading: "Téléchargement...",
-                loginHeadline: "Connexion admin",
-                password: "Mot de passe",
-                loginBtn: "Connexion",
-                logoutBtn: "Déconnexion",
-                uploadSuccess: "Téléchargement réussi !",
-                uploadError: "Erreur lors du téléchargement.",
-                allNews: "Tous les PDFs d'entraînement",
-                download: "Télécharger",
-                date: "Date de téléchargement",
-                noNews: "Aucune news/info disponible.",
-            },
-            en: {
-                headline: "News & Info",
-                uploadTitle: "PDF Upload (Admins only)",
-                uploadInstr: "Drag a PDF file here or click to select.",
-                pdfTitle: "Title",
-                pdfComment: "Comment",
-                uploadBtn: "Upload",
-                uploading: "Uploading...",
-                loginHeadline: "Admin Login",
-                password: "Password",
-                loginBtn: "Login",
-                logoutBtn: "Logout",
-                uploadSuccess: "Upload successful!",
-                uploadError: "Upload failed.",
-                allNews: "All Training PDFs",
-                download: "Download",
-                date: "Upload date",
-                noNews: "No news/info available yet.",
-            }
-        };
-        let currentLang = 'de';
-        function setLang(lang) {
-            currentLang = lang;
-            document.documentElement.lang = lang;
-            document.getElementById('headline').textContent = translations[lang].headline;
-            document.getElementById('allNewsLabel').textContent = translations[lang].allNews;
-            document.getElementById('uploadTitle').textContent = translations[lang].uploadTitle;
-            document.getElementById('uploadInstr').textContent = translations[lang].uploadInstr;
-            document.getElementById('pdfTitleLabel').textContent = translations[lang].pdfTitle;
-            document.getElementById('pdfCommentLabel').textContent = translations[lang].pdfComment;
-            document.getElementById('uploadBtn').textContent = translations[lang].uploadBtn;
-            document.getElementById('loginHeadline').textContent = translations[lang].loginHeadline;
-            document.getElementById('passwordLabel').textContent = translations[lang].password;
-            document.getElementById('loginBtn').textContent = translations[lang].loginBtn;
-            document.getElementById('logoutBtn').textContent = translations[lang].logoutBtn;
-            renderNewsList(window._newsList || []);
+    // Firebase INIT
+    const firebaseConfig = {
+        apiKey: "AIzaSyCCvHZN1q72UQLqrkgWb-L5X6A4WesHqRw",
+        authDomain: "ehcb-news.firebaseapp.com",
+        projectId: "ehcb-news",
+        storageBucket: "ehcb-news.firebasestorage.app",
+        messagingSenderId: "250325515447",
+        appId: "1:250325515447:web:740fcc143a4a9cafb92132"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+
+    // --- Sprachumschaltung ---
+    const translations = {
+        de: {
+            headline: "News & Info",
+            uploadTitle: "PDF-Upload (nur für Admins)",
+            uploadInstr: "Ziehe eine PDF-Datei hierher oder klicke zum Auswählen.",
+            pdfTitle: "Titel",
+            pdfComment: "Kommentar",
+            uploadBtn: "Hochladen",
+            uploading: "Wird hochgeladen...",
+            loginHeadline: "Admin-Login",
+            password: "Passwort",
+            loginBtn: "Login",
+            logoutBtn: "Logout",
+            uploadSuccess: "Upload erfolgreich!",
+            uploadError: "Fehler beim Upload.",
+            allNews: "Alle Trainings-PDFs",
+            download: "Download",
+            date: "Upload-Datum",
+            noNews: "Noch keine News/Infos vorhanden.",
+        },
+        fr: {
+            headline: "News & Infos",
+            uploadTitle: "Téléchargement PDF (admins seulement)",
+            uploadInstr: "Glissez un fichier PDF ici ou cliquez pour choisir.",
+            pdfTitle: "Titre",
+            pdfComment: "Commentaire",
+            uploadBtn: "Télécharger",
+            uploading: "Téléchargement...",
+            loginHeadline: "Connexion admin",
+            password: "Mot de passe",
+            loginBtn: "Connexion",
+            logoutBtn: "Déconnexion",
+            uploadSuccess: "Téléchargement réussi !",
+            uploadError: "Erreur lors du téléchargement.",
+            allNews: "Tous les PDFs d'entraînement",
+            download: "Télécharger",
+            date: "Date de téléchargement",
+            noNews: "Aucune news/info disponible.",
+        },
+        en: {
+            headline: "News & Info",
+            uploadTitle: "PDF Upload (Admins only)",
+            uploadInstr: "Drag a PDF file here or click to select.",
+            pdfTitle: "Title",
+            pdfComment: "Comment",
+            uploadBtn: "Upload",
+            uploading: "Uploading...",
+            loginHeadline: "Admin Login",
+            password: "Password",
+            loginBtn: "Login",
+            logoutBtn: "Logout",
+            uploadSuccess: "Upload successful!",
+            uploadError: "Upload failed.",
+            allNews: "All Training PDFs",
+            download: "Download",
+            date: "Upload date",
+            noNews: "No news/info available yet.",
         }
-        function t(key) {
-            return translations[currentLang][key] || key;
-        }
-        // --- Admin Login (Simple, client-side password check) ---
-let isAdmin = false;
-function showAdminUI(show) {
-    document.getElementById('uploadArea').style.display = show ? '' : 'none';
-    document.getElementById('logoutBtn').style.display = show ? '' : 'none';
-    document.getElementById('adminLoginSection').style.display = show ? 'none' : '';
-    // Admin sieht immer aktuelle News (löschen erlaubt), Spieler nur Ansicht
-    renderNewsList(window._newsList || []);
-}
-function handleLogin(e) {
-    e.preventDefault();
-    const pw = document.getElementById('adminPassword').value;
-    if (pw === "Coach7274") {
-        isAdmin = true;
-        showAdminUI(true);
-    } else {
-        alert("Falsches Passwort / Wrong password / Mauvais mot de passe");
+    };
+    let currentLang = 'de';
+    function setLang(lang) {
+        currentLang = lang;
+        document.documentElement.lang = lang;
+        document.getElementById('headline').textContent = translations[lang].headline;
+        document.getElementById('allNewsLabel').textContent = translations[lang].allNews;
+        document.getElementById('uploadTitle').textContent = translations[lang].uploadTitle;
+        document.getElementById('uploadInstr').textContent = translations[lang].uploadInstr;
+        document.getElementById('pdfTitleLabel').textContent = translations[lang].pdfTitle;
+        document.getElementById('pdfCommentLabel').textContent = translations[lang].pdfComment;
+        document.getElementById('uploadBtn').textContent = translations[lang].uploadBtn;
+        document.getElementById('loginHeadline').textContent = translations[lang].loginHeadline;
+        document.getElementById('passwordLabel').textContent = translations[lang].password;
+        document.getElementById('loginBtn').textContent = translations[lang].loginBtn;
+        document.getElementById('logoutBtn').textContent = translations[lang].logoutBtn;
+        renderNewsList(window._newsList || []);
     }
-}
-function handleLogout() {
-    isAdmin = false;
-    showAdminUI(false);
-}
-
-// --- News List Rendering ---
-function renderNewsList(newsList) {
-    window._newsList = newsList; // immer merken
-    const listDiv = document.getElementById('newsList');
-    listDiv.innerHTML = "";
-    if (!newsList.length) {
-        const p = document.createElement('p');
-        p.textContent = t('noNews');
-        listDiv.appendChild(p);
-        return;
+    function t(key) {
+        return translations[currentLang][key] || key;
     }
-    newsList.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'news-card';
-        const title = document.createElement('div');
-        title.className = 'title';
-        title.textContent = item.title;
-        const date = document.createElement('div');
-        date.className = 'date';
-        const d = new Date(item.timestamp);
-        date.textContent = t('date') + ": " + d.toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' });
-        const comment = document.createElement('div');
-        comment.className = 'comment';
-        comment.textContent = item.comment;
 
-        // Vorschau-Button
-        const preview = document.createElement('a');
-        preview.className = 'preview-link news-btn';
-        preview.href = item.url;
-        preview.target = "_blank";
-        preview.textContent = '👁 Vorschau';
-
-        // Download-Button
-        const link = document.createElement('a');
-        link.className = 'download-link news-btn';
-        link.href = item.url;
-        link.target = "_blank";
-        link.download = "";
-        link.textContent = t('download');
-
-        card.appendChild(title);
-        card.appendChild(date);
-        if (item.comment) card.appendChild(comment);
-        card.appendChild(preview);
-        card.appendChild(link);
-
-        // Delete nur für Admin
-        if (isAdmin && item.id) {
-            const delBtn = document.createElement('button');
-            delBtn.textContent = "🗑 Löschen";
-            delBtn.className = 'delete-btn news-btn';
-            delBtn.onclick = () => {
-                if (confirm('Wirklich löschen?')) {
-                    storage.refFromURL(item.url).delete().catch(()=>{});
-                    db.collection('news').doc(item.id).delete().then(() => {
-                        // kein reload nötig, Firestore-Listener updated automatisch
-                    });
-                }
-            };
-            card.appendChild(delBtn);
+    // --- Admin Login
+    let isAdmin = false;
+    function showAdminUI(show) {
+        document.getElementById('uploadArea').style.display = show ? '' : 'none';
+        document.getElementById('logoutBtn').style.display = show ? '' : 'none';
+        document.getElementById('adminLoginSection').style.display = show ? 'none' : '';
+        renderNewsList(window._newsList || []);
+    }
+    function handleLogin(e) {
+        e.preventDefault();
+        const pw = document.getElementById('adminPassword').value;
+        if (pw === "Coach7274") {
+            isAdmin = true;
+            showAdminUI(true);
+        } else {
+            alert("Falsches Passwort / Wrong password / Mauvais mot de passe");
         }
+    }
+    function handleLogout() {
+        isAdmin = false;
+        showAdminUI(false);
+    }
 
-        listDiv.appendChild(card);
-    });
-}
-
-// --- Live Firestore News List (immer für alle!) ---
-newsUnsubscribe = null;
-function listenToNews() {
-    if (typeof newsUnsubscribe === "function") newsUnsubscribe();
-    newsUnsubscribe = db.collection('news').orderBy('timestamp', 'desc')
-        .onSnapshot((snapshot) => {
-            const newsList = [];
-            snapshot.forEach(doc => {
-                newsList.push({ ...doc.data(), id: doc.id });
+    // --- File Upload/Meta/Drag&Drop
+    let uploadedFileURL = null;
+    function handleDragOver(e) {
+        e.preventDefault(); e.stopPropagation();
+        document.getElementById('uploadArea').classList.add('dragover');
+    }
+    function handleDragLeave(e) {
+        e.preventDefault(); e.stopPropagation();
+        document.getElementById('uploadArea').classList.remove('dragover');
+    }
+    function handleFileDrop(e) {
+        e.preventDefault(); e.stopPropagation();
+        document.getElementById('uploadArea').classList.remove('dragover');
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            handlePDFFileSelected(e.dataTransfer.files[0]);
+        }
+    }
+    function handlePDFFileSelected(file) {
+        if (!file || file.type !== 'application/pdf') return alert('Bitte nur PDF-Dateien!');
+        document.getElementById('uploadBtn').disabled = true;
+        document.getElementById('uploadBtn').textContent = t('uploading');
+        const bar = document.getElementById('progressBarInner');
+        bar.style.width = "0%";
+        // Upload PDF
+        const ts = Date.now();
+        const storageRef = storage.ref().child(`news-pdfs/${ts}_${file.name}`);
+        const uploadTask = storageRef.put(file);
+        uploadTask.on('state_changed', snapshot => {
+            const percent = Math.round(snapshot.bytesTransferred / snapshot.totalBytes * 100);
+            bar.style.width = percent + "%";
+        }, err => {
+            alert(t('uploadError'));
+            document.getElementById('uploadBtn').disabled = false;
+            document.getElementById('uploadBtn').textContent = t('uploadBtn');
+        }, () => {
+            uploadTask.snapshot.ref.getDownloadURL().then(url => {
+                uploadedFileURL = url;
+                document.getElementById('uploadBtn').disabled = false;
+                document.getElementById('uploadBtn').textContent = t('uploadSuccess');
+                // Zeige MetaForm
+                document.getElementById('metaForm').style.display = '';
             });
-            renderNewsList(newsList);
         });
-}
-        // Step 2: Metadaten speichern
-        function handleMetaSave(e) {
-            e.preventDefault();
-            if (!uploadedFileURL) {
-                alert('Bitte zuerst eine PDF hochladen!');
-                return;
-            }
-            const title = document.getElementById('pdfTitle').value.trim();
-            const comment = document.getElementById('pdfComment').value.trim();
-            if (!title) {
-                alert('Bitte Titel angeben!');
-                return;
-            }
-            const ts = Date.now();
-            document.getElementById('saveMetaBtn').disabled = true;
-            db.collection('news').add({
-                title: title,
-                comment: comment,
-                url: uploadedFileURL,
-                timestamp: ts
-            }).then(() => {
-                resetUploadStep();
-                document.getElementById('saveMetaBtn').disabled = false;
-                listenToNews(); // Nach erfolgreichem Speichern News laden
-            }).catch(() => {
-                alert(t('uploadError'));
-                document.getElementById('saveMetaBtn').disabled = false;
-            });
+    }
+    function resetUploadStep() {
+        uploadedFileURL = null;
+        document.getElementById('uploadForm').reset();
+        document.getElementById('metaForm').reset();
+        document.getElementById('metaForm').style.display = 'none';
+        document.getElementById('uploadBtn').textContent = t('uploadBtn');
+        document.getElementById('progressBarInner').style.width = "0%";
+    }
+    function handleMetaSave(e) {
+        e.preventDefault();
+        if (!uploadedFileURL) {
+            alert('Bitte zuerst eine PDF hochladen!');
+            return;
         }
-        // --- News List Rendering ---
-        function renderNewsList(newsList) {
-            window._newsList = newsList; // für Sprachumschaltung und Back
-            const listDiv = document.getElementById('newsList');
-            listDiv.innerHTML = "";
-            if (!newsList.length) {
-                const p = document.createElement('p');
-                p.textContent = t('noNews');
-                listDiv.appendChild(p);
-                return;
-            }
-            newsList.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'news-card';
-                const title = document.createElement('div');
-                title.className = 'title';
-                title.textContent = item.title;
-                const date = document.createElement('div');
-                date.className = 'date';
-                const d = new Date(item.timestamp);
-                date.textContent = t('date') + ": " + d.toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' });
-                const comment = document.createElement('div');
-                comment.className = 'comment';
-                comment.textContent = item.comment;
-
-                // Vorschau-Button
-                const preview = document.createElement('a');
-                preview.className = 'preview-link';
-                preview.href = item.url;
-                preview.target = "_blank";
-                preview.textContent = '👁 Vorschau';
-
-                // Download-Button
-                const link = document.createElement('a');
-                link.className = 'download-link';
-                link.href = item.url;
-                link.target = "_blank";
-                link.download = "";
-                link.textContent = t('download');
-
-                card.appendChild(title);
-                card.appendChild(date);
-                if (item.comment) card.appendChild(comment);
-                card.appendChild(preview);
-                card.appendChild(link);
-
-                // Delete nur für Admin
-                if (isAdmin && item.id) {
-                    const delBtn = document.createElement('button');
-                    delBtn.textContent = "🗑 Löschen";
-                    delBtn.className = 'delete-btn';
-                    delBtn.onclick = () => {
-                        if (confirm('Wirklich löschen?')) {
-                            storage.refFromURL(item.url).delete().catch(()=>{});
-                            db.collection('news').doc(item.id).delete().then(() => {
-                                listenToNews(); // Nach Löschen News neu laden
-                            });
-                        }
-                    };
-                    card.appendChild(delBtn);
-                }
-
-                listDiv.appendChild(card);
-            });
+        const title = document.getElementById('pdfTitle').value.trim();
+        const comment = document.getElementById('pdfComment').value.trim();
+        if (!title) {
+            alert('Bitte Titel angeben!');
+            return;
         }
-        // --- Live Firestore News List ---
-        // News-Listener-Referenz, damit wir ihn ggf. neu setzen können
-        // let newsUnsubscribe = null; // Entfernt, um doppelte Deklaration zu vermeiden
-        function listenToNews() {
-            // Vorherigen Listener entfernen, damit keine Duplikate entstehen
-            if (typeof newsUnsubscribe === "function") {
-                newsUnsubscribe();
+        const ts = Date.now();
+        document.getElementById('saveMetaBtn').disabled = true;
+        db.collection('news').add({
+            title: title,
+            comment: comment,
+            url: uploadedFileURL,
+            timestamp: ts
+        }).then(() => {
+            resetUploadStep();
+            document.getElementById('saveMetaBtn').disabled = false;
+        }).catch(() => {
+            alert(t('uploadError'));
+            document.getElementById('saveMetaBtn').disabled = false;
+        });
+    }
+
+    // --- News List Rendering ---
+    function renderNewsList(newsList) {
+        window._newsList = newsList; // für Sprachumschaltung und Back
+        const listDiv = document.getElementById('newsList');
+        listDiv.innerHTML = "";
+        if (!newsList.length) {
+            const p = document.createElement('p');
+            p.textContent = t('noNews');
+            listDiv.appendChild(p);
+            return;
+        }
+        newsList.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'news-card';
+            const title = document.createElement('div');
+            title.className = 'title';
+            title.textContent = item.title;
+            const date = document.createElement('div');
+            date.className = 'date';
+            const d = new Date(item.timestamp);
+            date.textContent = t('date') + ": " + d.toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' });
+            const comment = document.createElement('div');
+            comment.className = 'comment';
+            comment.textContent = item.comment;
+            // Vorschau-Button
+            const preview = document.createElement('a');
+            preview.className = 'preview-link';
+            preview.href = item.url;
+            preview.target = "_blank";
+            preview.textContent = '👁 Vorschau';
+            // Download-Button
+            const link = document.createElement('a');
+            link.className = 'download-link';
+            link.href = item.url;
+            link.target = "_blank";
+            link.download = "";
+            link.textContent = t('download');
+            card.appendChild(title);
+            card.appendChild(date);
+            if (item.comment) card.appendChild(comment);
+            card.appendChild(preview);
+            card.appendChild(link);
+            // Delete nur für Admin
+            if (isAdmin && item.id) {
+                const delBtn = document.createElement('button');
+                delBtn.textContent = "🗑 Löschen";
+                delBtn.className = 'delete-btn';
+                delBtn.onclick = () => {
+                    if (confirm('Wirklich löschen?')) {
+                        storage.refFromURL(item.url).delete().catch(()=>{});
+                        db.collection('news').doc(item.id).delete();
+                    }
+                };
+                card.appendChild(delBtn);
             }
-            newsUnsubscribe = db.collection('news').orderBy('timestamp', 'desc')
+            listDiv.appendChild(card);
+        });
+    }
+    // --- Firestore News Listener ---
+    let newsUnsubscribe = null;
+    function listenToNews() {
+        if (typeof newsUnsubscribe === "function") {
+            newsUnsubscribe();
+        }
+        newsUnsubscribe = db.collection('news').orderBy('timestamp', 'desc')
             .onSnapshot((snapshot) => {
                 const newsList = [];
                 snapshot.forEach(doc => {
@@ -604,45 +558,45 @@ function listenToNews() {
                 });
                 renderNewsList(newsList);
             });
-        }
-        // --- Init ---
-        window.addEventListener('DOMContentLoaded', () => {
-            // Language switcher
-            document.getElementById('langDE').onclick = () => setLang('de');
-            document.getElementById('langFR').onclick = () => setLang('fr');
-            document.getElementById('langEN').onclick = () => setLang('en');
-            setLang('de');
-            // Login
-            document.getElementById('adminLoginForm').onsubmit = handleLogin;
-            document.getElementById('logoutBtn').onclick = handleLogout;
-            showAdminUI(false);
-            // Upload events (2-Schritt)
-            const uploadArea = document.getElementById('uploadArea');
-            uploadArea.addEventListener('dragover', handleDragOver);
-            uploadArea.addEventListener('dragleave', handleDragLeave);
-            uploadArea.addEventListener('drop', handleFileDrop);
-            uploadArea.addEventListener('click', (e) => {
-                // Klicke nicht, wenn auf MetaForm geklickt wird
-                if (e.target.closest('#metaForm')) return;
-                document.getElementById('pdfFile').click();
-            });
-            document.getElementById('pdfFile').addEventListener('change', (e) => {
-                if (e.target.files && e.target.files.length > 0) {
-                    handlePDFFileSelected(e.target.files[0]);
-                }
-            });
-            document.getElementById('uploadBtn').onclick = () => {
-                document.getElementById('pdfFile').click();
-            };
-            document.getElementById('metaForm').onsubmit = handleMetaSave;
-            resetUploadStep();
-            listenToNews();
+    }
 
-            // News immer laden, auch nach "Zurück" (Back-Button)
-            window.addEventListener('pageshow', function(event) {
-                // pageshow wird auch bei bfcache ausgelöst
-                listenToNews();
-            });
+    // --- Init ---
+    window.addEventListener('DOMContentLoaded', () => {
+        // Language switcher
+        document.getElementById('langDE').onclick = () => setLang('de');
+        document.getElementById('langFR').onclick = () => setLang('fr');
+        document.getElementById('langEN').onclick = () => setLang('en');
+        setLang('de');
+        // Login
+        document.getElementById('adminLoginForm').onsubmit = handleLogin;
+        document.getElementById('logoutBtn').onclick = handleLogout;
+        showAdminUI(false);
+        // Upload events (2-Schritt)
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        uploadArea.addEventListener('drop', handleFileDrop);
+        uploadArea.addEventListener('click', (e) => {
+            // Klicke nicht, wenn auf MetaForm geklickt wird
+            if (e.target.closest('#metaForm')) return;
+            document.getElementById('pdfFile').click();
         });
+        document.getElementById('pdfFile').addEventListener('change', (e) => {
+            if (e.target.files && e.target.files.length > 0) {
+                handlePDFFileSelected(e.target.files[0]);
+            }
+        });
+        document.getElementById('uploadBtn').onclick = () => {
+            document.getElementById('pdfFile').click();
+        };
+        document.getElementById('metaForm').onsubmit = handleMetaSave;
+        resetUploadStep();
+        listenToNews();
+        // News immer laden, auch nach "Zurück"
+        window.addEventListener('pageshow', function(event) {
+            listenToNews();
+        });
+    });
 </script>
+</body>
 </html>
