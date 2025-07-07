@@ -84,7 +84,7 @@ h1, #main-title {
     padding: 9px 16px 7px 12px;
     font-size: 1.04rem;
   }
-  .logo { width: 54px; }
+  .logo { width: 100px; } /* angepasst */
   h1, #main-title { font-size: 1.18rem;}
 }
 
@@ -234,4 +234,5 @@ footer {
   nav .nav-cards {
     gap: 0.5rem;
   }
+  .logo { width: 100px; } /* falls du hier auch .logo hast */
 }
