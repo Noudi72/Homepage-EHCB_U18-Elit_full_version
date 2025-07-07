@@ -103,6 +103,12 @@ h1, #main-title {
   .logo { width: 100px; } /* Logo mobil einheitlich */
 }
 
+/* Fokus-Stil für bessere Accessibility */
+button:focus, .btn:focus, a:focus {
+  outline: 2px solid var(--ehc-gelb);
+  outline-offset: 2px;
+}
+
 nav {
   margin: 2.2rem 0 0 0;
 }
