@@ -301,18 +301,12 @@
       color: #fff;
       opacity: 1;
     }
-    /* Label im Uploadbereich außerhalb Cards */
-    #uploadArea label,
-    #uploadArea h3,
-    #uploadArea #uploadInstr {
-      color: #fff !important;
-      text-shadow: none;
-    }
     /* Überschriften außerhalb Cards */
     .container h2, .container h3, .container label {
       color: #fff;
       text-shadow: none;
     }
+    /* Upload-Section: Immer EHCB-Blau für Texte im weißen Upload-Bereich */
     .upload-section,
     .upload-section label,
     .upload-section h3,
@@ -320,6 +314,16 @@
       color: #002d5b !important;
       background: #fff !important;
       text-shadow: none !important;
+    }
+
+    /* Spezifisch für schmale Screens: sicherstellen, dass EHCB-Blau auch dort bleibt */
+    @media (max-width: 700px) {
+      .upload-section,
+      .upload-section label,
+      .upload-section h3,
+      .upload-section #uploadInstr {
+        color: #002d5b !important;
+      }
     }
   </style>
 </head>
