@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📅 MIH Kalender U18</title>
+  <link rel="icon" href="ehcb-icon.png" type="image/png" />
+  <style>
+    :root {
+      --ehc-blue: #002b5c;
+      --ehc-yellow: #ffd600;
+      --ehc-red: #d0021b;
+      --ehc-white: #fff;
+      --ehc-shadow: 0 10px 40px #00183e44;
+    }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--ehc-blue);
+      min-height: 100vh;
+      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+      color: var(--ehc-white);
+    }
+    header {
+      text-align: center;
+      padding: 32px 0 18px 0;
+    }
+    .logo {
+      width: 80px;
+      margin: 0 auto 14px auto;
+      display: block;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0 0 14px 0;
+      letter-spacing: 2px;
+      color: var(--ehc-white);
+    }
+    .lang-switch {
+      display: flex; justify-content: center; gap: 13px; margin: 20px 0 4px 0;
+    }
+    .lang-switch button {
+      background: #eee; color: #002b5c; border: none; font-weight: 700;
+      border-radius: 7px; cursor: pointer; padding: 6px 26px 4px 26px; font-size: 1.1rem; transition: background 0.1s, color 0.1s;
+    }
+    .lang-switch .active {
+      background: var(--ehc-yellow); color: var(--ehc-blue); box-shadow: 0 2px 8px #0002;
+    }
+    .main-content {
+      max-width: 800px; margin: 30px auto 0 auto; padding: 0 6px;
+    }
+    .card {
+      background: var(--ehc-blue);
+      color: var(--ehc-white);
+      border-radius: 28px;
+      box-shadow: var(--ehc-shadow);
+      padding: 26px 10px 10px 10px;
+      border: 2.8px solid var(--ehc-yellow);
+      margin: 0 auto;
+    }
+    .card h2 {
+      color: var(--ehc-yellow);
+      text-align: center;
+      font-size: 1.45rem;
+      font-weight: 800;
+      margin-bottom: 19px;
+    }
+    iframe {
+      border: 0; width: 100%; height: 540px;
+      background: #fff; border-radius: 15px; box-shadow: 0 4px 18px #002b5c33;
+      display: block;
+    }
+    .calendar-hint {
+      text-align:center;color:#ffe16b;font-size:0.98rem;margin-top:1.1rem;
+    }
+    .back-link {
+      display:block; text-align:center; margin-top:24px; font-size:1.1rem;
+      color: var(--ehc-yellow); text-decoration: none; font-weight: bold;
+      background: #002b5c; padding: 8px 0; border-radius: 9px; max-width:200px; margin-left:auto; margin-right:auto; border:2px solid #ffd600;
+      transition: background .18s, color .18s;
+    }
+    .back-link:hover { background: #ffd600; color: #002b5c; }
+    .yellow-slogan {
+      color: var(--ehc-yellow);
+      text-align: center;
+      margin: 44px 0 0 0;
+      font-size: 1.18rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+    }
+    footer {
+      margin-top: 65px;
+      background: var(--ehc-blue);
+      color: #ffd600;
+      text-align: center;
+      padding: 13px 0 10px 0;
+      font-size: 1.01rem;
+      opacity: 0.86;
+      border-top: 2px solid var(--ehc-red);
+    }
+    @media (max-width: 600px) {
+      .main-content { padding: 0 2px;}
+      .card { font-size: 1.01rem; padding: 10px 1px 7px 1px;}
+      .logo { width: 54px; }
+      h1 { font-size: 1.18rem;}
+      iframe { height: 320px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="wikinger.png" class="logo" alt="Logo" />
+    <h1 id="main-title">EHC BIEL-BIENNE U18-ELIT</h1>
+    <div class="lang-switch" id="lang-switch">
+      <button onclick="changeLanguage('de')" id="btn-de">DE</button>
+      <button onclick="changeLanguage('fr')" id="btn-fr">FR</button>
+      <button onclick="changeLanguage('en')" id="btn-en">EN</button>
+    </div>
+  </header>
+  <div class="main-content">
+    <section class="card">
+      <h2 id="kalender-title">📅 MIH Kalender U18</h2>
+      <iframe id="kalender-frame"
+        src="https://calendar.google.com/calendar/embed?src=mubk4n72crsbuptn4drqpt77rjsial8g%40import.calendar.google.com&ctz=Europe%2FZurich&mode=AGENDA">
+      </iframe>
+      <p class="calendar-hint" id="kalender-hint">
+        (Für eine bessere Übersicht rechts oben auf „Agenda“ klicken)
+      </p>
+    </section>
+    <a class="back-link" href="index.html">← Zurück / Back</a>
+  </div>
+  <section class="yellow-slogan" id="slogan">
+    "OUR STRENGTH IS OUR UNITY!"
+  </section>
+  <footer>
+    © 2025 EHC Biel-Bienne U18-Elit
+  </footer>
+  <script>
+    const translations = {
+      de: {
+        mainTitle: "EHC BIEL-BIENNE U18-ELIT",
+        kalenderTitle: "📅 MIH Kalender U18",
+        kalenderHint: "(Für eine bessere Übersicht rechts oben auf „Agenda“ klicken)",
+        slogan: "\"OUR STRENGTH IS OUR UNITY!\"",
+        back: "← Zurück / Back"
+      },
+      fr: {
+        mainTitle: "EHC BIEL-BIENNE U18-ÉLITE",
+        kalenderTitle: "📅 Calendrier MIH U18",
+        kalenderHint: "(Pour une meilleure vue, cliquez en haut à droite sur « Agenda »)",
+        slogan: "\"NOTRE FORCE EST NOTRE UNITÉ !\"",
+        back: "← Retour"
+      },
+      en: {
+        mainTitle: "EHC BIEL-BIENNE U18-ELITE",
+        kalenderTitle: "📅 MIH Calendar U18",
+        kalenderHint: "(For a better overview, click “Agenda” top right)",
+        slogan: "\"OUR STRENGTH IS OUR UNITY!\"",
+        back: "← Back"
+      }
+    };
+
+    let currentLang = localStorage.getItem('kalender_lang') || 'de';
+    function changeLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('kalender_lang', lang);
+      document.querySelectorAll('.lang-switch button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('btn-' + lang).classList.add('active');
+      const t = translations[lang];
+      document.getElementById('main-title').textContent = t.mainTitle;
+      document.getElementById('kalender-title').textContent = t.kalenderTitle;
+      document.getElementById('kalender-hint').textContent = t.kalenderHint;
+      document.getElementById('slogan').textContent = t.slogan;
+      document.querySelector('.back-link').textContent = t.back;
+    }
+    window.addEventListener('DOMContentLoaded', () => { changeLanguage(currentLang); });
+  </script>
+</body>
+</html>

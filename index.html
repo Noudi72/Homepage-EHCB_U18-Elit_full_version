@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EHC Biel-Bienne U18-Elit</title>
+  <link rel="icon" href="ehcb-icon.png" type="image/png" />
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0; padding: 0;
+      background: linear-gradient(to bottom, #063263 0%, #02306b 100%);
+      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+      min-height: 100vh;
+      color: #fff;
+    }
+    header {
+      display: flex; flex-direction: column; align-items: center; padding-top: 24px; padding-bottom: 12px;
+    }
+    .logo {
+      width: 84px; height: auto; margin-bottom: 12px;
+    }
+    .title {
+      font-size: 2.2rem; font-weight: bold; letter-spacing: 0.03em; text-align: center;
+    }
+    .lang-switcher {
+      margin-top: 12px; margin-bottom: 8px; display: flex; gap: 10px; justify-content: center;
+    }
+    .lang-btn {
+      background: #fff; color: #002b5c; border: none; border-radius: 8px; padding: 7px 18px;
+      font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 1px 8px #2222;
+      transition: background 0.18s;
+    }
+    .lang-btn.active, .lang-btn:focus {
+      background: #FFD600; color: #002b5c;
+    }
+    .main-buttons {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin: 28px 0;
+    }
+    .main-btn {
+      background: #d0021b; color: #fff; border: none; border-radius: 16px;
+      padding: 22px 34px; font-size: 1.3rem; font-weight: bold; min-width: 220px;
+      box-shadow: 0 2px 12px #002b5c26;
+      cursor: pointer; transition: background 0.15s;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .main-btn:hover, .main-btn:focus {
+      background: #a00117;
+    }
+    .yellow-slogan {
+      background: #ffd600; color: #002b5c; text-align: center; font-size: 1.25rem;
+      font-weight: bold; letter-spacing: .01em; margin: 44px 0 0 0; padding: 18px 0;
+    }
+    footer {
+      text-align: center; color: #fff; opacity: .77; padding: 24px 0 12px 0;
+      font-size: .95rem; letter-spacing: .01em;
+    }
+    @media (max-width: 700px) {
+      .main-buttons {
+        flex-direction: column; gap: 16px; align-items: center;
+      }
+      .main-btn { min-width: 88vw; font-size: 1.04rem; padding: 18px 10px; }
+      .logo { width: 60px; }
+      .title { font-size: 1.35rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="wikinger.png" class="logo" alt="Wikinger-Logo" />
+    <div class="title" id="main-title">EHC BIEL-BIENNE U18-ELIT</div>
+    <div class="lang-switcher">
+      <button class="lang-btn" data-lang="de">DE</button>
+      <button class="lang-btn" data-lang="fr">FR</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="main-buttons">
+      <a href="kalender.html" class="main-btn" id="btn-kalender">MIH Kalender U18</a>
+      <!-- KORREKTER LINK ZU CARDIO-APP: -->
+      <a href="https://noudi72.github.io/Cardio-App-EHCB-U18/" class="main-btn" id="btn-cardio" target="_blank">Cardio-Programme</a>
+      <a href="https://script.google.com/macros/s/AKfycbzkS395JUZ8Su4uxit44p8dZCKRbGDNs12fjZTdlkx_zKyTNY-9yrvymGuSedxe_pcinw/exec" class="main-btn" id="btn-sponser" target="_blank">Sponser Sport Food</a>
+      <a href="https://www.ehcb.ch/de/teams/u18-elit" class="main-btn" id="btn-spirit" target="_blank">Spirit Homepage</a>
+      <a href="feedback.html" class="main-btn" id="btn-feedback">Spieler Reflexion</a>
+      <a href="dashboard.html" class="main-btn" id="btn-dashboard">Coach Dashboard</a>
+    </div>
+  </main>
+  <section class="yellow-slogan" id="slogan">
+    "OUR STRENGTH IS OUR UNITY!"
+  </section>
+  <footer>
+    © 2025 EHC Biel-Bienne U18-Elit
+  </footer>
+  <script>
+    // Übersetzungen zentral als Objekt
+    const translations = {
+      de: {
+        title: "EHC BIEL-BIENNE U18-ELIT",
+        kalender: "MIH Kalender U18",
+        cardio: "Cardio-Programme",
+        sponser: "Sponser Sport Food",
+        spirit: "Spirit Homepage",
+        feedback: "Spieler Reflexion",
+        dashboard: "Coach Dashboard",
+        slogan: "\"OUR STRENGTH IS OUR UNITY!\"",
+      },
+      fr: {
+        title: "EHC BIEL-BIENNE U18-ÉLITE",
+        kalender: "Calendrier MIH U18",
+        cardio: "Programmes Cardio",
+        sponser: "Nutrition Sponser",
+        spirit: "Spirit Site officiel",
+        feedback: "Réflexion Joueur",
+        dashboard: "Dashboard Coach",
+        slogan: "\"NOTRE FORCE, C'EST NOTRE UNITÉ !\"",
+      },
+      en: {
+        title: "EHC BIEL-BIENNE U18-ELITE",
+        kalender: "MIH Calendar U18",
+        cardio: "Cardio Programs",
+        sponser: "Sponser Sport Food",
+        spirit: "Spirit Homepage",
+        feedback: "Player Reflection",
+        dashboard: "Coach Dashboard",
+        slogan: "\"OUR STRENGTH IS OUR UNITY!\"",
+      }
+    };
+
+    // Sprache erkennen (URL, LocalStorage, sonst Browser)
+    function getUserLang() {
+      const urlLang = (window.location.search.match(/lang=(de|fr|en)/) || [])[1];
+      if (urlLang) return urlLang;
+      if (localStorage.getItem('lang')) return localStorage.getItem('lang');
+      const browserLang = navigator.language.slice(0,2);
+      if (['de','fr','en'].includes(browserLang)) return browserLang;
+      return 'de';
+    }
+
+    function setLang(lang) {
+      localStorage.setItem('lang', lang);
+      const t = translations[lang] || translations.de;
+      document.getElementById('main-title').textContent = t.title;
+      document.getElementById('btn-kalender').textContent = t.kalender;
+      document.getElementById('btn-cardio').textContent = t.cardio;
+      document.getElementById('btn-sponser').textContent = t.sponser;
+      document.getElementById('btn-spirit').textContent = t.spirit;
+      document.getElementById('btn-feedback').textContent = t.feedback;
+      document.getElementById('btn-dashboard').textContent = t.dashboard;
+      document.getElementById('slogan').textContent = t.slogan;
+
+      // Highlight active language button
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+    }
+
+    // Events für Sprachwechsel
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.onclick = () => setLang(btn.dataset.lang);
+    });
+
+    // Init
+    setLang(getUserLang());
+  </script>
+</body>
+</html>

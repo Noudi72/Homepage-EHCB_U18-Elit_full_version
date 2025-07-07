@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>💬 Player Feedback</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="ehcb-icon.png" type="image/png" />
+  <style>
+    :root {
+      --ehc-blue: #002b5c;
+      --ehc-yellow: #ffe16b;
+      --ehc-red: #d0021b;
+      --ehc-white: #fff;
+      --ehc-shadow: 0 10px 40px #00183e44;
+    }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--ehc-blue);
+      min-height: 100vh;
+      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+    }
+    header {
+      background: var(--ehc-blue);
+      color: var(--ehc-white);
+      border-bottom: 4px solid var(--ehc-red);
+      text-align: center;
+      padding: 32px 0 16px 0;
+    }
+    .header-flex {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .header-flex .logo { height: 56px; }
+    h1 { font-size: 2.2rem; font-weight: 800; margin: 0; letter-spacing: 2px; color: var(--ehc-white);}
+    .yellow-line { width: 85px; height: 5px; background: var(--ehc-yellow); border-radius: 8px; margin: 20px auto 10px auto;}
+    .lang-switch {
+      display: flex; justify-content: center; align-items: center; gap: 13px; margin: 14px 0 5px 0; z-index: 10;
+    }
+    .lang-switch button {
+      background: #eee; color: #002b5c; border: none; font-weight: 700;
+      border-radius: 7px; cursor: pointer; padding: 6px 26px 4px 26px; font-size: 1.1rem; transition: background 0.1s, color 0.1s;
+    }
+    .lang-switch .active {
+      background: #002b5c; color: #fff; box-shadow: 0 2px 8px #0001;
+    }
+    .main-content {
+      max-width: 500px; margin: 38px auto 0 auto; padding: 0 10px;
+    }
+    .card {
+      background: var(--ehc-blue);
+      color: var(--ehc-white);
+      border-radius: 30px;
+      margin: 0 auto;
+      box-shadow: var(--ehc-shadow);
+      padding: 42px 32px 32px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      border: 3px solid var(--ehc-yellow);
+    }
+    .card h2 {
+      font-size: 1.7rem;
+      text-align: center;
+      margin-bottom: 18px;
+      font-weight: 800;
+      color: var(--ehc-yellow);
+    }
+    label { font-weight:700; margin:7px 0 3px 0; color:var(--ehc-yellow);}
+    input, select, textarea {
+      width: 100%;
+      max-width: 100%;
+      font-size: 1.12rem;
+      border-radius: 9px; border: 1.6px solid #bbb;
+      padding: 7px 10px; margin: 3px 0 9px 0; background: #fff9;
+      color: #002b5c;
+      font-family: inherit;
+      font-weight:600;
+      box-sizing: border-box;
+    }
+    #name, #comment {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    button[type="submit"] {
+      background: var(--ehc-red); color: var(--ehc-white); border: none;
+      border-radius: 14px; font-weight: 800; font-size: 1.22rem;
+      padding: 13px 0; margin-top: 16px; cursor: pointer; transition: background 0.18s;
+      box-shadow: 0 2px 7px #0002;
+      width: 100%;
+      max-width: 100%;
+    }
+    button[type="submit"]:hover { background: #af0116;}
+    .back-btn {
+      background: #e5e5e5;
+      color: #1751e7;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.04rem;
+      padding: 9px 0;
+      margin-top: 7px;
+      margin-bottom: 0;
+      cursor: pointer;
+      transition: background 0.13s, color 0.13s;
+      box-shadow: 0 1px 4px #0001;
+      width: 60%;
+      align-self: center;
+      display: block;
+    }
+    .back-btn:hover {
+      background: #d3d3d3;
+      color: #002b5c;
+    }
+    #message.success { color: #3bbb2c; font-weight:700; margin-top:12px;}
+    #message.error   { color: #b00; font-weight:700; margin-top:12px;}
+    .yellow-slogan {
+      color: var(--ehc-yellow);
+      text-align: center;
+      margin: 44px 0 0 0;
+      font-size: 1.27rem;
+      font-weight: 800;
+      letter-spacing: 1.3px;
+    }
+    footer {
+      margin-top: 65px;
+      background: var(--ehc-blue);
+      color: #ffe16b;
+      text-align: center;
+      padding: 13px 0 10px 0;
+      font-size: 1.04rem;
+      opacity: 0.87;
+      border-top: 2px solid var(--ehc-red);
+    }
+    @media (max-width: 600px) {
+      .header-flex { flex-direction: column; gap: 7px;}
+      .main-content { padding: 0 4px;}
+      .card { font-size: 1.03rem; padding: 19px 5px 16px 5px;}
+      .lang-switch { gap: 8px; margin: 10px 0 8px 0;}
+      .lang-switch button { padding: 5px 12px 3px 12px; font-size: 1rem;}
+      .back-btn { width: 100%; font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-flex">
+      <img src="wikinger.png" class="logo" alt="Logo" />
+      <h1>EHC BIEL-BIENNE U18-ELIT</h1>
+      <img src="wikinger.png" class="logo" alt="Logo" />
+    </div>
+    <div class="yellow-line"></div>
+    <div class="lang-switch" id="lang-switch">
+      <button onclick="changeLanguage('de')" id="btn-de">DE</button>
+      <button onclick="changeLanguage('fr')" id="btn-fr">FR</button>
+      <button onclick="changeLanguage('en')" id="btn-en">EN</button>
+    </div>
+  </header>
+  <div class="main-content">
+    <form id="feedbackForm" class="card">
+      <h2 id="formTitle">💬 Player Feedback</h2>
+      <label for="name" id="labelName">Name *</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="feeling" id="labelFeeling">🧠 Wie hast du dich gefühlt?</label>
+      <select id="feeling" name="feeling" required></select>
+
+      <label for="energy" id="labelEnergy">⚡️ Energie-Level (1 = sehr müde – 10 = voller Power)</label>
+      <select id="energy" name="energy" required></select>
+
+      <label for="intensity" id="labelIntensity">🏋️ Trainingsintensität <small>(1 = locker – 6 = sehr hart)</small></label>
+      <select id="intensity" name="intensity" required></select>
+
+      <label for="performance" id="labelPerformance">🎯 Eigene Leistung <small>(1 = sehr schlecht – 6 = top)</small></label>
+      <select id="performance" name="performance" required></select>
+
+      <label for="comment" id="labelComment">📝 Kommentar <small>(optional)</small></label>
+      <textarea id="comment" name="comment" rows="2"></textarea>
+
+      <button type="submit" id="submitBtn">Abschicken</button>
+      <div id="message"></div>
+      <button type="button" class="back-btn" onclick="window.location.href='index.html'">Zurück</button>
+    </form>
+  </div>
+  <section class="yellow-slogan" id="slogan">
+    "OUR STRENGTH IS OUR UNITY!"
+  </section>
+  <footer>
+    © 2025 EHC Biel-Bienne U18-Elit
+  </footer>
+  <script>
+    // Sprachdaten:
+    const translations = {
+      de: {
+        formTitle:"Spieler Reflexion",
+        name:"Name *",
+        feeling:"Wie hast du dich gefühlt?",
+        feelingOptions: [
+          {value:"🟢 Top", text:"🟢 Top"},
+          {value:"🟡 Okay", text:"🟡 Okay"},
+          {value:"🔴 Tired", text:"🔴 Müde"}
+        ],
+        energy:"⚡️ Energie-Level",
+        energyOptions: [
+          {value:"1", text:"1 – 😴 sehr müde"},
+          {value:"2", text:"2"},
+          {value:"3", text:"3"},
+          {value:"4", text:"4"},
+          {value:"5", text:"5"},
+          {value:"6", text:"6"},
+          {value:"7", text:"7"},
+          {value:"8", text:"8"},
+          {value:"9", text:"9"},
+          {value:"10", text:"10 – ⚡️ voller Power"}
+        ],
+        intensity:"🏋️ Intensität Training/Spiel",
+intensityOptions: [
+  {value:"1", text:"1 – sehr locker"},
+  {value:"2", text:"2"},
+  {value:"3", text:"3"},
+  {value:"4", text:"4"},
+  {value:"5", text:"5 – mittel"},
+  {value:"6", text:"6"},
+  {value:"7", text:"7"},
+  {value:"8", text:"8"},
+  {value:"9", text:"9"},
+  {value:"10", text:"10 – maximal"}
+],
+performance:"🎯 Eigene Leistung",
+performanceOptions: [
+  {value:"1", text:"1 – ausbaufähig"},
+  {value:"2", text:"2 – mässig"},
+  {value:"3", text:"3 – okay"},
+  {value:"4", text:"4 – solide"},
+  {value:"5", text:"5 – gut"},
+  {value:"6", text:"6 – sehr gut"},
+  {value:"7", text:"7 – stark"},
+  {value:"8", text:"8 – super"},
+  {value:"9", text:"9 – fast optimal"},
+  {value:"10", text:"10 – top"}
+],
+        comment:"📝 Kommentar <small>(optional)</small>",
+        submit:"Abschicken",
+        msg_success:'✅ Feedback übermittelt!',
+        msg_error:'❌ Verbindung fehlgeschlagen.',
+        slogan:'"OUR STRENGTH IS OUR UNITY!"'
+      },
+      en: {
+        formTitle:"Player Reflection",
+        name:"Name *",
+        feeling:"How did you feel today?",
+        feelingOptions: [
+          {value:"🟢 Top", text:"🟢 Top"},
+          {value:"🟡 Okay", text:"🟡 Okay"},
+          {value:"🔴 Tired", text:"🔴 Tired"}
+        ],
+        energy:"⚡️ Energy level",
+        energyOptions: [
+          {value:"1", text:"1 – 😴 very tired"},
+          {value:"2", text:"2"},
+          {value:"3", text:"3"},
+          {value:"4", text:"4"},
+          {value:"5", text:"5"},
+          {value:"6", text:"6"},
+          {value:"7", text:"7"},
+          {value:"8", text:"8"},
+          {value:"9", text:"9"},
+          {value:"10", text:"10 – ⚡️ full power"}
+        ],
+        intensity:"🏋️ Training/Game Intensity",
+intensityOptions: [
+  {value:"1", text:"1 – very easy"},
+  {value:"2", text:"2"},
+  {value:"3", text:"3"},
+  {value:"4", text:"4"},
+  {value:"5", text:"5 – medium"},
+  {value:"6", text:"6"},
+  {value:"7", text:"7"},
+  {value:"8", text:"8"},
+  {value:"9", text:"9"},
+  {value:"10", text:"10 – maximal"}
+],
+performance:"🎯 Own Performance",
+performanceOptions: [
+  {value:"1", text:"1 – needs work"},
+  {value:"2", text:"2 – fair"},
+  {value:"3", text:"3 – okay"},
+  {value:"4", text:"4 – solid"},
+  {value:"5", text:"5 – good"},
+  {value:"6", text:"6 – very good"},
+  {value:"7", text:"7 – strong"},
+  {value:"8", text:"8 – super"},
+  {value:"9", text:"9 – almost perfect"},
+  {value:"10", text:"10 – top"}
+],
+        comment:"📝 Comment <small>(optional)</small>",
+        submit:"Submit",
+        msg_success:'✅ Feedback submitted!',
+        msg_error:'❌ Connection failed. Please try again.',
+        slogan:'"OUR STRENGTH IS OUR UNITY!"'
+      },
+      fr: {
+        formTitle:"Réflexion Joueur",
+        name:"Nom *",
+        feeling:"Comment t'es-tu senti aujourd'hui ?",
+        feelingOptions: [
+          {value:"🟢 Top", text:"🟢 Top"},
+          {value:"🟡 Okay", text:"🟡 Bien"},
+          {value:"🔴 Tired", text:"🔴 Fatigué"}
+        ],
+        energy:"⚡️ Niveau d'énergie",
+        energyOptions: [
+          {value:"1", text:"1 – 😴 très fatigué"},
+          {value:"2", text:"2"},
+          {value:"3", text:"3"},
+          {value:"4", text:"4"},
+          {value:"5", text:"5"},
+          {value:"6", text:"6"},
+          {value:"7", text:"7"},
+          {value:"8", text:"8"},
+          {value:"9", text:"9"},
+          {value:"10", text:"10 – ⚡️ plein d'énergie"}
+        ],
+        intensity:"🏋️ Intensité Entraînement/Match",
+intensityOptions: [
+  {value:"1", text:"1 – très facile"},
+  {value:"2", text:"2"},
+  {value:"3", text:"3"},
+  {value:"4", text:"4"},
+  {value:"5", text:"5 – moyen"},
+  {value:"6", text:"6"},
+  {value:"7", text:"7"},
+  {value:"8", text:"8"},
+  {value:"9", text:"9"},
+  {value:"10", text:"10 – maximale"}
+],
+performance:"🎯 Performance personnelle",
+performanceOptions: [
+  {value:"1", text:"1 – à améliorer"},
+  {value:"2", text:"2 – passable"},
+  {value:"3", text:"3 – ok"},
+  {value:"4", text:"4 – solide"},
+  {value:"5", text:"5 – bien"},
+  {value:"6", text:"6 – très bien"},
+  {value:"7", text:"7 – fort"},
+  {value:"8", text:"8 – super"},
+  {value:"9", text:"9 – presque parfait"},
+  {value:"10", text:"10 – top"}
+],
+        comment:"📝 Commentaire <small>(optionnel)</small>",
+        submit:"Envoyer",
+        msg_success:'✅ Feedback envoyé!',
+        msg_error:'❌ Connexion échouée.',
+        slogan:'"NOTRE FORCE EST NOTRE UNITÉ !"'
+      }
+    };
+
+    let currentLang = localStorage.getItem('feedback_lang') || 'de';
+
+    function changeLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('feedback_lang', lang);
+      document.querySelectorAll('.lang-switch button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('btn-' + lang).classList.add('active');
+      const t = translations[lang];
+
+      document.getElementById('formTitle').textContent = t.formTitle;
+      document.getElementById('labelName').textContent = t.name;
+      document.getElementById('labelFeeling').textContent = (t.feelingIcon || "🧠") + " " + t.feeling;
+
+      const selFeeling = document.getElementById('feeling');
+      selFeeling.innerHTML = "";
+      t.feelingOptions.forEach(opt => {
+        const o = document.createElement('option');
+        o.value = opt.value;
+        o.textContent = opt.text;
+        selFeeling.appendChild(o);
+      });
+
+      document.getElementById('labelEnergy').innerHTML = t.energy;
+      const selEnergy = document.getElementById('energy');
+      selEnergy.innerHTML = "";
+      t.energyOptions.forEach(opt => {
+        const o = document.createElement('option');
+        o.value = opt.value;
+        o.textContent = opt.text;
+        selEnergy.appendChild(o);
+      });
+
+      document.getElementById('labelIntensity').innerHTML = t.intensity;
+      const selIntensity = document.getElementById('intensity');
+      selIntensity.innerHTML = "";
+      t.intensityOptions.forEach(opt => {
+        const o = document.createElement('option');
+        o.value = opt.value;
+        o.textContent = opt.text;
+        selIntensity.appendChild(o);
+      });
+
+      document.getElementById('labelPerformance').innerHTML = t.performance;
+      const selPerformance = document.getElementById('performance');
+      selPerformance.innerHTML = "";
+      t.performanceOptions.forEach(opt => {
+        const o = document.createElement('option');
+        o.value = opt.value;
+        o.textContent = opt.text;
+        selPerformance.appendChild(o);
+      });
+
+      document.getElementById('labelComment').innerHTML = t.comment;
+      document.getElementById('submitBtn').textContent = t.submit;
+      document.getElementById('slogan').textContent = t.slogan;
+    }
+    window.addEventListener('DOMContentLoaded', () => { changeLanguage(currentLang); });
+
+    const form = document.getElementById('feedbackForm');
+    const message = document.getElementById('message');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      message.textContent = '';
+      const t = translations[currentLang];
+      const data = {
+        name: form.name.value,
+        feeling: form.feeling.value,
+        energy: form.energy.value,
+        intensity: form.intensity.value,
+        performance: form.performance.value,
+        comment: form.comment.value
+      };
+      try {
+        await fetch('https://script.google.com/macros/s/AKfycbwL1IwFze4LFJ5vllA-s7MpnG_PTSJUMXTI-BV5Q0d54tjrscXx710xr672w3t0-ikPmw/exec', {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        message.className = "success";
+        message.textContent = t.msg_success;
+        form.reset();
+      } catch (err) {
+        message.className = "error";
+        message.textContent = t.msg_error;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>📊 Coach Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="ehcb-icon.png" type="image/png" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --ehc-blue: #002b5c;
+      --ehc-yellow: #ffd600;
+      --ehc-red: #d0021b;
+      --ehc-white: #fff;
+      --ehc-shadow: 0 10px 40px #00183e44;
+      --legend-colors: #ff4d4d,#ffa940,#ffe066,#5cb85c,#249045,#3580db;
+    }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--ehc-blue);
+      min-height: 100vh;
+      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+      color: var(--ehc-white);
+    }
+    header {
+      text-align: center;
+      padding: 32px 0 18px 0;
+    }
+    .logo {
+      width: 80px;
+      margin: 0 auto 14px auto;
+      display: block;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0 0 14px 0;
+      letter-spacing: 2px;
+      color: var(--ehc-white);
+    }
+    .lang-switch {
+      display: flex; justify-content: center; gap: 13px; margin: 20px 0 4px 0;
+    }
+    .lang-switch button {
+      background: #eee; color: #002b5c; border: none; font-weight: 700;
+      border-radius: 7px; cursor: pointer; padding: 6px 26px 4px 26px; font-size: 1.1rem; transition: background 0.1s, color 0.1s;
+    }
+    .lang-switch .active {
+      background: var(--ehc-yellow); color: var(--ehc-blue); box-shadow: 0 2px 8px #0002;
+    }
+    .main-content {
+      max-width: 900px; margin: 30px auto 0 auto; padding: 0 6px;
+    }
+    .login-card {
+      background: var(--ehc-blue);
+      color: var(--ehc-white);
+      border-radius: 28px;
+      border: 2.8px solid var(--ehc-yellow);
+      box-shadow: var(--ehc-shadow);
+      padding: 38px 30px 28px 30px;
+      max-width: 420px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+    .login-card input[type="password"] {
+      font-size: 1.15rem;
+      border-radius: 12px;
+      padding: 10px 16px;
+      border: 1.4px solid #bbb;
+      color: #002b5c;
+      width: 100%;
+      margin-bottom: 12px;
+      background: #fff9;
+      font-weight:700;
+      text-align:center;
+      box-sizing:border-box;
+    }
+    .login-card button {
+      background: var(--ehc-red);
+      color: var(--ehc-white);
+      border: none;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 1.13rem;
+      padding: 11px 38px;
+      cursor: pointer;
+      margin: 0 auto;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px #0002;
+    }
+    .login-card button:hover {
+      background: #af0116;
+    }
+    #login-msg {
+      color: #ff4d4d;
+      font-size: 1.04rem;
+      margin-top: 3px;
+      min-height: 22px;
+      text-align:center;
+    }
+    .dashboard-header-flex {
+      display: flex; align-items: center; gap: 12px; justify-content: center; margin-bottom: 24px;
+    }
+    .dashboard-header-flex img { height: 44px;}
+    .dashboard-header-flex h2 { font-size: 2.1rem; margin:0; color:var(--ehc-yellow);}
+    #filterForm {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    #filterForm label { font-weight:600; color:var(--ehc-yellow);}
+    #filterForm input, #filterForm button {
+      border-radius: 8px; border: 1.5px solid #ccc; font-size: 1.13rem;
+      padding: 4px 13px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+    #filterForm input[type="date"],
+    #filterForm input[type="text"] {
+      width: 230px;
+      max-width: 100%;
+    }
+    #filterForm button {
+      background: var(--ehc-red);
+      color: #fff;
+      border: none;
+      font-size: 1.13rem;
+      font-weight: 700;
+      padding: 7px 24px;
+      cursor: pointer;
+      margin-left: 8px;
+      transition: background 0.2s;
+    }
+    #filterForm button:hover { background: #af0116;}
+    .chart-card {
+      background: var(--ehc-blue);
+      border-radius: 22px;
+      border: 2.5px solid var(--ehc-yellow);
+      box-shadow: var(--ehc-shadow);
+      padding: 18px 6px 8px 6px;
+      max-width: 380px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #performanceChart {
+      width: 220px !important;
+      height: 220px !important;
+      background: transparent;
+      margin: 0 auto 10px auto;
+      display:block;
+    }
+    .chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 16px;
+      margin: 13px 0 2px 0;
+      font-size: 1.08rem;
+      font-weight: 700;
+    }
+    .chart-legend span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 7px 2px 0;
+    }
+    .chart-legend .dot {
+      display: inline-block;
+      width: 19px; height: 19px;
+      border-radius: 50%;
+      margin-right: 4px;
+      border: 1.3px solid #2228;
+    }
+    .table-scroll {
+      overflow-x: auto;
+      margin: 28px 0;
+      border-radius: 13px;
+      background: var(--ehc-blue);
+      box-shadow: var(--ehc-shadow);
+      padding: 8px 5px 6px 5px;
+    }
+    table {
+      border-spacing: 0;
+      width: 100%;
+      font-size: 1.03rem;
+      color: var(--ehc-white);
+      background: transparent;
+    }
+    th, td { padding: 8px 10px; }
+    /* Spalten gezielt zentrieren: Leistung, Energie, Intensität */
+    th:nth-child(4), th:nth-child(5), th:nth-child(6),
+    td:nth-child(4), td:nth-child(5), td:nth-child(6) {
+      text-align: center;
+    }
+
+    /* Name, Kommentar und Datum linksbündig lassen */
+    th:nth-child(1), th:nth-child(2), th:nth-child(7),
+    td:nth-child(1), td:nth-child(2), td:nth-child(7) {
+      text-align: left;
+    }
+
+    /* Name-Spalte: Mehr Platz für längere Namen */
+    th:nth-child(2), td:nth-child(2) {
+      min-width: 180px;
+      white-space: nowrap;
+      max-width: 240px;
+      overflow-x: auto;
+    }
+    th { background: var(--ehc-yellow); color: var(--ehc-blue); font-weight:800; }
+    tr:nth-child(even) { background: #003574;}
+    tr:nth-child(odd) { background: #002b5c;}
+    td { vertical-align: middle;}
+    .no-data-card {
+      background: var(--ehc-blue);
+      color: var(--ehc-yellow);
+      border-radius: 22px;
+      max-width: 700px;
+      margin: 30px auto 0 auto;
+      box-shadow: var(--ehc-shadow);
+      padding: 25px 16px 22px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.45rem;
+      font-weight: 700;
+      gap: 16px;
+      border: 2.2px solid var(--ehc-yellow);
+    }
+    .btn {
+      background: var(--ehc-red);
+      color: var(--ehc-white);
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 10px 19px;
+      margin: 18px 10px 0 0;
+      cursor: pointer;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px #0002;
+      display:inline-block;
+      text-decoration:none;
+    }
+    .btn:hover {
+      background: #af0116;
+      color: #fff;
+    }
+    .yellow-slogan {
+      color: var(--ehc-yellow);
+      text-align: center;
+      margin: 44px 0 0 0;
+      font-size: 1.18rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+    }
+    .back-link {
+      display:block; text-align:center; margin:28px auto 0 auto; font-size:1.08rem;
+      color: var(--ehc-yellow); text-decoration: none; font-weight: bold;
+      background: #002b5c; padding: 8px 0; border-radius: 9px; max-width:200px; border:2px solid #ffd600;
+      transition: background .18s, color .18s;
+    }
+    .back-link:hover { background: #ffd600; color: #002b5c; }
+    footer {
+      margin-top: 55px;
+      background: var(--ehc-blue);
+      color: #ffd600;
+      text-align: center;
+      padding: 15px 0 13px 0;
+      font-size: 1.01rem;
+      opacity: 0.86;
+      border-top: 2px solid var(--ehc-red);
+    }
+    @media (max-width: 600px) {
+      .main-content { padding: 0 2px;}
+      .chart-card { max-width: 100%; }
+      #performanceChart { width:140px !important; height:140px !important;}
+      .chart-legend .dot { width: 13px; height: 13px;}
+      .dashboard-header-flex h2 { font-size:1.13rem;}
+      .no-data-card { font-size: 1.1rem; padding: 12px 3px;}
+      .login-card { padding: 14px 4px 12px 4px; }
+      .logo { width: 54px; }
+      h1 { font-size: 1.18rem;}
+      #filterForm input, #filterForm button {
+        width: 96vw !important; max-width: 99vw !important; min-width: 0;
+        margin: 4px 0;
+        box-sizing: border-box;
+      }
+      #filterForm {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+      }
+      th, td { padding: 6px 5px; font-size: 0.96rem;}
+      .chart-legend { font-size:0.93rem;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="wikinger.png" class="logo" alt="Logo" />
+    <h1 id="main-title">EHC BIEL-BIENNE U18-ELIT</h1>
+    <div class="lang-switch" id="lang-switch">
+      <button onclick="changeLanguage('de')" id="btn-de">DE</button>
+      <button onclick="changeLanguage('fr')" id="btn-fr">FR</button>
+      <button onclick="changeLanguage('en')" id="btn-en">EN</button>
+    </div>
+  </header>
+  <div class="main-content">
+    <!-- Admin Login -->
+    <section class="login-card" id="login-section">
+      <h2 style="color:var(--ehc-yellow);text-align:center;font-size:1.23rem;margin-bottom:1.15rem;" id="loginTitle">
+        🔐 Coach Dashboard Login
+      </h2>
+      <input type="password" id="password" placeholder="Admin Passwort eingeben" autocomplete="current-password" />
+      <button onclick="checkPassword()" id="loginBtn">Login</button>
+      <div id="login-msg"></div>
+    </section>
+    <!-- Dashboard Content (hidden by default) -->
+    <div id="dashboard-section" style="display:none;">
+      <div class="dashboard-header-flex">
+        <img src="wikinger.png" alt="Logo" />
+        <h2 id="dashboardTitle">📊 Coach Dashboard</h2>
+      </div>
+      <form id="filterForm">
+        <label for="date" id="labelDate">Datum:</label>
+        <input type="date" id="date" name="date">
+        <label for="player" id="labelPlayer">Spieler:</label>
+        <input type="text" id="player" name="player" placeholder="Name">
+        <button type="submit" id="filterBtn">Filter</button>
+      </form>
+      <div class="chart-card">
+        <canvas id="performanceChart"></canvas>
+        <div class="chart-legend" id="chartLegend">
+          <!-- Legende wird von JS erzeugt -->
+        </div>
+      </div>
+      <div id="noDataCard" class="no-data-card" style="display:none;">
+        <span>📅 </span>
+        <span id="noDataMsg">Keine Feedbacks gefunden</span>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th id="thDate">Datum</th>
+              <th id="thName">Name</th>
+              <th id="thFeeling">Feeling</th>
+              <th id="thPerformance">Leistung</th>
+              <th id="thEnergy">Energie</th>
+              <th id="thIntensity">Intensität</th>
+              <th id="thComment">Kommentar</th>
+            </tr>
+          </thead>
+          <tbody id="feedbackTableBody"></tbody>
+        </table>
+      </div>
+      <a class="back-link" href="index.html" id="backBtn">← Zurück / Back</a>
+    </div>
+  </div>
+  <section class="yellow-slogan" id="slogan">
+    "OUR STRENGTH IS OUR UNITY!"
+  </section>
+  <footer>
+    © 2025 EHC Biel-Bienne U18-Elit
+  </footer>
+  <script>
+  // Übersetzungen
+  const translations = {
+    de: {
+      mainTitle: "EHC BIEL-BIENNE U18-ELIT",
+      loginTitle: "🔐 Coach Dashboard Login",
+      loginBtn: "Login",
+      loginPlaceholder: "Admin Passwort eingeben",
+      dashboardTitle: "📊 Coach Dashboard",
+      labelDate: "Datum:",
+      labelPlayer: "Spieler:",
+      filterBtn: "Filter",
+      thDate: "Datum",
+      thName: "Name",
+      thFeeling: "Feeling",
+      thPerformance: "Leistung",
+      thEnergy: "Energie",
+      thIntensity: "Intensität",
+      thComment: "Kommentar",
+      noDataMsg: "Keine Feedbacks gefunden",
+      back: "← Zurück / Back",
+      slogan: "\"OUR STRENGTH IS OUR UNITY!\"",
+      legendPerformance: [
+        "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"
+      ],
+      legendEnergy: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+      legendPerformanceDesc: "Selbsteinschätzung der Leistung",
+      legendEnergyDesc: "Gefühltes Energielevel"
+    },
+    fr: {
+      mainTitle: "EHC BIEL-BIENNE U18-ÉLITE",
+      loginTitle: "🔐 Connexion Dashboard Coach",
+      loginBtn: "Connexion",
+      loginPlaceholder: "Entrer mot de passe admin",
+      dashboardTitle: "📊 Dashboard Coach",
+      labelDate: "Date:",
+      labelPlayer: "Joueur:",
+      filterBtn: "Filtrer",
+      thDate: "Date",
+      thName: "Nom",
+      thFeeling: "Feeling",
+      thPerformance: "Performance",
+      thEnergy: "Énergie",
+      thIntensity: "Intensité",
+      thComment: "Commentaire",
+      noDataMsg: "Aucun feedback trouvé",
+      back: "← Retour",
+      slogan: "\"NOTRE FORCE EST NOTRE UNITÉ !\"",
+      legendPerformance: [
+        "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"
+      ],
+      legendEnergy: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+      legendPerformanceDesc: "Auto-évaluation de la performance",
+      legendEnergyDesc: "Niveau d'énergie ressenti"
+    },
+    en: {
+      mainTitle: "EHC BIEL-BIENNE U18-ELITE",
+      loginTitle: "🔐 Coach Dashboard Login",
+      loginBtn: "Login",
+      loginPlaceholder: "Enter admin password",
+      dashboardTitle: "📊 Coach Dashboard",
+      labelDate: "Date:",
+      labelPlayer: "Player:",
+      filterBtn: "Filter",
+      thDate: "Date",
+      thName: "Name",
+      thFeeling: "Feeling",
+      thPerformance: "Performance",
+      thEnergy: "Energy",
+      thIntensity: "Intensity",
+      thComment: "Comment",
+      noDataMsg: "No feedbacks found",
+      back: "← Back",
+      slogan: "\"OUR STRENGTH IS OUR UNITY!\"",
+      legendPerformance: [
+        "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"
+      ],
+      legendEnergy: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+      legendPerformanceDesc: "Self-assessment of performance",
+      legendEnergyDesc: "Perceived energy level"
+    }
+  };
+  let currentLang = localStorage.getItem('dashboard_lang') || 'de';
+  function changeLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('dashboard_lang', lang);
+    document.querySelectorAll('.lang-switch button').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('btn-' + lang).classList.add('active');
+    const t = translations[lang];
+    document.getElementById('main-title').textContent = t.mainTitle;
+    document.getElementById('loginTitle').textContent = t.loginTitle;
+    document.getElementById('loginBtn').textContent = t.loginBtn;
+    document.getElementById('password').placeholder = t.loginPlaceholder;
+    document.getElementById('dashboardTitle').textContent = t.dashboardTitle;
+    document.getElementById('labelDate').textContent = t.labelDate;
+    document.getElementById('labelPlayer').textContent = t.labelPlayer;
+    document.getElementById('filterBtn').textContent = t.filterBtn;
+    document.getElementById('thDate').textContent = t.thDate;
+    document.getElementById('thName').textContent = t.thName;
+    document.getElementById('thFeeling').textContent = t.thFeeling;
+    document.getElementById('thPerformance').textContent = t.thPerformance;
+    document.getElementById('thEnergy').textContent = t.thEnergy;
+    document.getElementById('thIntensity').textContent = t.thIntensity;
+    document.getElementById('thComment').textContent = t.thComment;
+    document.getElementById('noDataMsg').textContent = t.noDataMsg;
+    document.getElementById('backBtn').textContent = t.back;
+    document.getElementById('slogan').textContent = t.slogan;
+    renderLegend();
+  }
+  window.addEventListener('DOMContentLoaded', () => { changeLanguage(currentLang); });
+
+  // Admin Login-Logik
+  const correctPassword = "Coach7274";
+  function checkPassword() {
+    const input = document.getElementById("password").value;
+    const msg = document.getElementById("login-msg");
+    if (input === correctPassword) {
+      msg.textContent = '';
+      document.getElementById("dashboard-section").style.display = "block";
+      document.getElementById("login-section").style.display = "none";
+      loadFeedback();
+    } else {
+      msg.textContent = "❌ Wrong password.";
+    }
+  }
+  document.getElementById('password').addEventListener('keyup', function(e){
+    if(e.key === "Enter") checkPassword();
+  });
+
+  // Dashboard-Logik
+  let feedbackData = [];
+  async function loadFeedback() {
+    try {
+      const res = await fetch("https://opensheet.elk.sh/1AdcOsjQqNRl8kxY1NZ1kzA9XHyMlhXJB-yoNEo6ikQE/Feedback");
+      feedbackData = await res.json();
+      renderTable(feedbackData);
+      renderChart(feedbackData);
+    } catch (e) {
+      showNoData(true);
+    }
+  }
+  function showNoData(isNoData){
+    document.getElementById('noDataCard').style.display = isNoData ? 'flex' : 'none';
+  }
+  function renderTable(data) {
+    const tbody = document.getElementById('feedbackTableBody');
+    showNoData(!data.length);
+    if (!data.length) {
+      tbody.innerHTML = '';
+      return;
+    }
+    tbody.innerHTML = '';
+    data.forEach(row => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${row['Date']||''}</td>
+        <td>${row['Name']||''}</td>
+        <td>${row['Feeling']||''}</td>
+        <td>${row['Performance']||''}</td>
+        <td>${row['EnergyLevel']||row['Energie-Level']||''}</td>
+        <td>${row['Intensity']||''}</td>
+        <td>${row['Comment']||''}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+  document.getElementById('filterForm') &&
+  (document.getElementById('filterForm').onsubmit = function(e){
+    e.preventDefault();
+    const dateVal = document.getElementById('date').value;
+    const playerVal = document.getElementById('player').value.trim().toLowerCase();
+    let filtered = feedbackData;
+    if(dateVal) filtered = filtered.filter(r=>r['Date'] && r['Date'].startsWith(dateVal.split('-').reverse().join('.')));
+    if(playerVal) filtered = filtered.filter(r=>(r['Name']||'').toLowerCase().includes(playerVal));
+    renderTable(filtered);
+    renderChart(filtered);
+  });
+
+  // Doppel-Diagramm (Performance und EnergieLevel)
+  let chart;
+  function renderChart(data) {
+    // Performance 1-10 (innen)
+    const perfCounts = Array(10).fill(0);
+    data.forEach(r => {
+      const val = parseInt(r['Performance']);
+      if(val >=1 && val <=10) perfCounts[val-1]++;
+    });
+    // EnergieLevel 1-10 (außen)
+    const energyCounts = Array(10).fill(0);
+    data.forEach(r => {
+      const val = parseInt(r['EnergyLevel'] || r['Energie-Level']); // alte+neue Schreibweise
+      if(val >=1 && val <=10) energyCounts[val-1]++;
+    });
+    const perfColors = [
+      '#ff4d4d', '#ff7840', '#ffa940', '#ffd600', '#ffe066',
+      '#5cb85c', '#27b276', '#249045', '#3580db', '#ffd700'
+    ];
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    if(chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: [
+          ...translations[currentLang].legendPerformance, // 1-10 Performance
+          ...translations[currentLang].legendEnergy      // 1-10 Energie
+        ],
+        datasets: [
+          { // innen: Leistung
+            label: 'Performance',
+            data: perfCounts,
+            backgroundColor: perfColors,
+            borderWidth: 2,
+            radius: '65%',
+            hoverOffset: 4
+          },
+          { // außen: Energie-Level
+            label: 'Energy Level',
+            data: energyCounts,
+            backgroundColor: [
+              '#dde0f0', '#b1c5e9', '#81b1e5', '#51a1e1', '#2492db',
+              '#27b276', '#5dc944', '#ffef67', '#ffd600', '#ffa940'
+            ],
+            borderWidth: 2,
+            radius: '90%',
+            cutout: '68%',
+            hoverOffset: 4
+          }
+        ]
+      },
+      options: {
+        cutout: '54%',
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+    renderLegend();
+  }
+
+  // Legende für das Doppel-Diagramm
+  function renderLegend() {
+    const legend = document.getElementById('chartLegend');
+    const perfColors = [
+      '#ff4d4d', '#ff7840', '#ffa940', '#ffd600', '#ffe066',
+      '#5cb85c', '#27b276', '#249045', '#3580db', '#ffd700'
+    ];
+    const energyColors = [
+      '#dde0f0', '#b1c5e9', '#81b1e5', '#51a1e1', '#2492db',
+      '#27b276', '#5dc944', '#ffef67', '#ffd600', '#ffa940'
+    ];
+    const t = translations[currentLang];
+    legend.innerHTML = '';
+
+    // Leistung Beschreibung
+    legend.innerHTML += `<div style="width:100%;font-weight:normal;margin-bottom:2px">${t.legendPerformanceDesc}</div>`;
+    // Leistung Titel
+    legend.innerHTML += `<div style="width:100%;font-weight:bold;margin-bottom:2px">${t.thPerformance}:</div>`;
+    for(let i=0;i<10;i++) {
+      legend.innerHTML += `<span><span class="dot" style="background:${perfColors[i]}"></span>${t.legendPerformance[i]}</span>`;
+    }
+    // Energie Beschreibung
+    legend.innerHTML += `<div style="width:100%;font-weight:normal;margin:8px 0 2px 0">${t.legendEnergyDesc}</div>`;
+    // Energie Titel
+    legend.innerHTML += `<div style="width:100%;font-weight:bold;margin-bottom:2px">${t.thEnergy}:</div>`;
+    for(let i=0;i<10;i++) {
+      legend.innerHTML += `<span><span class="dot" style="background:${energyColors[i]}"></span>${t.legendEnergy[i]}</span>`;
+    }
+  }
+  </script>
+</body>
+</html>
