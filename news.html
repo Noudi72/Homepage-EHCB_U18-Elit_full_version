@@ -270,12 +270,12 @@
             </form>
         </section>
         <section id="uploadArea" class="upload-section" style="display:none;">
-            <h3 id="uploadTitle" style="color:var(--ehcb-blue);margin-bottom:0.6rem;">PDF-Upload (nur für Admins)</h3>
-            <div id="uploadInstr" style="color:#333;margin-bottom:1.2rem;">Ziehe eine PDF-Datei hierher oder klicke zum Auswählen.</div>
+            <h3 id="uploadTitle" style="color:var(--ehcb-blue);margin-bottom:0.6rem;">PDF/Bild-Upload (nur für Admins)</h3>
+            <div id="uploadInstr" style="color:#333;margin-bottom:1.2rem;">Ziehe eine PDF- oder Bilddatei (PNG/JPEG) hierher oder klicke zum Auswählen.</div>
             <form class="upload-form" id="uploadForm" autocomplete="off" style="margin-bottom:0;">
-                <input type="file" id="pdfFile" accept="application/pdf" style="display:none;" required>
+                <input type="file" id="pdfFile" accept="application/pdf,image/png,image/jpeg" style="display:none;" required>
                 <div class="progress-bar"><div id="progressBarInner" class="progress-bar-inner"></div></div>
-                <button id="uploadBtn" type="button">PDF auswählen</button>
+                <button id="uploadBtn" type="button">Datei auswählen</button>
             </form>
             <!-- Schritt 2: Metadaten-Formular, erst nach PDF-Upload sichtbar -->
             <form class="upload-form" id="metaForm" autocomplete="off" style="display:none; margin-top:1.2rem;">
@@ -410,6 +410,7 @@ function handleLogout() {
 
     // --- File Upload/Meta/Drag&Drop
     let uploadedFileURL = null;
+    let uploadedFileType = null;
     function handleDragOver(e) {
         e.preventDefault(); e.stopPropagation();
         document.getElementById('uploadArea').classList.add('dragover');
@@ -422,18 +423,27 @@ function handleLogout() {
         e.preventDefault(); e.stopPropagation();
         document.getElementById('uploadArea').classList.remove('dragover');
         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-            handlePDFFileSelected(e.dataTransfer.files[0]);
+            handleFileSelected(e.dataTransfer.files[0]);
         }
     }
-    function handlePDFFileSelected(file) {
-        if (!file || file.type !== 'application/pdf') return alert('Bitte nur PDF-Dateien!');
+    function handleFileSelected(file) {
+        if (!file) return;
+        // Akzeptierte Typen
+        const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg'];
+        if (!allowedTypes.includes(file.type)) {
+            alert('Bitte nur PDF, PNG oder JPEG-Dateien!');
+            return;
+        }
         document.getElementById('uploadBtn').disabled = true;
         document.getElementById('uploadBtn').textContent = t('uploading');
         const bar = document.getElementById('progressBarInner');
         bar.style.width = "0%";
-        // Upload PDF
         const ts = Date.now();
-        const storageRef = storage.ref().child(`news-pdfs/${ts}_${file.name}`);
+        // Zielordner nach Typ
+        let folder = 'news-files';
+        if (file.type === 'application/pdf') folder = 'news-pdfs';
+        else if (file.type === 'image/png' || file.type === 'image/jpeg') folder = 'news-images';
+        const storageRef = storage.ref().child(`${folder}/${ts}_${file.name}`);
         const uploadTask = storageRef.put(file);
         uploadTask.on('state_changed', snapshot => {
             const percent = Math.round(snapshot.bytesTransferred / snapshot.totalBytes * 100);
@@ -445,6 +455,7 @@ function handleLogout() {
         }, () => {
             uploadTask.snapshot.ref.getDownloadURL().then(url => {
                 uploadedFileURL = url;
+                uploadedFileType = file.type;
                 document.getElementById('uploadBtn').disabled = false;
                 document.getElementById('uploadBtn').textContent = t('uploadSuccess');
                 // Zeige MetaForm
@@ -454,6 +465,7 @@ function handleLogout() {
     }
     function resetUploadStep() {
         uploadedFileURL = null;
+        uploadedFileType = null;
         document.getElementById('uploadForm').reset();
         document.getElementById('metaForm').reset();
         document.getElementById('metaForm').style.display = 'none';
@@ -462,8 +474,8 @@ function handleLogout() {
     }
     function handleMetaSave(e) {
         e.preventDefault();
-        if (!uploadedFileURL) {
-            alert('Bitte zuerst eine PDF hochladen!');
+        if (!uploadedFileURL || !uploadedFileType) {
+            alert('Bitte zuerst eine Datei hochladen!');
             return;
         }
         const title = document.getElementById('pdfTitle').value.trim();
@@ -478,6 +490,7 @@ function handleLogout() {
             title: title,
             comment: comment,
             url: uploadedFileURL,
+            fileType: uploadedFileType,
             timestamp: ts
         }).then(() => {
             resetUploadStep();
@@ -512,12 +525,36 @@ function handleLogout() {
             const comment = document.createElement('div');
             comment.className = 'comment';
             comment.textContent = item.comment;
-            // Vorschau-Button
-            const preview = document.createElement('a');
-            preview.className = 'preview-link';
-            preview.href = item.url;
-            preview.target = "_blank";
-            preview.textContent = '👁 Vorschau';
+            // Vorschau/Thumbnail/Download
+            let preview = null;
+            let thumbnail = null;
+            // Typ bestimmen: PDF, PNG, JPEG
+            let fileType = item.fileType;
+            // Backwards compatibility: fileType ggf. aus URL ableiten
+            if (!fileType && item.url) {
+                if (item.url.match(/\.pdf(\?|$)/i)) fileType = 'application/pdf';
+                else if (item.url.match(/\.png(\?|$)/i)) fileType = 'image/png';
+                else if (item.url.match(/\.jpe?g(\?|$)/i)) fileType = 'image/jpeg';
+            }
+            // PDF: Vorschau-Button
+            if (fileType === 'application/pdf') {
+                preview = document.createElement('a');
+                preview.className = 'preview-link';
+                preview.href = item.url;
+                preview.target = "_blank";
+                preview.textContent = '👁 Vorschau';
+            }
+            // Bild: Thumbnail als Vorschau
+            if (fileType === 'image/png' || fileType === 'image/jpeg') {
+                thumbnail = document.createElement('img');
+                thumbnail.src = item.url;
+                thumbnail.alt = 'Bildvorschau';
+                thumbnail.style.maxWidth = '64px';
+                thumbnail.style.maxHeight = '64px';
+                thumbnail.style.borderRadius = '6px';
+                thumbnail.style.display = 'block';
+                thumbnail.style.margin = '0.3rem 0 0.7rem 0';
+            }
             // Download-Button
             const link = document.createElement('a');
             link.className = 'download-link';
@@ -528,7 +565,8 @@ function handleLogout() {
             card.appendChild(title);
             card.appendChild(date);
             if (item.comment) card.appendChild(comment);
-            card.appendChild(preview);
+            if (thumbnail) card.appendChild(thumbnail);
+            if (preview) card.appendChild(preview);
             card.appendChild(link);
             // Delete nur für Admin
             if (isAdmin && item.id) {
@@ -585,7 +623,7 @@ function handleLogout() {
         });
         document.getElementById('pdfFile').addEventListener('change', (e) => {
             if (e.target.files && e.target.files.length > 0) {
-                handlePDFFileSelected(e.target.files[0]);
+                handleFileSelected(e.target.files[0]);
             }
         });
         document.getElementById('uploadBtn').onclick = () => {
@@ -596,10 +634,10 @@ function handleLogout() {
         listenToNews();
         // News immer laden, auch nach "Zurück"
         window.addEventListener('pageshow', function(event) {
-    if (event.persisted) {
-        window.location.reload();
-    }
-});
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
     });
 </script>
 </body>
