@@ -54,10 +54,19 @@
             font-weight: bold;
             text-decoration: none;
             border: none;
+            transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
-        .main-btn:hover {
+        .main-btn:hover,
+        .main-btn:focus-visible {
             background: #001a33;
             color: #ffd700;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+        }
+        .main-btn:active {
+            background: #001628;
+            color: #ffd700;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.20);
         }
         .container {
             max-width: 900px;
@@ -118,10 +127,17 @@
             text-decoration: none;
             font-weight: bold;
             text-align: center;
-            transition: background 0.2s;
+            transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
         }
-        .news-card .download-link:hover {
+        .news-card .download-link:hover,
+        .news-card .download-link:focus-visible {
             background: #ffe066;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+        }
+        .news-card .download-link:active {
+            background: #e6ba00;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.19);
         }
         .news-card .preview-link {
             background: #fff;
@@ -132,9 +148,17 @@
             font-weight: bold;
             text-align: center;
             text-decoration: none;
+            transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
         }
-        .news-card .preview-link:hover {
+        .news-card .preview-link:hover,
+        .news-card .preview-link:focus-visible {
             background: #e6f0fa;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+        .news-card .preview-link:active {
+            background: #c7e0fa;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.18);
         }
         .news-card .delete-btn {
             background: #ff6565;
@@ -146,9 +170,17 @@
             cursor: pointer;
             font-size: 1rem;
             margin-bottom: 0;
+            transition: background 0.15s, box-shadow 0.15s;
+            box-shadow: 0 1px 4px rgba(255,101,101,0.11);
         }
-        .news-card .delete-btn:hover {
+        .news-card .delete-btn:hover,
+        .news-card .delete-btn:focus-visible {
             background: #ff0000;
+            box-shadow: 0 2px 8px rgba(255,0,0,0.18);
+        }
+        .news-card .delete-btn:active {
+            background: #c40000;
+            box-shadow: 0 1px 6px rgba(255,0,0,0.24);
         }
         .upload-section {
             background: var(--ehcb-white);
@@ -180,6 +212,19 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 1rem;
+            transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .upload-form button:hover,
+        .upload-form button:focus-visible {
+            background: #001a33;
+            color: #ffd700;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+        }
+        .upload-form button:active {
+            background: #001628;
+            color: #ffd700;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.20);
         }
         .progress-bar {
             width: 90%;
@@ -230,6 +275,19 @@
             border-radius: 4px;
             font-weight: bold;
             cursor: pointer;
+            transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .logout-btn:hover,
+        .logout-btn:focus-visible {
+            background: #ffe066;
+            color: #001a33;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+        }
+        .logout-btn:active {
+            background: #e6ba00;
+            color: #001a33;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.20);
         }
         @media (max-width: 700px) {
             .news-list {
@@ -712,3 +770,21 @@ function handleLogout() {
 </script>
 </body>
 </html>
+        /* Touch support for all main buttons */
+        @media (hover: none) and (pointer: coarse) {
+            .main-btn:active,
+            .news-card .download-link:active,
+            .news-card .preview-link:active,
+            .news-card .delete-btn:active,
+            #uploadBtn:active,
+            #saveMetaBtn:active,
+            .logout-btn:active {
+                /* Already defined above for :active, but media query ensures for mobile */
+            }
+            .main-btn:active,
+            #uploadBtn:active,
+            #saveMetaBtn:active {
+                /* fallback for mobile tap highlight */
+                filter: brightness(0.92);
+            }
+        }
