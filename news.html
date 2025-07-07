@@ -1,774 +1,719 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EHCB U18 – News & Info</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="ehcb-icon.png">
-    <link rel="apple-touch-icon" href="ehcb-icon.png">
-    <!-- Firebase App (Compat Version) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
-    <style>
-        :root {
-            --ehcb-blue: #002d5b;
-            --ehcb-yellow: #ffc700;
-            --ehcb-white: #fff;
-            --ehcb-grey: #f5f5f5;
-        }
-        html, body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: var(--ehcb-grey);
-            color: var(--ehcb-blue);
-        }
-        header {
-            background: var(--ehcb-blue);
-            color: var(--ehcb-yellow);
-            padding: 2rem 1rem 1rem 1rem;
-            text-align: center;
-            position: relative;
-        }
-        .lang-switcher {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-        }
-        .lang-switcher button {
-            background: var(--ehcb-yellow);
-            color: var(--ehcb-blue);
-            border: none;
-            margin-left: 0.3rem;
-            padding: 0.3rem 0.7rem;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .main-btn {
-            background: #002d5b;
-            color: #ffc700;
-            padding: 0.7rem 1.8rem;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-decoration: none;
-            border: none;
-            transition: background 0.15s, color 0.15s, box-shadow 0.15s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        .main-btn:hover,
-        .main-btn:focus-visible {
-            background: #001a33;
-            color: #ffd700;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.14);
-        }
-        .main-btn:active {
-            background: #001628;
-            color: #ffd700;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.20);
-        }
-        .container {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 1rem;
-        }
-        .news-section {
-            margin-bottom: 2.5rem;
-        }
-        .news-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            justify-content: flex-start;
-        }
-        .news-card {
-            background: var(--ehcb-white);
-            border-left: 5px solid var(--ehcb-blue);
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            padding: 1.2rem 1rem 1rem 1.4rem;
-            min-width: 260px;
-            max-width: 320px;
-            flex: 1 1 270px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 270px;
-        }
-        .news-card .title {
-            color: var(--ehcb-blue);
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-        }
-        .news-card .date {
-            color: #555;
-            font-size: 0.9rem;
-            margin-bottom: 0.7rem;
-        }
-        .news-card .comment {
-            margin-bottom: 0.8rem;
-            color: #222;
-        }
-        .news-card .download-link, .news-card .preview-link, .news-card .delete-btn {
-            display: block;
-            width: 100%;
-            margin: 0.4rem 0;
-            font-size: 1.1rem;
-            box-sizing: border-box;
-        }
-        .news-card .download-link {
-            background: var(--ehcb-yellow);
-            color: var(--ehcb-blue);
-            padding: 0.45rem 1rem;
-            border: none;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: bold;
-            text-align: center;
-            transition: background 0.15s, color 0.15s, box-shadow 0.15s;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-        }
-        .news-card .download-link:hover,
-        .news-card .download-link:focus-visible {
-            background: #ffe066;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.13);
-        }
-        .news-card .download-link:active {
-            background: #e6ba00;
-            box-shadow: 0 1px 6px rgba(0,0,0,0.19);
-        }
-        .news-card .preview-link {
-            background: #fff;
-            color: #002d5b;
-            border: 2px solid #002d5b;
-            padding: 0.45rem 1rem;
-            border-radius: 4px;
-            font-weight: bold;
-            text-align: center;
-            text-decoration: none;
-            transition: background 0.15s, color 0.15s, box-shadow 0.15s;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-        }
-        .news-card .preview-link:hover,
-        .news-card .preview-link:focus-visible {
-            background: #e6f0fa;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-        }
-        .news-card .preview-link:active {
-            background: #c7e0fa;
-            box-shadow: 0 1px 6px rgba(0,0,0,0.18);
-        }
-        .news-card .delete-btn {
-            background: #ff6565;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            padding: 0.45rem 1rem;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-bottom: 0;
-            transition: background 0.15s, box-shadow 0.15s;
-            box-shadow: 0 1px 4px rgba(255,101,101,0.11);
-        }
-        .news-card .delete-btn:hover,
-        .news-card .delete-btn:focus-visible {
-            background: #ff0000;
-            box-shadow: 0 2px 8px rgba(255,0,0,0.18);
-        }
-        .news-card .delete-btn:active {
-            background: #c40000;
-            box-shadow: 0 1px 6px rgba(255,0,0,0.24);
-        }
-        .upload-section {
-            background: var(--ehcb-white);
-            border: 2px dashed var(--ehcb-blue);
-            border-radius: 8px;
-            padding: 2rem 1rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        .upload-section.dragover {
-            background: #e6f0fa;
-            border-color: var(--ehcb-yellow);
-        }
-        .upload-form input,
-        .upload-form textarea {
-            width: 90%;
-            margin-bottom: 1rem;
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        .upload-form button {
-            background: var(--ehcb-blue);
-            color: var(--ehcb-yellow);
-            border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background 0.15s, color 0.15s, box-shadow 0.15s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-        }
-        .upload-form button:hover,
-        .upload-form button:focus-visible {
-            background: #001a33;
-            color: #ffd700;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.13);
-        }
-        .upload-form button:active {
-            background: #001628;
-            color: #ffd700;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.20);
-        }
-        .progress-bar {
-            width: 90%;
-            height: 12px;
-            background: #eee;
-            border-radius: 6px;
-            margin: 0.7rem auto 1rem auto;
-            overflow: hidden;
-        }
-        .progress-bar-inner {
-            height: 100%;
-            background: var(--ehcb-yellow);
-            width: 0%;
-            transition: width 0.3s;
-        }
-        .admin-login-section {
-            background: var(--ehcb-white);
-            border: 1px solid var(--ehcb-blue);
-            border-radius: 8px;
-            padding: 1.5rem 1rem;
-            max-width: 350px;
-            margin: 2rem auto;
-            text-align: center;
-        }
-        .admin-login-section input {
-            width: 80%;
-            padding: 0.5rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        .admin-login-section button {
-            background: var(--ehcb-blue);
-            color: var(--ehcb-yellow);
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .logout-btn {
-            margin-top: 1.5rem;
-            background: var(--ehcb-yellow);
-            color: var(--ehcb-blue);
-            padding: 0.4rem 1.2rem;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.15s, color 0.15s, box-shadow 0.15s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-        }
-        .logout-btn:hover,
-        .logout-btn:focus-visible {
-            background: #ffe066;
-            color: #001a33;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.13);
-        }
-        .logout-btn:active {
-            background: #e6ba00;
-            color: #001a33;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.20);
-        }
-        @media (max-width: 700px) {
-            .news-list {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            .news-card {
-                min-width: 0;
-                max-width: 100%;
-            }
-            .container {
-                padding: 0.5rem;
-            }
-        }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EHCB U18 – News & Info</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="ehcb-icon.png">
+  <link rel="apple-touch-icon" href="ehcb-icon.png">
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+  <style>
+    :root {
+      --ehcb-blue: #002d5b;
+      --ehcb-yellow: #ffc700;
+      --ehcb-white: #fff;
+      --ehcb-grey: #f5f5f5;
+    }
+    html, body {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--ehcb-grey);
+      color: var(--ehcb-blue);
+      min-height: 100vh;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 20px;
+      margin-left: 20px;
+    }
+    .back-link, .main-btn {
+      display: inline-block;
+      font-size: 1.08rem;
+      color: var(--ehcb-yellow);
+      text-decoration: none;
+      font-weight: bold;
+      background: #002d5b;
+      padding: 8px 18px;
+      border-radius: 9px;
+      border: 2px solid #ffd600;
+      transition: background .18s, color .18s;
+      text-align: left;
+    }
+    .back-link:hover, .main-btn:hover {
+      background: #ffd600;
+      color: #002d5b;
+    }
+    header {
+      text-align: center;
+      background: var(--ehcb-blue);
+      color: var(--ehcb-yellow);
+      padding: 1.2rem 1rem 1rem 1rem;
+      margin-bottom: 0.8rem;
+    }
+    header img {
+      height: 64px;
+      margin-bottom: 10px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      letter-spacing: 1px;
+      font-family: 'Oswald', Arial, sans-serif;
+      color: var(--ehcb-yellow);
+      font-weight: bold;
+    }
+    .lang-switcher {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin: 18px 0 0 0;
+    }
+    .lang-switcher button {
+      background: var(--ehcb-yellow);
+      color: var(--ehcb-blue);
+      border: none;
+      padding: 0.35rem 0.95rem;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1.06rem;
+      transition: background 0.12s, color 0.12s;
+    }
+    .lang-switcher button.active {
+      background: #002d5b;
+      color: #ffc700;
+      box-shadow: 0 2px 8px #0001;
+    }
+    .container {
+      max-width: 900px;
+      margin: 2.1rem auto 1.2rem auto;
+      padding: 1rem;
+    }
+    .news-section {
+      margin-bottom: 2.5rem;
+    }
+    .news-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: flex-start;
+    }
+    .news-card {
+      background: var(--ehcb-white);
+      border-left: 5px solid var(--ehcb-blue);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      padding: 1.2rem 1rem 1rem 1.4rem;
+      min-width: 260px;
+      max-width: 320px;
+      flex: 1 1 270px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 270px;
+    }
+    .news-card .title {
+      color: var(--ehcb-blue);
+      font-weight: bold;
+      font-size: 1.11rem;
+      margin-bottom: 0.3rem;
+    }
+    .news-card .date {
+      color: #555;
+      font-size: 0.94rem;
+      margin-bottom: 0.7rem;
+    }
+    .news-card .comment {
+      margin-bottom: 0.8rem;
+      color: #222;
+    }
+    .news-card img {
+      display: block;
+      max-width: 100%;
+      max-height: 84px;
+      border-radius: 8px;
+      margin: 0.4rem 0 0.7rem 0;
+      object-fit: contain;
+    }
+    .news-card .download-link, .news-card .preview-link, .news-card .delete-btn {
+      display: block;
+      width: 100%;
+      margin: 0.37rem 0;
+      font-size: 1.09rem;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .news-card .download-link {
+      background: var(--ehcb-yellow);
+      color: var(--ehcb-blue);
+      padding: 0.45rem 1rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .news-card .download-link:hover { background: #ffe066; }
+    .news-card .preview-link {
+      background: #fff;
+      color: #002d5b;
+      border: 2px solid #002d5b;
+      padding: 0.45rem 1rem;
+      border-radius: 4px;
+      font-weight: bold;
+      text-decoration: none;
+      margin-bottom: 0.4rem;
+    }
+    .news-card .preview-link:hover { background: #e6f0fa; }
+    .news-card .delete-btn {
+      background: #ff6565;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      padding: 0.45rem 1rem;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-bottom: 0;
+      transition: background 0.15s;
+    }
+    .news-card .delete-btn:hover { background: #ff0000; }
+    .upload-section {
+      background: var(--ehcb-white);
+      border: 2px dashed var(--ehcb-blue);
+      border-radius: 8px;
+      padding: 2rem 1rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .upload-section.dragover {
+      background: #e6f0fa;
+      border-color: var(--ehcb-yellow);
+    }
+    .upload-form input,
+    .upload-form textarea {
+      width: 90%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .upload-form button {
+      background: var(--ehcb-blue);
+      color: var(--ehcb-yellow);
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.15s;
+    }
+    .upload-form button:hover { background: #001a33; color: #ffd700; }
+    .progress-bar {
+      width: 90%;
+      height: 12px;
+      background: #eee;
+      border-radius: 6px;
+      margin: 0.7rem auto 1rem auto;
+      overflow: hidden;
+    }
+    .progress-bar-inner {
+      height: 100%;
+      background: var(--ehcb-yellow);
+      width: 0%;
+      transition: width 0.3s;
+    }
+    .admin-login-section {
+      background: var(--ehcb-white);
+      border: 1px solid var(--ehcb-blue);
+      border-radius: 8px;
+      padding: 1.5rem 1rem;
+      max-width: 350px;
+      margin: 2rem auto;
+      text-align: center;
+    }
+    .admin-login-section input {
+      width: 80%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .admin-login-section button {
+      background: var(--ehcb-blue);
+      color: var(--ehcb-yellow);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .logout-btn {
+      margin-top: 1.5rem;
+      background: var(--ehcb-yellow);
+      color: var(--ehcb-blue);
+      padding: 0.4rem 1.2rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .logout-btn:hover { background: #ffe066; color: #001a33;}
+    @media (max-width: 700px) {
+      .news-list {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .news-card {
+        min-width: 0;
+        max-width: 100%;
+      }
+      .container { padding: 0.5rem; }
+      .top-bar { margin-top:10px; margin-left:8px;}
+    }
+  </style>
 </head>
-    <header>
-        <h1 id="headline" style="margin:0; font-size:2.3rem; letter-spacing:1px; font-family:'Oswald',Arial,sans-serif;">News & Info</h1>
-        <div class="lang-switcher">
-            <button id="langDE">DE</button>
-            <button id="langFR">FR</button>
-            <button id="langEN">EN</button>
-        </div>
-    </header>
-    <div class="container">
-        <a href="index.html" class="main-btn" style="margin-bottom:1.8rem;display:inline-block;">← Zurück</a>
-        <section class="news-section">
-            <h2 id="allNewsLabel" style="color:var(--ehcb-blue);margin-bottom:1.2rem;">Alle Trainings-PDFs</h2>
-            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.8rem 1.2rem;margin-bottom:1.2rem;">
-                <input
-                    id="newsSearchInput"
-                    type="text"
-                    placeholder="Suche nach Titel oder Kommentar..."
-                    style="flex:1 1 220px;min-width:150px;max-width:350px;padding:0.4rem 0.8rem;border:1px solid #bbb;border-radius:4px;font-size:1rem;"
-                    autocomplete="off"
-                >
-                <select
-                    id="newsSortSelect"
-                    style="flex:0 0 170px;min-width:140px;padding:0.4rem 0.8rem;border:1px solid #bbb;border-radius:4px;font-size:1rem;"
-                >
-                    <option value="newest">Neuestes zuerst</option>
-                    <option value="oldest">Ältestes zuerst</option>
-                    <option value="title">Titel A–Z</option>
-                </select>
-            </div>
-            <div class="news-list" id="newsList"></div>
-        </section>
-        <section id="adminLoginSection" class="admin-login-section">
-            <h3 id="loginHeadline">Admin-Login</h3>
-            <form id="adminLoginForm">
-                <label id="passwordLabel" for="adminPassword">Passwort</label><br>
-                <input type="password" id="adminPassword" autocomplete="current-password" required><br>
-                <button id="loginBtn" type="submit">Login</button>
-            </form>
-        </section>
-        <section id="uploadArea" class="upload-section" style="display:none;">
-            <h3 id="uploadTitle" style="color:var(--ehcb-blue);margin-bottom:0.6rem;">PDF/Bild-Upload (nur für Admins)</h3>
-            <div id="uploadInstr" style="color:#333;margin-bottom:1.2rem;">Ziehe eine PDF- oder Bilddatei (PNG/JPEG) hierher oder klicke zum Auswählen.</div>
-            <form class="upload-form" id="uploadForm" autocomplete="off" style="margin-bottom:0;">
-                <input type="file" id="pdfFile" accept="application/pdf,image/png,image/jpeg" style="display:none;" required>
-                <div class="progress-bar"><div id="progressBarInner" class="progress-bar-inner"></div></div>
-                <button id="uploadBtn" type="button">Datei auswählen</button>
-            </form>
-            <!-- Schritt 2: Metadaten-Formular, erst nach PDF-Upload sichtbar -->
-            <form class="upload-form" id="metaForm" autocomplete="off" style="display:none; margin-top:1.2rem;">
-                <label id="pdfTitleLabel" for="pdfTitle" style="float:left;">Titel</label><br>
-                <input type="text" id="pdfTitle" maxlength="60"><br>
-                <label id="pdfCommentLabel" for="pdfComment" style="float:left;">Kommentar</label><br>
-                <textarea id="pdfComment" rows="2" maxlength="180"></textarea><br>
-                <button id="saveMetaBtn" type="submit">Speichern</button>
-            </form>
-        </section>
-        <button id="logoutBtn" class="logout-btn" style="display:none;">Logout</button>
+<body>
+  <div class="top-bar">
+    <a href="index.html" class="back-link">← Zurück</a>
+  </div>
+  <header>
+    <img src="ehcb-icon.png" alt="Logo"/>
+    <h1 id="headline">News & Info</h1>
+    <div class="lang-switcher">
+      <button id="langDE">DE</button>
+      <button id="langFR">FR</button>
+      <button id="langEN">EN</button>
     </div>
+  </header>
+  <div class="container">
+    <section class="news-section">
+      <h2 id="allNewsLabel" style="color:var(--ehcb-blue);margin-bottom:1.2rem;">Alle Trainings-PDFs</h2>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.8rem 1.2rem;margin-bottom:1.2rem;">
+        <input id="newsSearchInput" type="text" placeholder="Suche nach Titel oder Kommentar..." style="flex:1 1 220px;min-width:150px;max-width:350px;padding:0.4rem 0.8rem;border:1px solid #bbb;border-radius:4px;font-size:1rem;" autocomplete="off">
+        <select id="newsSortSelect" style="flex:0 0 170px;min-width:140px;padding:0.4rem 0.8rem;border:1px solid #bbb;border-radius:4px;font-size:1rem;">
+          <option value="newest">Neuestes zuerst</option>
+          <option value="oldest">Ältestes zuerst</option>
+          <option value="title">Titel A–Z</option>
+        </select>
+      </div>
+      <div class="news-list" id="newsList"></div>
+    </section>
+    <section id="adminLoginSection" class="admin-login-section">
+      <h3 id="loginHeadline">Admin-Login</h3>
+      <form id="adminLoginForm">
+        <label id="passwordLabel" for="adminPassword">Passwort</label><br>
+        <input type="password" id="adminPassword" autocomplete="current-password" required><br>
+        <button id="loginBtn" type="submit">Login</button>
+      </form>
+    </section>
+    <section id="uploadArea" class="upload-section" style="display:none;">
+      <h3 id="uploadTitle" style="color:var(--ehcb-blue);margin-bottom:0.6rem;">PDF/Bild-Upload (nur für Admins)</h3>
+      <div id="uploadInstr" style="color:#333;margin-bottom:1.2rem;">Ziehe eine PDF- oder Bilddatei (PNG/JPEG) hierher oder klicke zum Auswählen.</div>
+      <form class="upload-form" id="uploadForm" autocomplete="off" style="margin-bottom:0;">
+        <input type="file" id="pdfFile" accept="application/pdf,image/png,image/jpeg" style="display:none;" required>
+        <div class="progress-bar"><div id="progressBarInner" class="progress-bar-inner"></div></div>
+        <button id="uploadBtn" type="button">Datei auswählen</button>
+      </form>
+      <!-- Schritt 2: Metadaten-Formular, erst nach Datei-Upload sichtbar -->
+      <form class="upload-form" id="metaForm" autocomplete="off" style="display:none; margin-top:1.2rem;">
+        <label id="pdfTitleLabel" for="pdfTitle" style="float:left;">Titel</label><br>
+        <input type="text" id="pdfTitle" maxlength="60"><br>
+        <label id="pdfCommentLabel" for="pdfComment" style="float:left;">Kommentar</label><br>
+        <textarea id="pdfComment" rows="2" maxlength="180"></textarea><br>
+        <button id="saveMetaBtn" type="submit">Speichern</button>
+      </form>
+    </section>
+    <button id="logoutBtn" class="logout-btn" style="display:none;">Logout</button>
+  </div>
 <script>
-    // Firebase INIT
-    const firebaseConfig = {
-  apiKey: "AIzaSyCCvHZN1q72UQLqrkgWb-L5X6A4WesHqRw",
-  authDomain: "ehcb-news.firebaseapp.com",
-  projectId: "ehcb-news",
-  storageBucket: "ehcb-news.firebasestorage.app",
-  messagingSenderId: "250325515447",
-  appId: "1:250325515447:web:81f10ce4ac286d10b92132"
-};
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const storage = firebase.storage();
+  // --- FIREBASE INIT ---
+  const firebaseConfig = {
+    apiKey: "AIzaSyCCvHZN1q72UQLqrkgWb-L5X6A4WesHqRw",
+    authDomain: "ehcb-news.firebaseapp.com",
+    projectId: "ehcb-news",
+    storageBucket: "ehcb-news.firebasestorage.app",
+    messagingSenderId: "250325515447",
+    appId: "1:250325515447:web:81f10ce4ac286d10b92132"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const storage = firebase.storage();
 
-    // --- Sprachumschaltung ---
-    const translations = {
-        de: {
-            headline: "News & Info",
-            uploadTitle: "PDF/Bild-Upload (nur für Admins)",
-            uploadInstr: "Ziehe eine PDF- oder Bilddatei (PNG/JPEG) hierher oder klicke zum Auswählen.",
-            pdfTitle: "Titel",
-            pdfComment: "Kommentar",
-            uploadBtn: "Datei auswählen",
-            uploading: "Wird hochgeladen...",
-            loginHeadline: "Admin-Login",
-            password: "Passwort",
-            loginBtn: "Login",
-            logoutBtn: "Logout",
-            uploadSuccess: "Upload erfolgreich!",
-            uploadError: "Fehler beim Upload.",
-            allNews: "Alle Trainings-PDFs",
-            download: "Download",
-            date: "Upload-Datum",
-            noNews: "Noch keine News/Infos vorhanden.",
-        },
-        fr: {
-            headline: "News & Infos",
-            uploadTitle: "Téléchargement PDF (admins seulement)",
-            uploadInstr: "Glissez un fichier PDF ici ou cliquez pour choisir.",
-            pdfTitle: "Titre",
-            pdfComment: "Commentaire",
-            uploadBtn: "Télécharger",
-            uploading: "Téléchargement...",
-            loginHeadline: "Connexion admin",
-            password: "Mot de passe",
-            loginBtn: "Connexion",
-            logoutBtn: "Déconnexion",
-            uploadSuccess: "Téléchargement réussi !",
-            uploadError: "Erreur lors du téléchargement.",
-            allNews: "Tous les PDFs d'entraînement",
-            download: "Télécharger",
-            date: "Date de téléchargement",
-            noNews: "Aucune news/info disponible.",
-        },
-        en: {
-            headline: "News & Info",
-            uploadTitle: "PDF Upload (Admins only)",
-            uploadInstr: "Drag a PDF file here or click to select.",
-            pdfTitle: "Title",
-            pdfComment: "Comment",
-            uploadBtn: "Upload",
-            uploading: "Uploading...",
-            loginHeadline: "Admin Login",
-            password: "Password",
-            loginBtn: "Login",
-            logoutBtn: "Logout",
-            uploadSuccess: "Upload successful!",
-            uploadError: "Upload failed.",
-            allNews: "All Training PDFs",
-            download: "Download",
-            date: "Upload date",
-            noNews: "No news/info available yet.",
-        }
-    };
-    let currentLang = 'de';
-    function setLang(lang) {
-        currentLang = lang;
-        document.documentElement.lang = lang;
-        document.getElementById('headline').textContent = translations[lang].headline;
-        document.getElementById('allNewsLabel').textContent = translations[lang].allNews;
-        document.getElementById('uploadTitle').textContent = translations[lang].uploadTitle;
-        document.getElementById('uploadInstr').textContent = translations[lang].uploadInstr;
-        document.getElementById('pdfTitleLabel').textContent = translations[lang].pdfTitle;
-        document.getElementById('pdfCommentLabel').textContent = translations[lang].pdfComment;
-        document.getElementById('uploadBtn').textContent = translations[lang].uploadBtn;
-        document.getElementById('loginHeadline').textContent = translations[lang].loginHeadline;
-        document.getElementById('passwordLabel').textContent = translations[lang].password;
-        document.getElementById('loginBtn').textContent = translations[lang].loginBtn;
-        document.getElementById('logoutBtn').textContent = translations[lang].logoutBtn;
-        renderNewsList(window._newsList || []);
+  // --- Sprachumschaltung ---
+  const translations = {
+    de: {
+      headline: "News & Info",
+      uploadTitle: "PDF/Bild-Upload (nur für Admins)",
+      uploadInstr: "Ziehe eine PDF- oder Bilddatei (PNG/JPEG) hierher oder klicke zum Auswählen.",
+      pdfTitle: "Titel",
+      pdfComment: "Kommentar",
+      uploadBtn: "Datei auswählen",
+      uploading: "Wird hochgeladen...",
+      loginHeadline: "Admin-Login",
+      password: "Passwort",
+      loginBtn: "Login",
+      logoutBtn: "Logout",
+      uploadSuccess: "Upload erfolgreich!",
+      uploadError: "Fehler beim Upload.",
+      allNews: "Alle Trainings-PDFs",
+      download: "Download",
+      date: "Upload-Datum",
+      noNews: "Noch keine News/Infos vorhanden.",
+    },
+    fr: {
+      headline: "News & Infos",
+      uploadTitle: "Téléchargement PDF/Image (admins seulement)",
+      uploadInstr: "Glissez un fichier PDF ou une image ici ou cliquez pour choisir.",
+      pdfTitle: "Titre",
+      pdfComment: "Commentaire",
+      uploadBtn: "Télécharger",
+      uploading: "Téléchargement...",
+      loginHeadline: "Connexion admin",
+      password: "Mot de passe",
+      loginBtn: "Connexion",
+      logoutBtn: "Déconnexion",
+      uploadSuccess: "Téléchargement réussi !",
+      uploadError: "Erreur lors du téléchargement.",
+      allNews: "Tous les fichiers d'entraînement",
+      download: "Télécharger",
+      date: "Date de téléchargement",
+      noNews: "Aucune news/info disponible.",
+    },
+    en: {
+      headline: "News & Info",
+      uploadTitle: "PDF/Image Upload (Admins only)",
+      uploadInstr: "Drag a PDF or image file here or click to select.",
+      pdfTitle: "Title",
+      pdfComment: "Comment",
+      uploadBtn: "Select file",
+      uploading: "Uploading...",
+      loginHeadline: "Admin Login",
+      password: "Password",
+      loginBtn: "Login",
+      logoutBtn: "Logout",
+      uploadSuccess: "Upload successful!",
+      uploadError: "Upload failed.",
+      allNews: "All Training Files",
+      download: "Download",
+      date: "Upload date",
+      noNews: "No news/info available yet.",
     }
-    function t(key) {
-        return translations[currentLang][key] || key;
-    }
+  };
+  let currentLang = localStorage.getItem('news_lang') || 'de';
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('news_lang', lang);
+    document.documentElement.lang = lang;
+    document.getElementById('headline').textContent = translations[lang].headline;
+    document.getElementById('allNewsLabel').textContent = translations[lang].allNews;
+    document.getElementById('uploadTitle').textContent = translations[lang].uploadTitle;
+    document.getElementById('uploadInstr').textContent = translations[lang].uploadInstr;
+    document.getElementById('pdfTitleLabel').textContent = translations[lang].pdfTitle;
+    document.getElementById('pdfCommentLabel').textContent = translations[lang].pdfComment;
+    document.getElementById('uploadBtn').textContent = translations[lang].uploadBtn;
+    document.getElementById('loginHeadline').textContent = translations[lang].loginHeadline;
+    document.getElementById('passwordLabel').textContent = translations[lang].password;
+    document.getElementById('loginBtn').textContent = translations[lang].loginBtn;
+    document.getElementById('logoutBtn').textContent = translations[lang].logoutBtn;
+    renderNewsList(window._newsList || []);
+  }
+  function t(key) {
+    return translations[currentLang][key] || key;
+  }
 
-    // --- Admin Login
-    let isAdmin = false;
-    function showAdminUI(show) {
-        document.getElementById('uploadArea').style.display = show ? '' : 'none';
-        document.getElementById('logoutBtn').style.display = show ? '' : 'none';
-        document.getElementById('adminLoginSection').style.display = show ? 'none' : '';
-        renderNewsList(window._newsList || []);
-    }
-    function handleLogin(e) {
+  // --- Admin Login
+  let isAdmin = false;
+  function showAdminUI(show) {
+    document.getElementById('uploadArea').style.display = show ? '' : 'none';
+    document.getElementById('logoutBtn').style.display = show ? '' : 'none';
+    document.getElementById('adminLoginSection').style.display = show ? 'none' : '';
+    renderNewsList(window._newsList || []);
+  }
+  function handleLogin(e) {
     e.preventDefault();
     const pw = document.getElementById('adminPassword').value;
     if (pw === "Coach7274") {
-        isAdmin = true;
-        showAdminUI(true);
-        listenToNews();   // ← News-Listener nach Login immer neu aktivieren
+      isAdmin = true;
+      showAdminUI(true);
+      listenToNews();
     } else {
-        alert("Falsches Passwort / Wrong password / Mauvais mot de passe");
+      alert("Falsches Passwort / Wrong password / Mauvais mot de passe");
     }
-}
-function handleLogout() {
+  }
+  function handleLogout() {
     isAdmin = false;
     showAdminUI(false);
-    listenToNews();     // ← News-Listener nach Logout immer neu aktivieren
-}
+    listenToNews();
+  }
 
-    // --- File Upload/Meta/Drag&Drop
-    let uploadedFileURL = null;
-    let uploadedFileType = null;
-    function handleDragOver(e) {
-        e.preventDefault(); e.stopPropagation();
-        document.getElementById('uploadArea').classList.add('dragover');
+  // --- File Upload/Meta/Drag&Drop
+  let uploadedFileURL = null;
+  let uploadedFileType = null;
+  function handleDragOver(e) {
+    e.preventDefault(); e.stopPropagation();
+    document.getElementById('uploadArea').classList.add('dragover');
+  }
+  function handleDragLeave(e) {
+    e.preventDefault(); e.stopPropagation();
+    document.getElementById('uploadArea').classList.remove('dragover');
+  }
+  function handleFileDrop(e) {
+    e.preventDefault(); e.stopPropagation();
+    document.getElementById('uploadArea').classList.remove('dragover');
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleFileSelected(e.dataTransfer.files[0]);
     }
-    function handleDragLeave(e) {
-        e.preventDefault(); e.stopPropagation();
-        document.getElementById('uploadArea').classList.remove('dragover');
+  }
+  function handleFileSelected(file) {
+    if (!file) return;
+    const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Bitte nur PDF, PNG oder JPEG-Dateien!');
+      return;
     }
-    function handleFileDrop(e) {
-        e.preventDefault(); e.stopPropagation();
-        document.getElementById('uploadArea').classList.remove('dragover');
-        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-            handleFileSelected(e.dataTransfer.files[0]);
-        }
-    }
-    function handleFileSelected(file) {
-        if (!file) return;
-        // Akzeptierte Typen
-        const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg'];
-        if (!allowedTypes.includes(file.type)) {
-            alert('Bitte nur PDF, PNG oder JPEG-Dateien!');
-            return;
-        }
-        document.getElementById('uploadBtn').disabled = true;
-        document.getElementById('uploadBtn').textContent = t('uploading');
-        const bar = document.getElementById('progressBarInner');
-        bar.style.width = "0%";
-        const ts = Date.now();
-        // Zielordner nach Typ
-        let folder = 'news-files';
-        if (file.type === 'application/pdf') folder = 'news-pdfs';
-        else if (file.type === 'image/png' || file.type === 'image/jpeg') folder = 'news-images';
-        const storageRef = storage.ref().child(`${folder}/${ts}_${file.name}`);
-        const uploadTask = storageRef.put(file);
-        uploadTask.on('state_changed', snapshot => {
-            const percent = Math.round(snapshot.bytesTransferred / snapshot.totalBytes * 100);
-            bar.style.width = percent + "%";
-        }, err => {
-            alert(t('uploadError'));
-            document.getElementById('uploadBtn').disabled = false;
-            document.getElementById('uploadBtn').textContent = t('uploadBtn');
-        }, () => {
-            uploadTask.snapshot.ref.getDownloadURL().then(url => {
-                uploadedFileURL = url;
-                uploadedFileType = file.type;
-                document.getElementById('uploadBtn').disabled = false;
-                document.getElementById('uploadBtn').textContent = t('uploadSuccess');
-                // Zeige MetaForm
-                document.getElementById('metaForm').style.display = '';
-            });
-        });
-    }
-    function resetUploadStep() {
-        uploadedFileURL = null;
-        uploadedFileType = null;
-        document.getElementById('uploadForm').reset();
-        document.getElementById('metaForm').reset();
-        document.getElementById('metaForm').style.display = 'none';
-        document.getElementById('uploadBtn').textContent = t('uploadBtn');
-        document.getElementById('progressBarInner').style.width = "0%";
-    }
-    function handleMetaSave(e) {
-        e.preventDefault();
-        if (!uploadedFileURL || !uploadedFileType) {
-            alert('Bitte zuerst eine Datei hochladen!');
-            return;
-        }
-        const title = document.getElementById('pdfTitle').value.trim();
-        const comment = document.getElementById('pdfComment').value.trim();
-        if (!title) {
-            alert('Bitte Titel angeben!');
-            return;
-        }
-        const ts = Date.now();
-        document.getElementById('saveMetaBtn').disabled = true;
-        db.collection('news').add({
-            title: title,
-            comment: comment,
-            url: uploadedFileURL,
-            fileType: uploadedFileType,
-            timestamp: ts
-        }).then(() => {
-            resetUploadStep();
-            document.getElementById('saveMetaBtn').disabled = false;
-        }).catch(() => {
-            alert(t('uploadError'));
-            document.getElementById('saveMetaBtn').disabled = false;
-        });
-    }
-
-    // --- News List Rendering ---
-    // --- Filter/Sort State ---
-    let newsFilterText = "";
-    let newsSortMode = "newest";
-
-    function renderNewsList(newsList) {
-        window._newsList = newsList; // für Sprachumschaltung und Back
-        // Filterung
-        let filtered = newsList;
-        if (newsFilterText && newsFilterText.trim().length > 0) {
-            const search = newsFilterText.trim().toLowerCase();
-            filtered = filtered.filter(item =>
-                (item.title && item.title.toLowerCase().includes(search)) ||
-                (item.comment && item.comment.toLowerCase().includes(search))
-            );
-        }
-        // Sortierung
-        let sorted = filtered.slice();
-        if (newsSortMode === "newest") {
-            sorted.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-        } else if (newsSortMode === "oldest") {
-            sorted.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-        } else if (newsSortMode === "title") {
-            sorted.sort((a, b) =>
-                (a.title || "").localeCompare(b.title || "", currentLang, { sensitivity: "base" })
-            );
-        }
-        const listDiv = document.getElementById('newsList');
-        listDiv.innerHTML = "";
-        if (!sorted.length) {
-            const p = document.createElement('p');
-            p.textContent = t('noNews');
-            listDiv.appendChild(p);
-            return;
-        }
-        sorted.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'news-card';
-            const title = document.createElement('div');
-            title.className = 'title';
-            title.textContent = item.title;
-            const date = document.createElement('div');
-            date.className = 'date';
-            const d = new Date(item.timestamp);
-            date.textContent = t('date') + ": " + d.toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' });
-            const comment = document.createElement('div');
-            comment.className = 'comment';
-            comment.textContent = item.comment;
-            // Vorschau/Thumbnail/Download
-            let preview = null;
-            let thumbnail = null;
-            // Typ bestimmen: PDF, PNG, JPEG
-            let fileType = item.fileType;
-            // Backwards compatibility: fileType ggf. aus URL ableiten
-            if (!fileType && item.url) {
-                if (item.url.match(/\.pdf(\?|$)/i)) fileType = 'application/pdf';
-                else if (item.url.match(/\.png(\?|$)/i)) fileType = 'image/png';
-                else if (item.url.match(/\.jpe?g(\?|$)/i)) fileType = 'image/jpeg';
-            }
-            // PDF: Vorschau-Button
-            if (fileType === 'application/pdf') {
-                preview = document.createElement('a');
-                preview.className = 'preview-link';
-                preview.href = item.url;
-                preview.target = "_blank";
-                preview.textContent = '👁 Vorschau';
-            }
-            // Bild: Thumbnail als Vorschau
-            if (fileType === 'image/png' || fileType === 'image/jpeg') {
-                thumbnail = document.createElement('img');
-                thumbnail.src = item.url;
-                thumbnail.alt = 'Bildvorschau';
-                thumbnail.style.maxWidth = '64px';
-                thumbnail.style.maxHeight = '64px';
-                thumbnail.style.borderRadius = '6px';
-                thumbnail.style.display = 'block';
-                thumbnail.style.margin = '0.3rem 0 0.7rem 0';
-            }
-            // Download-Button
-            const link = document.createElement('a');
-            link.className = 'download-link';
-            link.href = item.url;
-            link.target = "_blank";
-            link.download = "";
-            link.textContent = t('download');
-            card.appendChild(title);
-            card.appendChild(date);
-            if (item.comment) card.appendChild(comment);
-            if (thumbnail) card.appendChild(thumbnail);
-            if (preview) card.appendChild(preview);
-            card.appendChild(link);
-            // Delete nur für Admin
-            if (isAdmin && item.id) {
-                const delBtn = document.createElement('button');
-                delBtn.textContent = "🗑 Löschen";
-                delBtn.className = 'delete-btn';
-                delBtn.onclick = () => {
-                    if (confirm('Wirklich löschen?')) {
-                        storage.refFromURL(item.url).delete().catch(()=>{});
-                        db.collection('news').doc(item.id).delete();
-                    }
-                };
-                card.appendChild(delBtn);
-            }
-            listDiv.appendChild(card);
-        });
-    }
-    // --- Firestore News Listener ---
-    let newsUnsubscribe = null;
-    function listenToNews() {
-        if (typeof newsUnsubscribe === "function") {
-            newsUnsubscribe();
-        }
-        newsUnsubscribe = db.collection('news').orderBy('timestamp', 'desc')
-            .onSnapshot((snapshot) => {
-                const newsList = [];
-                snapshot.forEach(doc => {
-                    newsList.push({ ...doc.data(), id: doc.id });
-                });
-                renderNewsList(newsList);
-            });
-    }
-
-    // --- Init ---
-    window.addEventListener('DOMContentLoaded', () => {
-        // Language switcher
-        document.getElementById('langDE').onclick = () => setLang('de');
-        document.getElementById('langFR').onclick = () => setLang('fr');
-        document.getElementById('langEN').onclick = () => setLang('en');
-        setLang('de');
-        // Login
-        document.getElementById('adminLoginForm').onsubmit = handleLogin;
-        document.getElementById('logoutBtn').onclick = handleLogout;
-        showAdminUI(false);
-        // Upload events (2-Schritt)
-        const uploadArea = document.getElementById('uploadArea');
-        uploadArea.addEventListener('dragover', handleDragOver);
-        uploadArea.addEventListener('dragleave', handleDragLeave);
-        uploadArea.addEventListener('drop', handleFileDrop);
-        uploadArea.addEventListener('click', (e) => {
-            // Klicke nicht, wenn auf MetaForm geklickt wird
-            if (e.target.closest('#metaForm')) return;
-            // Klicke nicht, wenn auf den Upload-Button geklickt wird (der handled separat)
-            if (e.target.closest('#uploadBtn')) return;
-            document.getElementById('pdfFile').click();
-        });
-        document.getElementById('pdfFile').addEventListener('change', (e) => {
-            if (e.target.files && e.target.files.length > 0) {
-                handleFileSelected(e.target.files[0]);
-            }
-        });
-        document.getElementById('uploadBtn').onclick = (e) => {
-            e.stopPropagation();
-            document.getElementById('pdfFile').click();
-        };
-        document.getElementById('metaForm').onsubmit = handleMetaSave;
-        resetUploadStep();
-        // Filter-/Sortier-Einstellungen initialisieren
-        const searchInput = document.getElementById('newsSearchInput');
-        const sortSelect = document.getElementById('newsSortSelect');
-        // Wiederherstellen falls vorher gesetzt
-        if (window.localStorage) {
-            const savedFilter = localStorage.getItem('newsFilterText');
-            const savedSort = localStorage.getItem('newsSortMode');
-            if (typeof savedFilter === "string") {
-                newsFilterText = savedFilter;
-                searchInput.value = savedFilter;
-            }
-            if (typeof savedSort === "string" && ["newest", "oldest", "title"].includes(savedSort)) {
-                newsSortMode = savedSort;
-                sortSelect.value = savedSort;
-            }
-        }
-        searchInput.addEventListener('input', function() {
-            newsFilterText = this.value;
-            if (window.localStorage) localStorage.setItem('newsFilterText', newsFilterText);
-            renderNewsList(window._newsList || []);
-        });
-        sortSelect.addEventListener('change', function() {
-            newsSortMode = this.value;
-            if (window.localStorage) localStorage.setItem('newsSortMode', newsSortMode);
-            renderNewsList(window._newsList || []);
-        });
-        listenToNews();
-        // News immer laden, auch nach "Zurück"
-        window.addEventListener('pageshow', function(event) {
-            if (event.persisted) {
-                window.location.reload();
-            }
-        });
+    document.getElementById('uploadBtn').disabled = true;
+    document.getElementById('uploadBtn').textContent = t('uploading');
+    const bar = document.getElementById('progressBarInner');
+    bar.style.width = "0%";
+    const ts = Date.now();
+    let folder = 'news-files';
+    if (file.type === 'application/pdf') folder = 'news-pdfs';
+    else if (file.type === 'image/png' || file.type === 'image/jpeg') folder = 'news-images';
+    const storageRef = storage.ref().child(`${folder}/${ts}_${file.name}`);
+    const uploadTask = storageRef.put(file);
+    uploadTask.on('state_changed', snapshot => {
+      const percent = Math.round(snapshot.bytesTransferred / snapshot.totalBytes * 100);
+      bar.style.width = percent + "%";
+    }, err => {
+      alert(t('uploadError'));
+      document.getElementById('uploadBtn').disabled = false;
+      document.getElementById('uploadBtn').textContent = t('uploadBtn');
+    }, () => {
+      uploadTask.snapshot.ref.getDownloadURL().then(url => {
+        uploadedFileURL = url;
+        uploadedFileType = file.type;
+        document.getElementById('uploadBtn').disabled = false;
+        document.getElementById('uploadBtn').textContent = t('uploadSuccess');
+        document.getElementById('metaForm').style.display = '';
+      });
     });
+  }
+  function resetUploadStep() {
+    uploadedFileURL = null;
+    uploadedFileType = null;
+    document.getElementById('uploadForm').reset();
+    document.getElementById('metaForm').reset();
+    document.getElementById('metaForm').style.display = 'none';
+    document.getElementById('uploadBtn').textContent = t('uploadBtn');
+    document.getElementById('progressBarInner').style.width = "0%";
+  }
+  function handleMetaSave(e) {
+    e.preventDefault();
+    if (!uploadedFileURL || !uploadedFileType) {
+      alert('Bitte zuerst eine Datei hochladen!');
+      return;
+    }
+    const title = document.getElementById('pdfTitle').value.trim();
+    const comment = document.getElementById('pdfComment').value.trim();
+    if (!title) {
+      alert('Bitte Titel angeben!');
+      return;
+    }
+    const ts = Date.now();
+    document.getElementById('saveMetaBtn').disabled = true;
+    db.collection('news').add({
+      title: title,
+      comment: comment,
+      url: uploadedFileURL,
+      fileType: uploadedFileType,
+      timestamp: ts
+    }).then(() => {
+      resetUploadStep();
+      document.getElementById('saveMetaBtn').disabled = false;
+    }).catch(() => {
+      alert(t('uploadError'));
+      document.getElementById('saveMetaBtn').disabled = false;
+    });
+  }
+
+  // --- News List Rendering ---
+  let newsFilterText = "";
+  let newsSortMode = "newest";
+  function renderNewsList(newsList) {
+    window._newsList = newsList;
+    let filtered = newsList;
+    if (newsFilterText && newsFilterText.trim().length > 0) {
+      const search = newsFilterText.trim().toLowerCase();
+      filtered = filtered.filter(item =>
+        (item.title && item.title.toLowerCase().includes(search)) ||
+        (item.comment && item.comment.toLowerCase().includes(search))
+      );
+    }
+    let sorted = filtered.slice();
+    if (newsSortMode === "newest") {
+      sorted.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    } else if (newsSortMode === "oldest") {
+      sorted.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+    } else if (newsSortMode === "title") {
+      sorted.sort((a, b) =>
+        (a.title || "").localeCompare(b.title || "", currentLang, { sensitivity: "base" })
+      );
+    }
+    const listDiv = document.getElementById('newsList');
+    listDiv.innerHTML = "";
+    if (!sorted.length) {
+      const p = document.createElement('p');
+      p.textContent = t('noNews');
+      listDiv.appendChild(p);
+      return;
+    }
+    sorted.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'news-card';
+      const title = document.createElement('div');
+      title.className = 'title';
+      title.textContent = item.title;
+      const date = document.createElement('div');
+      date.className = 'date';
+      const d = new Date(item.timestamp);
+      date.textContent = t('date') + ": " + d.toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' });
+      const comment = document.createElement('div');
+      comment.className = 'comment';
+      comment.textContent = item.comment;
+      let preview = null;
+      let thumbnail = null;
+      let fileType = item.fileType;
+      if (!fileType && item.url) {
+        if (item.url.match(/\.pdf(\?|$)/i)) fileType = 'application/pdf';
+        else if (item.url.match(/\.png(\?|$)/i)) fileType = 'image/png';
+        else if (item.url.match(/\.jpe?g(\?|$)/i)) fileType = 'image/jpeg';
+      }
+      if (fileType === 'application/pdf') {
+        preview = document.createElement('a');
+        preview.className = 'preview-link';
+        preview.href = item.url;
+        preview.target = "_blank";
+        preview.textContent = '👁 Vorschau';
+      }
+      if (fileType === 'image/png' || fileType === 'image/jpeg') {
+        thumbnail = document.createElement('img');
+        thumbnail.src = item.url;
+        thumbnail.alt = 'Bildvorschau';
+      }
+      const link = document.createElement('a');
+      link.className = 'download-link';
+      link.href = item.url;
+      link.target = "_blank";
+      link.download = "";
+      link.textContent = t('download');
+      card.appendChild(title);
+      card.appendChild(date);
+      if (item.comment) card.appendChild(comment);
+      if (thumbnail) card.appendChild(thumbnail);
+      if (preview) card.appendChild(preview);
+      card.appendChild(link);
+      if (isAdmin && item.id) {
+        const delBtn = document.createElement('button');
+        delBtn.textContent = "🗑 Löschen";
+        delBtn.className = 'delete-btn';
+        delBtn.onclick = () => {
+          if (confirm('Wirklich löschen?')) {
+            storage.refFromURL(item.url).delete().catch(()=>{});
+            db.collection('news').doc(item.id).delete();
+          }
+        };
+        card.appendChild(delBtn);
+      }
+      listDiv.appendChild(card);
+    });
+  }
+  // --- Firestore News Listener ---
+  let newsUnsubscribe = null;
+  function listenToNews() {
+    if (typeof newsUnsubscribe === "function") newsUnsubscribe();
+    newsUnsubscribe = db.collection('news').orderBy('timestamp', 'desc')
+      .onSnapshot((snapshot) => {
+        const newsList = [];
+        snapshot.forEach(doc => {
+          newsList.push({ ...doc.data(), id: doc.id });
+        });
+        renderNewsList(newsList);
+      });
+  }
+
+  // --- Init ---
+  window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('langDE').onclick = () => setLang('de');
+    document.getElementById('langFR').onclick = () => setLang('fr');
+    document.getElementById('langEN').onclick = () => setLang('en');
+    setLang(currentLang);
+    document.getElementById('adminLoginForm').onsubmit = handleLogin;
+    document.getElementById('logoutBtn').onclick = handleLogout;
+    showAdminUI(false);
+    // Upload events (2-Schritt)
+    const uploadArea = document.getElementById('uploadArea');
+    uploadArea.addEventListener('dragover', handleDragOver);
+    uploadArea.addEventListener('dragleave', handleDragLeave);
+    uploadArea.addEventListener('drop', handleFileDrop);
+    uploadArea.addEventListener('click', (e) => {
+      if (e.target.closest('#metaForm')) return;
+      if (e.target.closest('#uploadBtn')) return;
+      document.getElementById('pdfFile').click();
+    });
+    document.getElementById('pdfFile').addEventListener('change', (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        handleFileSelected(e.target.files[0]);
+      }
+    });
+    document.getElementById('uploadBtn').onclick = (e) => {
+      e.stopPropagation();
+      document.getElementById('pdfFile').click();
+    };
+    document.getElementById('metaForm').onsubmit = handleMetaSave;
+    resetUploadStep();
+    // Filter-/Sortier-Einstellungen initialisieren
+    const searchInput = document.getElementById('newsSearchInput');
+    const sortSelect = document.getElementById('newsSortSelect');
+    if (window.localStorage) {
+      const savedFilter = localStorage.getItem('newsFilterText');
+      const savedSort = localStorage.getItem('newsSortMode');
+      if (typeof savedFilter === "string") {
+        newsFilterText = savedFilter;
+        searchInput.value = savedFilter;
+      }
+      if (typeof savedSort === "string" && ["newest", "oldest", "title"].includes(savedSort)) {
+        newsSortMode = savedSort;
+        sortSelect.value = savedSort;
+      }
+    }
+    searchInput.addEventListener('input', function() {
+      newsFilterText = this.value;
+      if (window.localStorage) localStorage.setItem('newsFilterText', newsFilterText);
+      renderNewsList(window._newsList || []);
+    });
+    sortSelect.addEventListener('change', function() {
+      newsSortMode = this.value;
+      if (window.localStorage) localStorage.setItem('newsSortMode', newsSortMode);
+      renderNewsList(window._newsList || []);
+    });
+    listenToNews();
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    });
+  });
 </script>
 </body>
 </html>

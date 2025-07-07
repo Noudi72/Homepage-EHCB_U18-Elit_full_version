@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>💬 Player Feedback</title>
+  <title>💬 Spieler Reflexion</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="icon" href="ehcb-icon.png" type="image/png" />
   <style>
@@ -19,12 +19,36 @@
       min-height: 100vh;
       font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
     }
+    /* Einheitlicher Zurück-Button oben links */
+    .top-bar {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 18px;
+      margin-left: 18px;
+    }
+    .back-link {
+      display: inline-block;
+      font-size: 1.08rem;
+      color: var(--ehc-yellow);
+      text-decoration: none;
+      font-weight: bold;
+      background: #002b5c;
+      padding: 8px 18px;
+      border-radius: 9px;
+      border: 2px solid #ffd600;
+      transition: background .18s, color .18s;
+      text-align: left;
+    }
+    .back-link:hover {
+      background: #ffd600;
+      color: #002b5c;
+    }
     header {
       background: var(--ehc-blue);
       color: var(--ehc-white);
-      border-bottom: 4px solid var(--ehc-red);
       text-align: center;
-      padding: 32px 0 16px 0;
+      padding: 24px 0 8px 0;
     }
     .header-flex {
       display: flex;
@@ -95,27 +119,6 @@
       max-width: 100%;
     }
     button[type="submit"]:hover { background: #af0116;}
-    .back-btn {
-      background: #e5e5e5;
-      color: #1751e7;
-      border: none;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 1.04rem;
-      padding: 9px 0;
-      margin-top: 7px;
-      margin-bottom: 0;
-      cursor: pointer;
-      transition: background 0.13s, color 0.13s;
-      box-shadow: 0 1px 4px #0001;
-      width: 60%;
-      align-self: center;
-      display: block;
-    }
-    .back-btn:hover {
-      background: #d3d3d3;
-      color: #002b5c;
-    }
     #message.success { color: #3bbb2c; font-weight:700; margin-top:12px;}
     #message.error   { color: #b00; font-weight:700; margin-top:12px;}
     .yellow-slogan {
@@ -142,11 +145,13 @@
       .card { font-size: 1.03rem; padding: 19px 5px 16px 5px;}
       .lang-switch { gap: 8px; margin: 10px 0 8px 0;}
       .lang-switch button { padding: 5px 12px 3px 12px; font-size: 1rem;}
-      .back-btn { width: 100%; font-size: 1rem; }
     }
   </style>
 </head>
 <body>
+  <div class="top-bar">
+    <a class="back-link" href="index.html" id="backBtn">← Zurück / Back</a>
+  </div>
   <header>
     <div class="header-flex">
       <img src="wikinger.png" class="logo" alt="Logo" />
@@ -162,7 +167,7 @@
   </header>
   <div class="main-content">
     <form id="feedbackForm" class="card">
-      <h2 id="formTitle">💬 Player Feedback</h2>
+      <h2 id="formTitle">💬 Spieler Reflexion</h2>
       <label for="name" id="labelName">Name *</label>
       <input type="text" id="name" name="name" required />
 
@@ -172,10 +177,10 @@
       <label for="energy" id="labelEnergy">⚡️ Energie-Level (1 = sehr müde – 10 = voller Power)</label>
       <select id="energy" name="energy" required></select>
 
-      <label for="intensity" id="labelIntensity">🏋️ Trainingsintensität <small>(1 = locker – 6 = sehr hart)</small></label>
+      <label for="intensity" id="labelIntensity">🏋️ Intensität Training/Spiel <small>(1 = locker – 10 = top)</small></label>
       <select id="intensity" name="intensity" required></select>
 
-      <label for="performance" id="labelPerformance">🎯 Eigene Leistung <small>(1 = sehr schlecht – 6 = top)</small></label>
+      <label for="performance" id="labelPerformance">🎯 Eigene Leistung <small>(1 = ausbaufähig – 10 = top)</small></label>
       <select id="performance" name="performance" required></select>
 
       <label for="comment" id="labelComment">📝 Kommentar <small>(optional)</small></label>
@@ -183,7 +188,6 @@
 
       <button type="submit" id="submitBtn">Abschicken</button>
       <div id="message"></div>
-      <button type="button" class="back-btn" onclick="window.location.href='index.html'">Zurück</button>
     </form>
   </div>
   <section class="yellow-slogan" id="slogan">
@@ -218,31 +222,31 @@
           {value:"10", text:"10 – ⚡️ voller Power"}
         ],
         intensity:"🏋️ Intensität Training/Spiel",
-intensityOptions: [
-  {value:"1", text:"1 – sehr locker"},
-  {value:"2", text:"2"},
-  {value:"3", text:"3"},
-  {value:"4", text:"4"},
-  {value:"5", text:"5 – mittel"},
-  {value:"6", text:"6"},
-  {value:"7", text:"7"},
-  {value:"8", text:"8"},
-  {value:"9", text:"9"},
-  {value:"10", text:"10 – maximal"}
-],
-performance:"🎯 Eigene Leistung",
-performanceOptions: [
-  {value:"1", text:"1 – ausbaufähig"},
-  {value:"2", text:"2 – mässig"},
-  {value:"3", text:"3 – okay"},
-  {value:"4", text:"4 – solide"},
-  {value:"5", text:"5 – gut"},
-  {value:"6", text:"6 – sehr gut"},
-  {value:"7", text:"7 – stark"},
-  {value:"8", text:"8 – super"},
-  {value:"9", text:"9 – fast optimal"},
-  {value:"10", text:"10 – top"}
-],
+        intensityOptions: [
+          {value:"1", text:"1 – sehr locker"},
+          {value:"2", text:"2"},
+          {value:"3", text:"3"},
+          {value:"4", text:"4"},
+          {value:"5", text:"5 – mittel"},
+          {value:"6", text:"6"},
+          {value:"7", text:"7"},
+          {value:"8", text:"8"},
+          {value:"9", text:"9"},
+          {value:"10", text:"10 – maximal"}
+        ],
+        performance:"🎯 Eigene Leistung",
+        performanceOptions: [
+          {value:"1", text:"1 – ausbaufähig"},
+          {value:"2", text:"2 – mässig"},
+          {value:"3", text:"3 – okay"},
+          {value:"4", text:"4 – solide"},
+          {value:"5", text:"5 – gut"},
+          {value:"6", text:"6 – sehr gut"},
+          {value:"7", text:"7 – stark"},
+          {value:"8", text:"8 – super"},
+          {value:"9", text:"9 – fast optimal"},
+          {value:"10", text:"10 – top"}
+        ],
         comment:"📝 Kommentar <small>(optional)</small>",
         submit:"Abschicken",
         msg_success:'✅ Feedback übermittelt!',
@@ -272,31 +276,31 @@ performanceOptions: [
           {value:"10", text:"10 – ⚡️ full power"}
         ],
         intensity:"🏋️ Training/Game Intensity",
-intensityOptions: [
-  {value:"1", text:"1 – very easy"},
-  {value:"2", text:"2"},
-  {value:"3", text:"3"},
-  {value:"4", text:"4"},
-  {value:"5", text:"5 – medium"},
-  {value:"6", text:"6"},
-  {value:"7", text:"7"},
-  {value:"8", text:"8"},
-  {value:"9", text:"9"},
-  {value:"10", text:"10 – maximal"}
-],
-performance:"🎯 Own Performance",
-performanceOptions: [
-  {value:"1", text:"1 – needs work"},
-  {value:"2", text:"2 – fair"},
-  {value:"3", text:"3 – okay"},
-  {value:"4", text:"4 – solid"},
-  {value:"5", text:"5 – good"},
-  {value:"6", text:"6 – very good"},
-  {value:"7", text:"7 – strong"},
-  {value:"8", text:"8 – super"},
-  {value:"9", text:"9 – almost perfect"},
-  {value:"10", text:"10 – top"}
-],
+        intensityOptions: [
+          {value:"1", text:"1 – very easy"},
+          {value:"2", text:"2"},
+          {value:"3", text:"3"},
+          {value:"4", text:"4"},
+          {value:"5", text:"5 – medium"},
+          {value:"6", text:"6"},
+          {value:"7", text:"7"},
+          {value:"8", text:"8"},
+          {value:"9", text:"9"},
+          {value:"10", text:"10 – maximal"}
+        ],
+        performance:"🎯 Own Performance",
+        performanceOptions: [
+          {value:"1", text:"1 – needs work"},
+          {value:"2", text:"2 – fair"},
+          {value:"3", text:"3 – okay"},
+          {value:"4", text:"4 – solid"},
+          {value:"5", text:"5 – good"},
+          {value:"6", text:"6 – very good"},
+          {value:"7", text:"7 – strong"},
+          {value:"8", text:"8 – super"},
+          {value:"9", text:"9 – almost perfect"},
+          {value:"10", text:"10 – top"}
+        ],
         comment:"📝 Comment <small>(optional)</small>",
         submit:"Submit",
         msg_success:'✅ Feedback submitted!',
@@ -326,31 +330,31 @@ performanceOptions: [
           {value:"10", text:"10 – ⚡️ plein d'énergie"}
         ],
         intensity:"🏋️ Intensité Entraînement/Match",
-intensityOptions: [
-  {value:"1", text:"1 – très facile"},
-  {value:"2", text:"2"},
-  {value:"3", text:"3"},
-  {value:"4", text:"4"},
-  {value:"5", text:"5 – moyen"},
-  {value:"6", text:"6"},
-  {value:"7", text:"7"},
-  {value:"8", text:"8"},
-  {value:"9", text:"9"},
-  {value:"10", text:"10 – maximale"}
-],
-performance:"🎯 Performance personnelle",
-performanceOptions: [
-  {value:"1", text:"1 – à améliorer"},
-  {value:"2", text:"2 – passable"},
-  {value:"3", text:"3 – ok"},
-  {value:"4", text:"4 – solide"},
-  {value:"5", text:"5 – bien"},
-  {value:"6", text:"6 – très bien"},
-  {value:"7", text:"7 – fort"},
-  {value:"8", text:"8 – super"},
-  {value:"9", text:"9 – presque parfait"},
-  {value:"10", text:"10 – top"}
-],
+        intensityOptions: [
+          {value:"1", text:"1 – très facile"},
+          {value:"2", text:"2"},
+          {value:"3", text:"3"},
+          {value:"4", text:"4"},
+          {value:"5", text:"5 – moyen"},
+          {value:"6", text:"6"},
+          {value:"7", text:"7"},
+          {value:"8", text:"8"},
+          {value:"9", text:"9"},
+          {value:"10", text:"10 – maximale"}
+        ],
+        performance:"🎯 Performance personnelle",
+        performanceOptions: [
+          {value:"1", text:"1 – à améliorer"},
+          {value:"2", text:"2 – passable"},
+          {value:"3", text:"3 – ok"},
+          {value:"4", text:"4 – solide"},
+          {value:"5", text:"5 – bien"},
+          {value:"6", text:"6 – très bien"},
+          {value:"7", text:"7 – fort"},
+          {value:"8", text:"8 – super"},
+          {value:"9", text:"9 – presque parfait"},
+          {value:"10", text:"10 – top"}
+        ],
         comment:"📝 Commentaire <small>(optionnel)</small>",
         submit:"Envoyer",
         msg_success:'✅ Feedback envoyé!',
