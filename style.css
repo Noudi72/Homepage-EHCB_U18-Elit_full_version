@@ -25,9 +25,9 @@ header {
   position: relative;
 }
 .logo {
-  width: 80px;
+  width: 120px;
   height: auto;
-  margin: 0 auto 14px auto;
+  margin: 0 auto 30px auto;
   display: block;
   filter: drop-shadow(0 5px 18px #0008);
 }
