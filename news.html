@@ -216,6 +216,46 @@
             }
         }
     </style>
+</head>
+<body>
+    <header>
+        <h1 id="headline" style="margin:0; font-size:2.3rem; letter-spacing:1px; font-family:'Oswald',Arial,sans-serif;">News & Info</h1>
+        <div class="lang-switcher">
+            <button id="langDE">DE</button>
+            <button id="langFR">FR</button>
+            <button id="langEN">EN</button>
+        </div>
+    </header>
+    <div class="container">
+        <section class="news-section">
+            <h2 id="allNewsLabel" style="color:var(--ehcb-blue);margin-bottom:1.2rem;">Alle Trainings-PDFs</h2>
+            <div class="news-list" id="newsList"></div>
+        </section>
+        <section id="adminLoginSection" class="admin-login-section">
+            <h3 id="loginHeadline">Admin-Login</h3>
+            <form id="adminLoginForm">
+                <label id="passwordLabel" for="adminPassword">Passwort</label><br>
+                <input type="password" id="adminPassword" autocomplete="current-password" required><br>
+                <button id="loginBtn" type="submit">Login</button>
+            </form>
+        </section>
+        <section id="uploadArea" class="upload-section" style="display:none;">
+            <h3 id="uploadTitle" style="color:var(--ehcb-blue);margin-bottom:0.6rem;">PDF-Upload (nur für Admins)</h3>
+            <div id="uploadInstr" style="color:#333;margin-bottom:1.2rem;">Ziehe eine PDF-Datei hierher oder klicke zum Auswählen.</div>
+            <form class="upload-form" id="uploadForm" autocomplete="off">
+                <input type="file" id="pdfFile" accept="application/pdf" style="display:none;" required>
+                <label id="pdfTitleLabel" for="pdfTitle" style="float:left;">Titel</label><br>
+                <input type="text" id="pdfTitle" maxlength="60" required><br>
+                <label id="pdfCommentLabel" for="pdfComment" style="float:left;">Kommentar</label><br>
+                <textarea id="pdfComment" rows="2" maxlength="180"></textarea><br>
+                <div class="progress-bar"><div id="progressBarInner" class="progress-bar-inner"></div></div>
+                <button id="uploadBtn" type="submit">Hochladen</button>
+            </form>
+        </section>
+        <button id="logoutBtn" class="logout-btn" style="display:none;">Logout</button>
+    </div>
+</body>
+<script>
         // --- Sprachumschaltung ---
         const translations = {
             de: {
@@ -461,44 +501,5 @@
             // Listen to Firestore
             listenToNews();
         });
-    </script>
-</head>
-<body>
-    <header>
-        <h1 id="headline" style="margin:0; font-size:2.3rem; letter-spacing:1px; font-family:'Oswald',Arial,sans-serif;">News & Info</h1>
-        <div class="lang-switcher">
-            <button id="langDE">DE</button>
-            <button id="langFR">FR</button>
-            <button id="langEN">EN</button>
-        </div>
-    </header>
-    <div class="container">
-        <section class="news-section">
-            <h2 id="allNewsLabel" style="color:var(--ehcb-blue);margin-bottom:1.2rem;">Alle Trainings-PDFs</h2>
-            <div class="news-list" id="newsList"></div>
-        </section>
-        <section id="adminLoginSection" class="admin-login-section">
-            <h3 id="loginHeadline">Admin-Login</h3>
-            <form id="adminLoginForm">
-                <label id="passwordLabel" for="adminPassword">Passwort</label><br>
-                <input type="password" id="adminPassword" autocomplete="current-password" required><br>
-                <button id="loginBtn" type="submit">Login</button>
-            </form>
-        </section>
-        <section id="uploadArea" class="upload-section" style="display:none;">
-            <h3 id="uploadTitle" style="color:var(--ehcb-blue);margin-bottom:0.6rem;">PDF-Upload (nur für Admins)</h3>
-            <div id="uploadInstr" style="color:#333;margin-bottom:1.2rem;">Ziehe eine PDF-Datei hierher oder klicke zum Auswählen.</div>
-            <form class="upload-form" id="uploadForm" autocomplete="off">
-                <input type="file" id="pdfFile" accept="application/pdf" style="display:none;" required>
-                <label id="pdfTitleLabel" for="pdfTitle" style="float:left;">Titel</label><br>
-                <input type="text" id="pdfTitle" maxlength="60" required><br>
-                <label id="pdfCommentLabel" for="pdfComment" style="float:left;">Kommentar</label><br>
-                <textarea id="pdfComment" rows="2" maxlength="180"></textarea><br>
-                <div class="progress-bar"><div id="progressBarInner" class="progress-bar-inner"></div></div>
-                <button id="uploadBtn" type="submit">Hochladen</button>
-            </form>
-        </section>
-        <button id="logoutBtn" class="logout-btn" style="display:none;">Logout</button>
-    </div>
-</body>
+</script>
 </html>
