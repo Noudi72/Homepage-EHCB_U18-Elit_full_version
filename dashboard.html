@@ -262,12 +262,26 @@
       letter-spacing: 1.2px;
     }
     .back-link {
-      display:block; text-align:center; margin:28px auto 0 auto; font-size:1.08rem;
-      color: var(--ehc-yellow); text-decoration: none; font-weight: bold;
-      background: #002b5c; padding: 8px 0; border-radius: 9px; max-width:200px; border:2px solid #ffd600;
+      display: inline-block;
+      position: relative;
+      left: 0;
+      margin: 18px 0 0 18px;
+      font-size: 1.08rem;
+      color: var(--ehc-yellow);
+      text-decoration: none;
+      font-weight: bold;
+      background: #002b5c;
+      padding: 8px 18px;
+      border-radius: 9px;
+      border: 2px solid #ffd600;
       transition: background .18s, color .18s;
+      max-width: unset;
+      text-align: left;
     }
-    .back-link:hover { background: #ffd600; color: #002b5c; }
+    .back-link:hover {
+      background: #ffd600;
+      color: #002b5c;
+    }
     footer {
       margin-top: 55px;
       background: var(--ehc-blue);
@@ -300,6 +314,11 @@
       }
       th, td { padding: 6px 5px; font-size: 0.96rem;}
       .chart-legend { font-size:0.93rem;}
+      .back-link {
+        margin: 10px 0 0 7px;
+        padding: 7px 12px;
+        font-size: 0.98rem;
+      }
     }
   </style>
 </head>
@@ -313,6 +332,7 @@
       <button onclick="changeLanguage('en')" id="btn-en">EN</button>
     </div>
   </header>
+  <a class="back-link" href="index.html" id="backBtn">← Zurück / Back</a>
   <div class="main-content">
     <!-- Admin Login -->
     <section class="login-card" id="login-section">
@@ -362,7 +382,6 @@
           <tbody id="feedbackTableBody"></tbody>
         </table>
       </div>
-      <a class="back-link" href="index.html" id="backBtn">← Zurück / Back</a>
     </div>
   </div>
   <section class="yellow-slogan" id="slogan">

@@ -73,13 +73,6 @@
     .calendar-hint {
       text-align:center;color:#ffe16b;font-size:0.98rem;margin-top:1.1rem;
     }
-    .back-link {
-      display:block; text-align:center; margin-top:24px; font-size:1.1rem;
-      color: var(--ehc-yellow); text-decoration: none; font-weight: bold;
-      background: #002b5c; padding: 8px 0; border-radius: 9px; max-width:200px; margin-left:auto; margin-right:auto; border:2px solid #ffd600;
-      transition: background .18s, color .18s;
-    }
-    .back-link:hover { background: #ffd600; color: #002b5c; }
     .yellow-slogan {
       color: var(--ehc-yellow);
       text-align: center;
@@ -97,6 +90,31 @@
       font-size: 1.01rem;
       opacity: 0.86;
       border-top: 2px solid var(--ehc-red);
+    }
+    .back-btn {
+      position: absolute;
+      top: 28px;
+      left: 32px;
+      z-index: 10;
+      background: #002b5c;
+      color: #ffd600;
+      font-weight: bold;
+      border: 2px solid #ffd600;
+      border-radius: 10px;
+      padding: 12px 32px 10px 20px;
+      font-size: 1.19rem;
+      text-decoration: none;
+      transition: background .18s, color .18s;
+      box-shadow: 0 2px 14px #0002;
+    }
+    .back-btn:hover { background: #ffd600; color: #002b5c; }
+    @media (max-width: 700px) {
+      .back-btn {
+        top: 15px;
+        left: 7px;
+        padding: 9px 16px 7px 12px;
+        font-size: 1.04rem;
+      }
     }
     @media (max-width: 600px) {
       .main-content { padding: 0 2px;}
@@ -117,8 +135,8 @@
       <button onclick="changeLanguage('en')" id="btn-en">EN</button>
     </div>
   </header>
+  <a class="back-btn" href="index.html" id="backBtn">← Zurück / Back</a>
   <div class="main-content">
-    <a class="back-link" href="index.html">← Zurück / Back</a>
     <section class="card">
       <h2 id="kalender-title">📅 MIH Kalender U18</h2>
       <iframe id="kalender-frame"
@@ -171,7 +189,7 @@
       document.getElementById('kalender-title').textContent = t.kalenderTitle;
       document.getElementById('kalender-hint').textContent = t.kalenderHint;
       document.getElementById('slogan').textContent = t.slogan;
-      document.querySelector('.back-link').textContent = t.back;
+      document.getElementById('backBtn').textContent = t.back;
     }
     window.addEventListener('DOMContentLoaded', () => { changeLanguage(currentLang); });
   </script>
