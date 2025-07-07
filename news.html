@@ -326,7 +326,7 @@
       <button onclick="setLang('en')" id="btn-en">EN</button>
     </div>
     <form id="adminLoginForm" class="admin-login-inline">
-      <label for="adminPassword" style="margin-right:8px;">🔒</label>
+      <label for="adminPassword" id="passwordLabel" style="margin-right:8px;">🔒</label>
       <input type="password" id="adminPassword" placeholder="Admin Passwort" autocomplete="current-password" required>
       <button id="loginBtn" type="submit">Login</button>
     </form>
@@ -441,7 +441,6 @@
     document.getElementById('pdfTitleLabel').textContent = translations[lang].pdfTitle;
     document.getElementById('pdfCommentLabel').textContent = translations[lang].pdfComment;
     document.getElementById('uploadBtn').textContent = translations[lang].uploadBtn;
-    document.getElementById('loginHeadline').textContent = translations[lang].loginHeadline;
     document.getElementById('passwordLabel').textContent = translations[lang].password;
     document.getElementById('loginBtn').textContent = translations[lang].loginBtn;
     document.getElementById('logoutBtn').textContent = translations[lang].logoutBtn;
