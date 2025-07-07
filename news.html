@@ -1,0 +1,517 @@
+
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EHCB U18 – News & Info</title>
+    <!-- Firebase App (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCvHZN1q72UQLqrkgWb-L5X6A4WesHqRw",
+            authDomain: "ehcb-news.firebaseapp.com",
+            projectId: "ehcb-news",
+            storageBucket: "ehcb-news.firebasestorage.app",
+            messagingSenderId: "250325515447",
+            appId: "1:250325515447:web:740fcc143a4a9cafb92132"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        // Firestore DB (für News)
+        const db = firebase.firestore();
+        // Firebase Storage (für PDF-Uploads)
+        const storage = firebase.storage();
+    </script>
+    <!-- EHCB Branding & Responsive Styles -->
+    <style>
+        :root {
+            --ehcb-blue: #002d5b;
+            --ehcb-yellow: #ffc700;
+            --ehcb-white: #fff;
+            --ehcb-grey: #f5f5f5;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--ehcb-grey);
+            color: var(--ehcb-blue);
+        }
+        header {
+            background: var(--ehcb-blue);
+            color: var(--ehcb-yellow);
+            padding: 2rem 1rem 1rem 1rem;
+            text-align: center;
+            position: relative;
+        }
+        .lang-switcher {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+        .lang-switcher button {
+            background: var(--ehcb-yellow);
+            color: var(--ehcb-blue);
+            border: none;
+            margin-left: 0.3rem;
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+        .news-section {
+            margin-bottom: 2.5rem;
+        }
+        .news-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: flex-start;
+        }
+        .news-card {
+            background: var(--ehcb-white);
+            border-left: 5px solid var(--ehcb-blue);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 1.2rem 1rem 1rem 1.4rem;
+            min-width: 260px;
+            max-width: 320px;
+            flex: 1 1 270px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .news-card .title {
+            color: var(--ehcb-blue);
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+        .news-card .date {
+            color: #555;
+            font-size: 0.9rem;
+            margin-bottom: 0.7rem;
+        }
+        .news-card .comment {
+            margin-bottom: 0.8rem;
+            color: #222;
+        }
+        .news-card .download-link {
+            background: var(--ehcb-yellow);
+            color: var(--ehcb-blue);
+            padding: 0.45rem 1rem;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+            transition: background 0.2s;
+        }
+        .news-card .download-link:hover {
+            background: #ffe066;
+        }
+        /* Upload area */
+        .upload-section {
+            background: var(--ehcb-white);
+            border: 2px dashed var(--ehcb-blue);
+            border-radius: 8px;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .upload-section.dragover {
+            background: #e6f0fa;
+            border-color: var(--ehcb-yellow);
+        }
+        .upload-form input,
+        .upload-form textarea {
+            width: 90%;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .upload-form button {
+            background: var(--ehcb-blue);
+            color: var(--ehcb-yellow);
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .progress-bar {
+            width: 90%;
+            height: 12px;
+            background: #eee;
+            border-radius: 6px;
+            margin: 0.7rem auto 1rem auto;
+            overflow: hidden;
+        }
+        .progress-bar-inner {
+            height: 100%;
+            background: var(--ehcb-yellow);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .admin-login-section {
+            background: var(--ehcb-white);
+            border: 1px solid var(--ehcb-blue);
+            border-radius: 8px;
+            padding: 1.5rem 1rem;
+            max-width: 350px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+        .admin-login-section input {
+            width: 80%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .admin-login-section button {
+            background: var(--ehcb-blue);
+            color: var(--ehcb-yellow);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .logout-btn {
+            margin-top: 1.5rem;
+            background: var(--ehcb-yellow);
+            color: var(--ehcb-blue);
+            padding: 0.4rem 1.2rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        @media (max-width: 700px) {
+            .news-list {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .news-card {
+                min-width: 0;
+                max-width: 100%;
+            }
+            .container {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+    <script>
+        // Firebase config – bitte ggf. anpassen!
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+        // --- Sprachumschaltung ---
+        const translations = {
+            de: {
+                headline: "News & Info",
+                uploadTitle: "PDF-Upload (nur für Admins)",
+                uploadInstr: "Ziehe eine PDF-Datei hierher oder klicke zum Auswählen.",
+                pdfTitle: "Titel",
+                pdfComment: "Kommentar",
+                uploadBtn: "Hochladen",
+                uploading: "Wird hochgeladen...",
+                loginHeadline: "Admin-Login",
+                password: "Passwort",
+                loginBtn: "Login",
+                logoutBtn: "Logout",
+                uploadSuccess: "Upload erfolgreich!",
+                uploadError: "Fehler beim Upload.",
+                allNews: "Alle Trainings-PDFs",
+                download: "Download",
+                date: "Upload-Datum",
+                noNews: "Noch keine News/Infos vorhanden.",
+            },
+            fr: {
+                headline: "News & Infos",
+                uploadTitle: "Téléchargement PDF (admins seulement)",
+                uploadInstr: "Glissez un fichier PDF ici ou cliquez pour choisir.",
+                pdfTitle: "Titre",
+                pdfComment: "Commentaire",
+                uploadBtn: "Télécharger",
+                uploading: "Téléchargement...",
+                loginHeadline: "Connexion admin",
+                password: "Mot de passe",
+                loginBtn: "Connexion",
+                logoutBtn: "Déconnexion",
+                uploadSuccess: "Téléchargement réussi !",
+                uploadError: "Erreur lors du téléchargement.",
+                allNews: "Tous les PDFs d'entraînement",
+                download: "Télécharger",
+                date: "Date de téléchargement",
+                noNews: "Aucune news/info disponible.",
+            },
+            en: {
+                headline: "News & Info",
+                uploadTitle: "PDF Upload (Admins only)",
+                uploadInstr: "Drag a PDF file here or click to select.",
+                pdfTitle: "Title",
+                pdfComment: "Comment",
+                uploadBtn: "Upload",
+                uploading: "Uploading...",
+                loginHeadline: "Admin Login",
+                password: "Password",
+                loginBtn: "Login",
+                logoutBtn: "Logout",
+                uploadSuccess: "Upload successful!",
+                uploadError: "Upload failed.",
+                allNews: "All Training PDFs",
+                download: "Download",
+                date: "Upload date",
+                noNews: "No news/info available yet.",
+            }
+        };
+        let currentLang = 'de';
+        function setLang(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.getElementById('headline').textContent = translations[lang].headline;
+            document.getElementById('allNewsLabel').textContent = translations[lang].allNews;
+            document.getElementById('uploadTitle').textContent = translations[lang].uploadTitle;
+            document.getElementById('uploadInstr').textContent = translations[lang].uploadInstr;
+            document.getElementById('pdfTitleLabel').textContent = translations[lang].pdfTitle;
+            document.getElementById('pdfCommentLabel').textContent = translations[lang].pdfComment;
+            document.getElementById('uploadBtn').textContent = translations[lang].uploadBtn;
+            document.getElementById('loginHeadline').textContent = translations[lang].loginHeadline;
+            document.getElementById('passwordLabel').textContent = translations[lang].password;
+            document.getElementById('loginBtn').textContent = translations[lang].loginBtn;
+            document.getElementById('logoutBtn').textContent = translations[lang].logoutBtn;
+            // update news list
+            renderNewsList(window._newsList || []);
+        }
+        function t(key) {
+            return translations[currentLang][key] || key;
+        }
+        // --- Admin Login (Simple, client-side password check) ---
+        let isAdmin = false;
+        function showAdminUI(show) {
+            document.getElementById('uploadArea').style.display = show ? '' : 'none';
+            document.getElementById('logoutBtn').style.display = show ? '' : 'none';
+            document.getElementById('adminLoginSection').style.display = show ? 'none' : '';
+        }
+        function handleLogin(e) {
+            e.preventDefault();
+            const pw = document.getElementById('adminPassword').value;
+            if (pw === "Coach7274") {
+                isAdmin = true;
+                showAdminUI(true);
+            } else {
+                alert("Falsches Passwort / Wrong password / Mauvais mot de passe");
+            }
+        }
+        function handleLogout() {
+            isAdmin = false;
+            showAdminUI(false);
+        }
+        // --- PDF Upload ---
+        function handleFileDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('uploadArea').classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                document.getElementById('pdfFile').files = files;
+            }
+        }
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('uploadArea').classList.add('dragover');
+        }
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('uploadArea').classList.remove('dragover');
+        }
+        function handleUpload(e) {
+            e.preventDefault();
+            const file = document.getElementById('pdfFile').files[0];
+            const title = document.getElementById('pdfTitle').value.trim();
+            const comment = document.getElementById('pdfComment').value.trim();
+            if (!file || !title) {
+                alert('Bitte Datei und Titel angeben! / Please select file and title!');
+                return;
+            }
+            if (file.type !== "application/pdf") {
+                alert('Nur PDF-Dateien erlaubt! / PDF only!');
+                return;
+            }
+            document.getElementById('uploadBtn').disabled = true;
+            document.getElementById('uploadBtn').textContent = t('uploading');
+            const progressBar = document.getElementById('progressBarInner');
+            progressBar.style.width = "0%";
+            // Firebase Storage: upload file
+            const ts = Date.now();
+            const storageRef = storage.ref().child('news_pdfs/' + ts + '_' + file.name);
+            const uploadTask = storageRef.put(file);
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    progressBar.style.width = percent + "%";
+                },
+                (error) => {
+                    alert(t('uploadError'));
+                    document.getElementById('uploadBtn').disabled = false;
+                    document.getElementById('uploadBtn').textContent = t('uploadBtn');
+                },
+                () => {
+                    uploadTask.snapshot.ref.getDownloadURL().then((url) => {
+                        // Firestore: save meta info
+                        db.collection('news').add({
+                            title: title,
+                            comment: comment,
+                            url: url,
+                            timestamp: ts
+                        }).then(() => {
+                            progressBar.style.width = "100%";
+                            document.getElementById('uploadBtn').disabled = false;
+                            document.getElementById('uploadBtn').textContent = t('uploadBtn');
+                            document.getElementById('pdfFile').value = "";
+                            document.getElementById('pdfTitle').value = "";
+                            document.getElementById('pdfComment').value = "";
+                            setTimeout(() => { progressBar.style.width = "0%"; }, 1000);
+                        });
+                    });
+                }
+            );
+        }
+        // --- News List Rendering ---
+        function renderNewsList(newsList) {
+            window._newsList = newsList; // for language switch
+            const listDiv = document.getElementById('newsList');
+            listDiv.innerHTML = "";
+            if (!newsList.length) {
+                const p = document.createElement('p');
+                p.textContent = t('noNews');
+                listDiv.appendChild(p);
+                return;
+            }
+            newsList.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'news-card';
+                const title = document.createElement('div');
+                title.className = 'title';
+                title.textContent = item.title;
+                const date = document.createElement('div');
+                date.className = 'date';
+                const d = new Date(item.timestamp);
+                date.textContent = t('date') + ": " + d.toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric' });
+                const comment = document.createElement('div');
+                comment.className = 'comment';
+                comment.textContent = item.comment;
+                const link = document.createElement('a');
+                link.className = 'download-link';
+                link.href = item.url;
+                link.target = "_blank";
+                link.textContent = t('download');
+                card.appendChild(title);
+                card.appendChild(date);
+                if (item.comment) card.appendChild(comment);
+                card.appendChild(link);
+                listDiv.appendChild(card);
+            });
+        }
+        // --- Live Firestore News List ---
+        function listenToNews() {
+            db.collection('news').orderBy('timestamp', 'desc')
+            .onSnapshot((snapshot) => {
+                const newsList = [];
+                snapshot.forEach(doc => {
+                    newsList.push(doc.data());
+                });
+                renderNewsList(newsList);
+            });
+        }
+        // --- Init ---
+        window.addEventListener('DOMContentLoaded', () => {
+            // Language switcher
+            document.getElementById('langDE').onclick = () => setLang('de');
+            document.getElementById('langFR').onclick = () => setLang('fr');
+            document.getElementById('langEN').onclick = () => setLang('en');
+            setLang('de');
+            // Login
+            document.getElementById('adminLoginForm').onsubmit = handleLogin;
+            document.getElementById('logoutBtn').onclick = handleLogout;
+            showAdminUI(false);
+            // Upload events
+            const uploadArea = document.getElementById('uploadArea');
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleFileDrop);
+            uploadArea.addEventListener('click', () => document.getElementById('pdfFile').click());
+            document.getElementById('pdfFile').addEventListener('change', (e) => {
+                // show file name (optional)
+            });
+            document.getElementById('uploadForm').onsubmit = handleUpload;
+            // Listen to Firestore
+            listenToNews();
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1 id="headline" style="margin:0; font-size:2.3rem; letter-spacing:1px; font-family:'Oswald',Arial,sans-serif;">News & Info</h1>
+        <div class="lang-switcher">
+            <button id="langDE">DE</button>
+            <button id="langFR">FR</button>
+            <button id="langEN">EN</button>
+        </div>
+    </header>
+    <div class="container">
+        <section class="news-section">
+            <h2 id="allNewsLabel" style="color:var(--ehcb-blue);margin-bottom:1.2rem;">Alle Trainings-PDFs</h2>
+            <div class="news-list" id="newsList"></div>
+        </section>
+        <section id="adminLoginSection" class="admin-login-section">
+            <h3 id="loginHeadline">Admin-Login</h3>
+            <form id="adminLoginForm">
+                <label id="passwordLabel" for="adminPassword">Passwort</label><br>
+                <input type="password" id="adminPassword" autocomplete="current-password" required><br>
+                <button id="loginBtn" type="submit">Login</button>
+            </form>
+        </section>
+        <section id="uploadArea" class="upload-section" style="display:none;">
+            <h3 id="uploadTitle" style="color:var(--ehcb-blue);margin-bottom:0.6rem;">PDF-Upload (nur für Admins)</h3>
+            <div id="uploadInstr" style="color:#333;margin-bottom:1.2rem;">Ziehe eine PDF-Datei hierher oder klicke zum Auswählen.</div>
+            <form class="upload-form" id="uploadForm" autocomplete="off">
+                <input type="file" id="pdfFile" accept="application/pdf" style="display:none;" required>
+                <label id="pdfTitleLabel" for="pdfTitle" style="float:left;">Titel</label><br>
+                <input type="text" id="pdfTitle" maxlength="60" required><br>
+                <label id="pdfCommentLabel" for="pdfComment" style="float:left;">Kommentar</label><br>
+                <textarea id="pdfComment" rows="2" maxlength="180"></textarea><br>
+                <div class="progress-bar"><div id="progressBarInner" class="progress-bar-inner"></div></div>
+                <button id="uploadBtn" type="submit">Hochladen</button>
+            </form>
+        </section>
+        <button id="logoutBtn" class="logout-btn" style="display:none;">Logout</button>
+    </div>
+</body>
+</html>
