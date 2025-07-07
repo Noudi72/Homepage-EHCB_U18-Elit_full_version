@@ -291,13 +291,13 @@
 <script>
     // Firebase INIT
     const firebaseConfig = {
-        apiKey: "AIzaSyCCvHZN1q72UQLqrkgWb-L5X6A4WesHqRw",
-        authDomain: "ehcb-news.firebaseapp.com",
-        projectId: "ehcb-news",
-        storageBucket: "ehcb-news.firebasestorage.app",
-        messagingSenderId: "250325515447",
-        appId: "1:250325515447:web:740fcc143a4a9cafb92132"
-    };
+  apiKey: "AIzaSyCCvHZN1q72UQLqrkgWb-L5X6A4WesHqRw",
+  authDomain: "ehcb-news.firebaseapp.com",
+  projectId: "ehcb-news",
+  storageBucket: "ehcb-news.appspot.com", // ← HIER den Wert manuell ändern!
+  messagingSenderId: "250325515447",
+  appId: "1:250325515447:web:81f10ce4ac286d10b92132"
+};
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     const storage = firebase.storage();
