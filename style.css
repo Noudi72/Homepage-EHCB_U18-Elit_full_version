@@ -270,13 +270,14 @@ footer {
   text-align: center;
 }
 
-/* Sprachumschalter exakt wie kalender.html */
+/* ---- EHCB Header/Sprachbutton Style Stand 07/2025, identisch kalender.html ---- */
 .lang-switcher {
-  margin-top: 0;
-  margin-bottom: 17px;
   display: flex;
-  gap: 10px;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 17px 0;
+  padding: 0;
 }
 .lang-btn {
   background: #fff;
@@ -290,8 +291,12 @@ footer {
   box-shadow: 0 1px 8px #2222;
   transition: background 0.18s, color 0.18s;
   outline: none;
+  min-width: 90px;
+  text-align: center;
+  display: inline-block;
 }
-.lang-btn.active, .lang-btn:focus {
+.lang-btn.active,
+.lang-btn:focus {
   background: #FFD600;
   color: #002b5c;
 }
@@ -300,15 +305,12 @@ footer {
   color: #fff;
 }
 @media (max-width: 700px) {
-  .logo, .main-logo {
-    width: 85px;
-    max-width: 94vw;
-    margin-bottom: 10px;
+  .lang-btn {
+    font-size: 1.03rem;
+    padding: 7px 13px;
   }
-  .main-title, .page-title, h1#main-title {
-    font-size: 1.13rem;
-    margin-bottom: 12px;
+  .lang-switcher {
+    gap: 7px;
   }
-  .lang-btn { font-size: 1.03rem; padding: 7px 13px; }
-  .lang-switcher { gap: 7px; }
 }
+/* ---- EHCB Header/Sprachbutton Style Stand 07/2025, identisch kalender.html ---- */
