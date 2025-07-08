@@ -657,29 +657,39 @@
         list.appendChild(card);
       });
     }
-    // --- FEEDBACK FORM HANDLER (schreibt direkt in Firestore!) ---
-    document.getElementById('feedbackForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      // Felder auslesen
-      const t = translations[currentLang];
-      const fb = {
-        name: document.getElementById('name').value,
-        feeling: document.getElementById('feeling').value,
-        energy: document.getElementById('energy').value,
-        intensity: document.getElementById('intensity').value,
-        performance: document.getElementById('performance').value,
-        comment: document.getElementById('comment').value,
-        timestamp: Date.now()
-      };
-      db.collection('feedbacks').add(fb).then(() => {
-        document.getElementById('feedback-success').textContent = t.feedbackSuccess;
-        document.getElementById('feedbackForm').reset();
-        fillDropdowns(currentLang); // reset selects to placeholder
-        setTimeout(() => { document.getElementById('feedback-success').textContent = ""; }, 2500);
-      }).catch(() => {
-        document.getElementById('feedback-success').textContent = "Fehler beim Speichern!";
-      });
-    });
+    // --- FEEDBACK FORM HANDLER (schreibt in Google Sheets via App Script!) ---
+document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const t = translations[currentLang];
+  const fb = {
+    name: document.getElementById('name').value,
+    feeling: document.getElementById('feeling').value,
+    energy: document.getElementById('energy').value,
+    intensity: document.getElementById('intensity').value,
+    performance: document.getElementById('performance').value,
+    comment: document.getElementById('comment').value,
+    timestamp: Date.now()
+  };
+  fetch("https://script.google.com/macros/s/AKfycbwL1IwFze4LFJ5vllA-s7MpnG_PTSJUMXTI-BV5Q0d54tjrscXx710xr672w3t0-ikPmw/exec", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(fb)
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "success") {
+      document.getElementById('feedback-success').textContent = t.feedbackSuccess;
+      document.getElementById('feedbackForm').reset();
+      fillDropdowns(currentLang); // reset selects to placeholder
+      setTimeout(() => { document.getElementById('feedback-success').textContent = ""; }, 2500);
+    } else {
+      document.getElementById('feedback-success').textContent = "Fehler beim Speichern!";
+    }
+  })
+  .catch(() => {
+    document.getElementById('feedback-success').textContent = "Fehler beim Speichern!";
+  });
+});
   </script>
 </body>
 </html>
