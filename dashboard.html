@@ -596,7 +596,7 @@
     // Feedbacks laden & anzeigen
     function loadFeedbacks() {
       // GOOGLE SHEETS APP SCRIPT
-      const apiUrl = "https://script.google.com/macros/s/AKfycbwL1IwFze4LFJ5vllA-s7MpnG_PTSJUMXTI-BV5Q0d54tjrscXx710xr672w3t0-ikPmw/exec?action=list";
+      const apiUrl = "https://script.google.com/macros/s/AKfycby1suEb75mTW3P9RNvq232HBfPzIyci4__gqWs5jZHsQCAYuEsl8h9GNN5S4N4abIMo8Q/exec?action=list";
       fetch(apiUrl)
         .then(r => r.json())
         .then(data => {
@@ -670,7 +670,7 @@ document.getElementById('feedbackForm').addEventListener('submit', function(e) {
     comment: document.getElementById('comment').value,
     timestamp: Date.now()
   };
-  fetch("https://script.google.com/macros/s/AKfycbwL1IwFze4LFJ5vllA-s7MpnG_PTSJUMXTI-BV5Q0d54tjrscXx710xr672w3t0-ikPmw/exec", {
+  fetch("https://script.google.com/macros/s/AKfycby1suEb75mTW3P9RNvq232HBfPzIyci4__gqWs5jZHsQCAYuEsl8h9GNN5S4N4abIMo8Q/exec", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(fb)
