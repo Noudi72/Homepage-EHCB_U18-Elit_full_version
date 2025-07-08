@@ -20,64 +20,129 @@
       color: var(--ehcb-white);
       min-height: 100vh;
     }
+    .logo {
+      display: block;
+      margin: 0 auto 6px auto;
+      width: 120px;
+      max-width: 26vw;
+      filter: drop-shadow(0 6px 18px #0008);
+    }
     header {
       text-align: center;
-      padding: 2.5rem 1rem 1.0rem 1rem;
-      margin-bottom: 0.5rem;
-    }
-    .logo {
-      width: 120px;
-      max-width: 100%;
-      height: auto;
-      margin: 0 auto 18px auto;
-      display: block;
-      filter: drop-shadow(0 5px 18px #0008);
+      margin-top: 14px;
+      margin-bottom: 8px;
     }
     #main-title {
-      font-size: 2.2rem;
+      color: #ffc700;
+      font-size: 2.1rem;
+      letter-spacing: 2px;
       font-weight: 900;
-      margin: 0 0 16px 0;
-      letter-spacing: 1px;
-      color: var(--ehcb-yellow);
+      margin: 0.2em 0 0.25em 0;
       text-shadow: 2px 3px 8px #1a1a1a, 0 1px 0 #222;
-      text-align: center;
     }
-    /* Sprachumschaltung wie auf index.html */
-    /* (alte .lang-switch und .lang-switch button-Regeln entfernt) */
     .lang-switcher {
-      margin-top: 12px; 
-      margin-bottom: 8px; 
-      display: flex; 
-      gap: 10px; 
+      display: flex;
       justify-content: center;
+      gap: 0.55rem;
+      margin-bottom: 0.19rem;
     }
     .lang-btn {
-      background: #fff; 
-      color: #002b5c; 
-      border: none; 
-      border-radius: 8px; 
-      padding: 7px 18px;
-      font-weight: bold; 
-      font-size: 1rem; 
-      cursor: pointer; 
+      background: #fff;
+      color: #002d5b;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 25px;
+      font-weight: bold;
+      font-size: 1.09rem;
+      cursor: pointer;
       box-shadow: 0 1px 8px #2222;
       transition: background 0.18s;
+      outline: none;
     }
     .lang-btn.active, .lang-btn:focus {
-      background: #FFD600; 
-      color: #002b5c;
+      background: #ffc700;
+      color: #002d5b;
     }
     .lang-btn:hover:not(.active) {
       background: #d0021b;
       color: #fff;
     }
-    @media (max-width: 600px) {
-      .lang-btn { font-size: 1rem; padding: 6px 10px; }
-      .lang-switcher { gap: 7px; }
+    @media (max-width: 700px) {
+      .logo {
+        width: 66px;
+        max-width: 34vw;
+      }
+      #main-title {
+        font-size: 1.13rem;
+        letter-spacing: 1px;
+        margin-top: 0.12em;
+        margin-bottom: 0.18em;
+      }
+      .lang-btn {
+        font-size: 0.97rem;
+        padding: 8px 16px;
+      }
+    }
+    .lang-switcher {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.16rem;
+      margin-left: 0.35rem;
+    }
+    .lang-btn {
+      background: #fff;
+      color: #002d5b;
+      border: none;
+      border-radius: 8px;
+      padding: 7px 19px 7px 19px;
+      font-weight: bold;
+      font-size: 1.02rem;
+      cursor: pointer;
+      box-shadow: 0 1px 8px #2222;
+      transition: background 0.18s;
+      outline: none;
+    }
+    .lang-btn.active, .lang-btn:focus {
+      background: #ffc700;
+      color: #002d5b;
+    }
+    .lang-btn:hover:not(.active) {
+      background: #d0021b;
+      color: #fff;
+    }
+    @media (max-width: 700px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.6rem 0.5rem 0.3rem 0.5rem;
+      }
+      .header-left {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+      }
+      .header-title {
+        font-size: 1.09rem;
+        margin-bottom: 5px;
+        text-align: center;
+      }
+      .header-logo {
+        width: 44px;
+        margin: 0 auto;
+      }
+      .lang-btn {
+        font-size: 0.98rem;
+        padding: 6px 10px 6px 10px;
+      }
+      .lang-switcher {
+        gap: 0.24rem;
+        margin-left: 0.01rem;
+      }
     }
     .back-btn {
       position: absolute;
-      top: 28px;
+      top: 26px;
       left: 32px;
       z-index: 10;
       background: #002b5c;
@@ -92,6 +157,15 @@
       box-shadow: 0 2px 14px #0002;
     }
     .back-btn:hover { background: #ffd600; color: #002b5c; }
+    @media (max-width: 700px) {
+      .back-btn {
+        top: 11px;
+        left: 7px;
+        padding: 8px 14px 7px 10px;
+        font-size: 1.04rem;
+      }
+    }
+    /* Restliche Styles (News etc.) bleiben unverändert */
     .container {
       max-width: 900px;
       margin: 2.1rem auto 1.2rem auto;
@@ -299,24 +373,6 @@
     }
     .logout-btn:hover { background: #ffe066; color: #001a33;}
     @media (max-width: 700px) {
-      .back-btn {
-        top: 15px;
-        left: 7px;
-        padding: 9px 16px 7px 12px;
-        font-size: 1.04rem;
-      }
-      .logo {
-        width: 85px;
-        margin-bottom: 10px;
-      }
-      #main-title {
-        font-size: 1.15rem;
-        margin-bottom: 9px;
-      }
-      header {
-        padding-top: 1.2rem;
-        padding-bottom: 0.6rem;
-      }
       .container { padding: 0.5rem; }
       .news-list { flex-direction: column; gap: 1rem; }
       .news-card { min-width: 0; max-width: 100%; }
@@ -349,8 +405,6 @@
       background: #fff !important;
       text-shadow: none !important;
     }
-
-    /* Spezifisch für schmale Screens: sicherstellen, dass EHCB-Blau auch dort bleibt */
     @media (max-width: 700px) {
       .upload-section,
       .upload-section label,
