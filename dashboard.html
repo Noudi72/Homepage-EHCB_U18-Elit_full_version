@@ -595,8 +595,8 @@
 
     // Feedbacks laden & anzeigen
     function loadFeedbacks() {
-      // GOOGLE SHEETS APP SCRIPT
-      const apiUrl = "https://script.google.com/macros/s/AKfycby1suEb75mTW3P9RNvq232HBfPzIyci4__gqWs5jZHsQCAYuEsl8h9GNN5S4N4abIMo8Q/exec?action=list";
+      // GOOGLE SHEETS APP SCRIPT - NEUE URL
+      const apiUrl = "https://script.google.com/macros/s/AKfycbw-oE1eyx0uwGw_xuIIPChNDJFjo5GRJM_rnngivdPZaZnMRTahOZN7_H6z1-zjBwpk7A/exec?action=list";
       fetch(apiUrl)
         .then(r => r.json())
         .then(data => {
@@ -675,7 +675,7 @@ document.getElementById('feedbackForm').addEventListener('submit', function(e) {
   const formData = new FormData();
   Object.entries(fb).forEach(([k, v]) => formData.append(k, v));
 
-  fetch("https://script.google.com/macros/s/AKfycby1suEb75mTW3P9RNvq232HBfPzIyci4__gqWs5jZHsQCAYuEsl8h9GNN5S4N4abIMo8Q/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbw-oE1eyx0uwGw_xuIIPChNDJFjo5GRJM_rnngivdPZaZnMRTahOZN7_H6z1-zjBwpk7A/exec", {
     method: "POST",
     body: formData
     // KEIN Content-Type explizit setzen!
