@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="icon" href="ehcb-icon.png" type="image/png" />
   <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <style>
     :root {
       --ehcb-blue: #002d5b;
@@ -145,6 +147,50 @@
       letter-spacing: 1.4px;
       box-shadow: 0 1px 7px #0002;
     }
+    .feedback-list {
+      margin-top: 2.3rem;
+      margin-bottom: 2.7rem;
+    }
+    .feedback-card {
+      background: #fff;
+      color: #002d5b;
+      border-radius: 9px;
+      box-shadow: 0 2px 10px #0002;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1.15rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .feedback-card .f-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.3rem;
+      align-items: baseline;
+      margin-bottom: 0.7rem;
+      font-weight: bold;
+    }
+    .feedback-card .f-name {
+      font-size: 1.21rem;
+      font-weight: 700;
+      margin-right: 1.2rem;
+    }
+    .feedback-card .f-date {
+      color: #7a7a7a;
+      font-size: 0.97rem;
+    }
+    .feedback-card .f-row {
+      margin-bottom: 0.21rem;
+      font-size: 1.08rem;
+    }
+    .feedback-card .f-label {
+      font-weight: bold;
+      margin-right: 0.41rem;
+    }
+    @media (max-width: 700px) {
+      .feedback-card { padding: 1rem 0.7rem; }
+      .feedback-list { margin-top: 1.2rem; }
+    }
     footer {
       text-align: center;
       color: #fff;
@@ -180,8 +226,7 @@
     </section>
     <!-- Dashboard Content (hidden by default) -->
     <div id="dashboard-section" style="display:none;">
-      <!-- Dein Dashboard-Inhalt hier -->
-      <!-- ... (wie gehabt) ... -->
+      <div class="feedback-list" id="feedback-list"></div>
     </div>
   </div>
   <section class="yellow-slogan" id="slogan">
@@ -193,9 +238,9 @@
   <script>
     // Sprachumschaltung identisch zu kalender.html!
     const translations = {
-      de: { mainTitle: "EHC BIEL-BIENNE U18-ELIT", loginTitle: "🔐 Coach Dashboard Login", loginBtn: "Login", slogan: "\"OUR STRENGTH IS OUR UNITY!\"", back: "← Back" },
-      fr: { mainTitle: "EHC BIEL-BIENNE U18-ÉLITE", loginTitle: "🔐 Connexion Dashboard Coach", loginBtn: "Connexion", slogan: "\"NOTRE FORCE EST NOTRE UNITÉ !\"", back: "← Retour" },
-      en: { mainTitle: "EHC BIEL-BIENNE U18-ELITE", loginTitle: "🔐 Coach Dashboard Login", loginBtn: "Login", slogan: "\"OUR STRENGTH IS OUR UNITY!\"", back: "← Back" }
+      de: { mainTitle: "EHC BIEL-BIENNE U18-ELIT", loginTitle: "🔐 Coach Dashboard Login", loginBtn: "Login", slogan: "\"OUR STRENGTH IS OUR UNITY!\"", back: "← Back", noFeedbacks: "Keine Feedbacks vorhanden." },
+      fr: { mainTitle: "EHC BIEL-BIENNE U18-ÉLITE", loginTitle: "🔐 Connexion Dashboard Coach", loginBtn: "Connexion", slogan: "\"NOTRE FORCE EST NOTRE UNITÉ !\"", back: "← Retour", noFeedbacks: "Aucun feedback disponible." },
+      en: { mainTitle: "EHC BIEL-BIENNE U18-ELITE", loginTitle: "🔐 Coach Dashboard Login", loginBtn: "Login", slogan: "\"OUR STRENGTH IS OUR UNITY!\"", back: "← Back", noFeedbacks: "No feedbacks yet." }
     };
     let currentLang = localStorage.getItem('dashboard_lang') || 'de';
     function changeLanguage(lang) {
@@ -209,13 +254,29 @@
       document.getElementById('loginBtn').textContent = t.loginBtn;
       document.getElementById('backBtn').textContent = t.back;
       document.getElementById('slogan').textContent = t.slogan;
+      // Feedback-List auch übersetzen
+      if (typeof renderFeedbacks === "function" && window._feedbacks) renderFeedbacks(window._feedbacks);
     }
     window.addEventListener('DOMContentLoaded', () => { changeLanguage(currentLang); });
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.onclick = () => changeLanguage(btn.id.replace('btn-',''));
     });
 
-    // Admin Login Dummy (nur für Demo!)
+    // Firebase INIT (ersetze durch dein eigenes Config)
+    const firebaseConfig = {
+  apiKey: "AIzaSyCCvHZN1q72UQLqrkgWb-L5X6A4WesHqRw",
+  authDomain: "ehcb-news.firebaseapp.com",
+  projectId: "ehcb-news",
+  storageBucket: "ehcb-news.firebasestorage.app",
+  messagingSenderId: "250325515447",
+  appId: "1:250325515447:web:81f10ce4ac286d10b92132"
+};
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    // Admin Login
     const correctPassword = "Coach7274";
     function checkPassword() {
       const input = document.getElementById("password").value;
@@ -224,7 +285,7 @@
         msg.textContent = '';
         document.getElementById("dashboard-section").style.display = "block";
         document.getElementById("login-section").style.display = "none";
-        // Hier Dashboard laden
+        loadFeedbacks();
       } else {
         msg.textContent = "❌ Wrong password.";
       }
@@ -232,6 +293,59 @@
     document.getElementById('password').addEventListener('keyup', function(e){
       if(e.key === "Enter") checkPassword();
     });
+
+    // Feedbacks laden & anzeigen
+    function loadFeedbacks() {
+      db.collection('feedbacks').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+        const feedbacks = [];
+        snapshot.forEach(doc => {
+          feedbacks.push({ id: doc.id, ...doc.data() });
+        });
+        window._feedbacks = feedbacks;
+        renderFeedbacks(feedbacks);
+      });
+    }
+
+    function renderFeedbacks(feedbacks) {
+      const t = translations[currentLang];
+      const list = document.getElementById('feedback-list');
+      list.innerHTML = '';
+      if (!feedbacks.length) {
+        const p = document.createElement('p');
+        p.textContent = t.noFeedbacks;
+        p.style.color = "#ffc700";
+        p.style.textAlign = "center";
+        p.style.fontWeight = "bold";
+        list.appendChild(p);
+        return;
+      }
+      feedbacks.forEach(fb => {
+        const card = document.createElement('div');
+        card.className = "feedback-card";
+        // Kopfzeile (Name, Datum)
+        const head = document.createElement('div');
+        head.className = "f-header";
+        const name = document.createElement('span');
+        name.className = "f-name";
+        name.textContent = fb.name || "-";
+        const date = document.createElement('span');
+        date.className = "f-date";
+        const dt = fb.timestamp ? new Date(fb.timestamp) : null;
+        date.textContent = dt ? dt.toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'}) : "";
+        head.appendChild(name);
+        head.appendChild(date);
+        card.appendChild(head);
+        // Alle Felder anzeigen
+        card.innerHTML += `
+          <div class="f-row"><span class="f-label">🧠 Stimmung:</span> ${fb.feeling || "-"}</div>
+          <div class="f-row"><span class="f-label">⚡ Energie-Level:</span> ${fb.energy || "-"}</div>
+          <div class="f-row"><span class="f-label">🔥 Intensität:</span> ${fb.intensity || "-"}</div>
+          <div class="f-row"><span class="f-label">🎯 Eigene Leistung:</span> ${fb.performance || "-"}</div>
+          <div class="f-row"><span class="f-label">💬 Kommentar:</span> ${fb.comment || "-"}</div>
+        `;
+        list.appendChild(card);
+      });
+    }
   </script>
 </body>
 </html>
