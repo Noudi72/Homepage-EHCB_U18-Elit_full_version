@@ -20,74 +20,42 @@
       color: var(--ehcb-white);
       min-height: 100vh;
     }
-    .logo {
-      display: block;
-      margin: 0 auto 6px auto;
+    .header-inner {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 1.2rem 0.5rem 0.7rem 0.5rem;
+      position: relative;
+    }
+    .header-left {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .header-logo {
       width: 120px;
       max-width: 26vw;
       filter: drop-shadow(0 6px 18px #0008);
+      display: block;
+      margin: 0 auto;
     }
-    header {
-      text-align: center;
-      margin-top: 14px;
-      margin-bottom: 8px;
-    }
-    #main-title {
+    .header-title {
       color: #ffc700;
       font-size: 2.1rem;
       letter-spacing: 2px;
       font-weight: 900;
-      margin: 0.2em 0 0.25em 0;
+      margin: 0;
       text-shadow: 2px 3px 8px #1a1a1a, 0 1px 0 #222;
-    }
-    .lang-switcher {
-      display: flex;
-      justify-content: center;
-      gap: 0.55rem;
-      margin-bottom: 0.19rem;
-    }
-    .lang-btn {
-      background: #fff;
-      color: #002d5b;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 25px;
-      font-weight: bold;
-      font-size: 1.09rem;
-      cursor: pointer;
-      box-shadow: 0 1px 8px #2222;
-      transition: background 0.18s;
-      outline: none;
-    }
-    .lang-btn.active, .lang-btn:focus {
-      background: #ffc700;
-      color: #002d5b;
-    }
-    .lang-btn:hover:not(.active) {
-      background: #d0021b;
-      color: #fff;
-    }
-    @media (max-width: 700px) {
-      .logo {
-        width: 66px;
-        max-width: 34vw;
-      }
-      #main-title {
-        font-size: 1.13rem;
-        letter-spacing: 1px;
-        margin-top: 0.12em;
-        margin-bottom: 0.18em;
-      }
-      .lang-btn {
-        font-size: 0.97rem;
-        padding: 8px 16px;
-      }
+      text-align: left;
     }
     .lang-switcher {
       display: flex;
       gap: 0.5rem;
-      margin-bottom: 0.16rem;
       margin-left: 0.35rem;
+      margin-bottom: 0;
     }
     .lang-btn {
       background: #fff;
@@ -110,6 +78,23 @@
       background: #d0021b;
       color: #fff;
     }
+    .back-btn {
+      position: absolute;
+      top: 26px;
+      left: 32px;
+      z-index: 10;
+      background: #002b5c;
+      color: #ffd600;
+      font-weight: bold;
+      border: 2px solid #ffd600;
+      border-radius: 10px;
+      padding: 12px 32px 10px 20px;
+      font-size: 1.19rem;
+      text-decoration: none;
+      transition: background .18s, color .18s;
+      box-shadow: 0 2px 14px #0002;
+    }
+    .back-btn:hover { background: #ffd600; color: #002b5c; }
     @media (max-width: 700px) {
       .header-inner {
         flex-direction: column;
@@ -139,25 +124,6 @@
         gap: 0.24rem;
         margin-left: 0.01rem;
       }
-    }
-    .back-btn {
-      position: absolute;
-      top: 26px;
-      left: 32px;
-      z-index: 10;
-      background: #002b5c;
-      color: #ffd600;
-      font-weight: bold;
-      border: 2px solid #ffd600;
-      border-radius: 10px;
-      padding: 12px 32px 10px 20px;
-      font-size: 1.19rem;
-      text-decoration: none;
-      transition: background .18s, color .18s;
-      box-shadow: 0 2px 14px #0002;
-    }
-    .back-btn:hover { background: #ffd600; color: #002b5c; }
-    @media (max-width: 700px) {
       .back-btn {
         top: 11px;
         left: 7px;
@@ -416,14 +382,18 @@
   </style>
 </head>
 <body>
-  <a class="back-btn" href="index.html" id="backBtn">← Back</a>
   <header>
-    <img src="wikinger.png" class="logo" alt="Logo" />
-    <h1 id="main-title">EHC BIEL-BIENNE U18-ELIT</h1>
-    <div class="lang-switcher">
-      <button class="lang-btn" id="btn-de">DE</button>
-      <button class="lang-btn" id="btn-fr">FR</button>
-      <button class="lang-btn" id="btn-en">EN</button>
+    <div class="header-inner">
+      <a class="back-btn" href="index.html" id="backBtn">← Back</a>
+      <div class="header-left">
+        <img src="wikinger.png" class="header-logo" alt="Logo" />
+        <div class="header-title" id="main-title">EHC BIEL-BIENNE U18-ELIT</div>
+      </div>
+      <div class="lang-switcher">
+        <button class="lang-btn" id="btn-de">DE</button>
+        <button class="lang-btn" id="btn-fr">FR</button>
+        <button class="lang-btn" id="btn-en">EN</button>
+      </div>
     </div>
   </header>
   <div class="container">

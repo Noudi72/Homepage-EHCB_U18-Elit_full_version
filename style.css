@@ -252,7 +252,7 @@ footer {
   color: var(--ehc-blau) !important;
 }
 
-/* Einheitliches Header-, Logo-, Titel-, Sprachumschalter-Design wie news.html */
+/* ================= EINHEITLICHER HEADER, LOGO, TITEL, SPRACHUMSCHALTER WIE IN KALENDER.HTML ================ */
 .logo, .main-logo {
   width: 120px;
   max-width: 100%;
@@ -270,7 +270,7 @@ footer {
   text-align: center;
 }
 
-/* Sprachumschalter einheitlich wie in kalender.html */
+/* Sprachumschalter exakt wie kalender.html */
 .lang-switcher {
   margin-top: 0;
   margin-bottom: 17px;
@@ -300,6 +300,15 @@ footer {
   color: #fff;
 }
 @media (max-width: 700px) {
+  .logo, .main-logo {
+    width: 85px;
+    max-width: 94vw;
+    margin-bottom: 10px;
+  }
+  .main-title, .page-title, h1#main-title {
+    font-size: 1.13rem;
+    margin-bottom: 12px;
+  }
   .lang-btn { font-size: 1.03rem; padding: 7px 13px; }
   .lang-switcher { gap: 7px; }
 }
