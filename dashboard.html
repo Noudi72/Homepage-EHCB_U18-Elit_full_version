@@ -670,10 +670,15 @@ document.getElementById('feedbackForm').addEventListener('submit', function(e) {
     comment: document.getElementById('comment').value,
     timestamp: Date.now()
   };
+
+  // FormData statt JSON!
+  const formData = new FormData();
+  Object.entries(fb).forEach(([k, v]) => formData.append(k, v));
+
   fetch("https://script.google.com/macros/s/AKfycby1suEb75mTW3P9RNvq232HBfPzIyci4__gqWs5jZHsQCAYuEsl8h9GNN5S4N4abIMo8Q/exec", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(fb)
+    body: formData
+    // KEIN Content-Type explizit setzen!
   })
   .then(res => res.json())
   .then(data => {
