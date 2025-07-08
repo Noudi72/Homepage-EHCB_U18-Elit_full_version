@@ -21,6 +21,23 @@
       font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
       color: var(--ehc-white);
     }
+    .back-btn {
+      position: absolute;
+      top: 28px;
+      left: 32px;
+      z-index: 10;
+      background: #002b5c;
+      color: #ffd600;
+      font-weight: bold;
+      border: 2px solid #ffd600;
+      border-radius: 10px;
+      padding: 12px 32px 10px 20px;
+      font-size: 1.19rem;
+      text-decoration: none;
+      transition: background .18s, color .18s;
+      box-shadow: 0 2px 14px #0002;
+    }
+    .back-btn:hover { background: #ffd600; color: #002b5c; }
     header {
       text-align: center;
       padding: 2.5rem 1rem 1.0rem 1rem;
@@ -147,26 +164,10 @@
       opacity: 0.86;
       border-top: 2px solid var(--ehc-red);
     }
-    .back-btn {
-      position: absolute;
-      top: 28px;
-      left: 32px;
-      z-index: 10;
-      background: #002b5c;
-      color: #ffd600;
-      font-weight: bold;
-      border: 2px solid #ffd600;
-      border-radius: 10px;
-      padding: 12px 32px 10px 20px;
-      font-size: 1.19rem;
-      text-decoration: none;
-      transition: background .18s, color .18s;
-      box-shadow: 0 2px 14px #0002;
-    }
-    .back-btn:hover { background: #ffd600; color: #002b5c; }
   </style>
 </head>
 <body>
+  <a class="back-btn" href="index.html" id="backBtn">← Zurück / Back</a>
   <header>
     <img src="wikinger.png" class="logo" alt="Logo" />
     <h1 id="main-title">EHC BIEL-BIENNE U18-ELIT</h1>
@@ -176,7 +177,6 @@
       <button class="lang-btn" id="btn-en">EN</button>
     </div>
   </header>
-  <a class="back-btn" href="index.html" id="backBtn">← Zurück / Back</a>
   <div class="main-content">
     <section class="card">
       <h2 id="kalender-title">📅 MIH Kalender U18</h2>

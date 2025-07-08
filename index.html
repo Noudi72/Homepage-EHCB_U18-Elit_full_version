@@ -29,7 +29,7 @@
       height: auto;
       margin-bottom: 18px;
     }
-    .title {
+    h1#main-title {
       font-size: 2.2rem;
       font-weight: bold;
       letter-spacing: 0.03em;
@@ -79,7 +79,7 @@
         width: 85px;
         margin-bottom: 10px;
       }
-      .title {
+      h1#main-title {
         font-size: 1.15rem;
         margin-bottom: 9px;
       }
@@ -91,13 +91,15 @@
   </style>
 </head>
 <body>
+  <a class="back-btn" href="index.html" id="backBtn" style="display:none;">← Zurück / Back</a>
+  <!-- Hinweis: Der Button ist auf der Startseite standardmäßig ausgeblendet, damit keine Dopplung entsteht -->
   <header>
-    <img src="wikinger.png" class="logo" alt="Wikinger-Logo" />
-    <div class="title" id="main-title" style="margin-bottom: 16px;">EHC BIEL-BIENNE U18-ELIT</div>
+    <img src="wikinger.png" class="logo" alt="Logo" />
+    <h1 id="main-title">EHC BIEL-BIENNE U18-ELIT</h1>
     <div class="lang-switcher">
-      <button class="lang-btn" data-lang="de">DE</button>
-      <button class="lang-btn" data-lang="fr">FR</button>
-      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="de" id="btn-de">DE</button>
+      <button class="lang-btn" data-lang="fr" id="btn-fr">FR</button>
+      <button class="lang-btn" data-lang="en" id="btn-en">EN</button>
     </div>
   </header>
 
