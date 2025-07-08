@@ -88,9 +88,34 @@
         padding-bottom: 0.6rem;
       }
     }
+    #global-loader {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 2000;
+      display: flex; justify-content: center; align-items: center;
+      background: rgba(10,23,54, 0.77);
+      transition: opacity 0.35s;
+    }
+    #global-loader svg {
+      animation: rotate 1.15s linear infinite;
+      width: 64px; height: 64px;
+      stroke: #FFD600;
+      stroke-width: 8;
+      fill: none;
+      stroke-linecap: round;
+    }
+    @keyframes rotate {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
   </style>
 </head>
 <body>
+  <div id="global-loader" aria-hidden="true" role="status" aria-label="Lädt">
+    <svg viewBox="0 0 50 50">
+      <circle cx="25" cy="25" r="20" stroke-dasharray="90,150" stroke-dashoffset="0"></circle>
+    </svg>
+  </div>
   <a class="back-btn" href="index.html" id="backBtn" style="display:none;">← Back</a>
   <!-- Hinweis: Der Button ist auf der Startseite standardmäßig ausgeblendet, damit keine Dopplung entsteht -->
   <header>
@@ -259,5 +284,13 @@
       });
     });
   </script>
+<script>
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const loader = document.getElementById('global-loader');
+    if(loader){ loader.style.opacity = '0'; setTimeout(()=>loader.style.display='none',340);}
+  }, 800); // nach spätestens 0.8s ausgeblendet
+});
+</script>
 </body>
 </html>

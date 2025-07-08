@@ -309,6 +309,14 @@
   </style>
 </head>
 <body>
+  <!-- Loader Overlay -->
+  <div id="loaderOverlay" style="display:flex;position:fixed;z-index:2000;top:0;left:0;width:100vw;height:100vh;align-items:center;justify-content:center;background:rgba(0,29,91,0.66);">
+    <svg width="70" height="70" viewBox="0 0 70 70" style="display:block" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="35" cy="35" r="28" fill="none" stroke="#ffc700" stroke-width="7" stroke-linecap="round" stroke-dasharray="44 94" stroke-dashoffset="0">
+        <animateTransform attributeName="transform" type="rotate" from="0 35 35" to="360 35 35" dur="1s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+  </div>
   <header>
     <div class="header-inner">
       <a class="back-btn" href="index.html" id="backBtn">← Back</a>
@@ -619,6 +627,9 @@
       }
       const listDiv = document.getElementById('newsList');
       listDiv.innerHTML = "";
+      // Loader ausblenden, sobald Rendering beginnt (egal ob leer oder nicht)
+      var loader = document.getElementById('loaderOverlay');
+      if (loader) loader.style.display = "none";
       if (!sorted.length) {
         const p = document.createElement('p');
         p.textContent = translations[currentLang].noNews;
@@ -724,6 +735,9 @@
           renderNewsList(newsList);
         });
     }
+    // Loader zu Beginn anzeigen
+    var loaderInit = document.getElementById('loaderOverlay');
+    if (loaderInit) loaderInit.style.display = "flex";
     listenToNews();
     window.addEventListener('pageshow', function(event) {
       if (event.persisted) window.location.reload();

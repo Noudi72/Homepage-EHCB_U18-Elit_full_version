@@ -266,8 +266,27 @@
       opacity: 0.93;
     }
   </style>
+  <style>
+    #ehcb-loader-bg {
+      position: fixed; inset: 0; z-index: 9999; background: rgba(0,36,80,0.25); display: flex; align-items: center; justify-content: center;
+      transition: opacity .3s;
+    }
+    #ehcb-loader-spinner {
+      width: 74px; height: 74px;
+      display: block;
+      background: none;
+    }
+    #ehcb-loader-spinner svg { width: 74px; height: 74px; display: block; }
+    @media (max-width: 700px) {
+      #ehcb-loader-spinner, #ehcb-loader-spinner svg { width: 50px; height: 50px; }
+    }
+  </style>
 </head>
 <body>
+  <div id="ehcb-loader-bg"><span id="ehcb-loader-spinner">
+    <svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" fill="none" stroke="#ffc700" stroke-width="5" stroke-linecap="round" stroke-dasharray="90" stroke-dashoffset="60">
+      <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.8s" repeatCount="indefinite"/></circle></svg>
+  </span></div>
   <header>
     <div class="header-inner">
       <a class="back-btn" href="index.html" id="backBtn">← Back</a>
@@ -695,6 +714,16 @@ document.getElementById('feedbackForm').addEventListener('submit', function(e) {
     document.getElementById('feedback-success').textContent = "Fehler beim Speichern!";
   });
 });
+</script>
+  <script>
+  // EHCB Loader entfernen, sobald geladen
+  window.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+      const loader = document.getElementById('ehcb-loader-bg');
+      if (loader) loader.style.opacity = '0';
+      setTimeout(() => { if(loader) loader.remove(); }, 350);
+    }, 800);
+  });
   </script>
 </body>
 </html>

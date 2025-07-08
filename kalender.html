@@ -115,7 +115,7 @@
     @media (max-width: 700px) {
       .main-content { padding: 0 2px;}
       .card { font-size: 1.01rem; padding: 10px 1px 7px 1px;}
-      .logo { width: 100px; } /* <-- Wert angepasst */
+      .logo { width: 100px; }
       h1 { font-size: 1.18rem;}
       iframe { height: 320px; }
     }
@@ -130,6 +130,7 @@
       padding: 26px 10px 10px 10px;
       border: 2.8px solid var(--ehc-yellow);
       margin: 0 auto;
+      position: relative;
     }
     .card h2 {
       color: var(--ehc-yellow);
@@ -164,6 +165,34 @@
       opacity: 0.86;
       border-top: 2px solid var(--ehc-red);
     }
+
+    /* Loader-Styles */
+    .loader-backdrop {
+      position: fixed;
+      z-index: 1000;
+      inset: 0;
+      background: rgba(7, 49, 102, 0.96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s;
+    }
+    .svg-loader {
+      width: 72px;
+      height: 72px;
+      display: block;
+    }
+    .svg-loader circle {
+      fill: none;
+      stroke: #ffd600;
+      stroke-width: 7;
+      stroke-linecap: round;
+      stroke-dasharray: 180 60;
+      animation: spin-loader 1s linear infinite;
+    }
+    @keyframes spin-loader {
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -180,8 +209,14 @@
   <div class="main-content">
     <section class="card">
       <h2 id="kalender-title">📅 MIH Kalender U18</h2>
+      <div id="loader" class="loader-backdrop">
+        <svg class="svg-loader" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="28"/>
+        </svg>
+      </div>
       <iframe id="kalender-frame"
-        src="https://calendar.google.com/calendar/embed?src=mubk4n72crsbuptn4drqpt77rjsial8g%40import.calendar.google.com&ctz=Europe%2FZurich&mode=AGENDA">
+        src="https://calendar.google.com/calendar/embed?src=mubk4n72crsbuptn4drqpt77rjsial8g%40import.calendar.google.com&ctz=Europe%2FZurich&mode=AGENDA"
+        onload="document.getElementById('loader').style.display='none';">
       </iframe>
       <p class="calendar-hint" id="kalender-hint">
         (Für eine bessere Übersicht rechts oben auf „Agenda“ klicken)
