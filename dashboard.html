@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Coach Dashboard</title>
+  <title>EHCB Feedback & Coach Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="icon" href="ehcb-icon.png" type="image/png" />
   <link rel="stylesheet" href="style.css">
@@ -14,6 +14,7 @@
       --ehcb-yellow: #ffc700;
       --ehcb-white: #fff;
       --ehcb-grey: #f5f5f5;
+      --ehcb-red: #d0021b;
     }
     html, body {
       margin: 0; padding: 0;
@@ -26,22 +27,20 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
       margin-bottom: 0.2rem;
       position: relative;
     }
     .back-btn {
       position: absolute;
-      top: 22px;
-      left: 22px;
-      z-index: 10;
+      top: 18px; left: 18px; z-index: 10;
       background: #002b5c;
       color: #ffd600;
       font-weight: bold;
       border: 2px solid #ffd600;
       border-radius: 10px;
-      padding: 12px 32px 10px 20px;
-      font-size: 1.19rem;
+      padding: 10px 28px 9px 17px;
+      font-size: 1.09rem;
       text-decoration: none;
       transition: background .18s, color .18s;
       box-shadow: 0 2px 14px #0002;
@@ -58,7 +57,7 @@
       font-weight: 900;
       letter-spacing: 2px;
       text-shadow: 2px 3px 8px #1a1a1a, 0 1px 0 #222;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.25rem;
       text-align: center;
     }
     .lang-switcher {
@@ -96,6 +95,66 @@
       .back-btn { top: 7px; left: 6px; font-size: 1rem; padding: 8px 13px 7px 10px; }
     }
     .main-content { max-width: 900px; margin: 0 auto; }
+    /* --- Feedback Form --- */
+    .feedback-form-section {
+      background: transparent;
+      max-width: 620px;
+      margin: 2rem auto 2.2rem auto;
+      padding: 2.1rem 1.4rem 1.7rem 1.4rem;
+      border-radius: 12px;
+      text-align: left;
+      box-shadow: 0 1px 12px #0002;
+      border: 3px solid #fff;
+    }
+    .feedback-form-section h2 {
+      color: #ffc700;
+      text-align: center;
+      margin-bottom: 1.2rem;
+      font-size: 1.38rem;
+      letter-spacing: 0.5px;
+    }
+    .feedback-form-section label {
+      color: #ffc700;
+      font-weight: 600;
+      margin-bottom: 0.13rem;
+      display: block;
+      font-size: 1.07rem;
+    }
+    .feedback-form-section input[type="text"],
+    .feedback-form-section textarea {
+      width: 100%;
+      margin-bottom: 1.02rem;
+      padding: 12px;
+      font-size: 1.13rem;
+      border-radius: 7px;
+      border: 1.3px solid #bbb;
+      box-shadow: 0 1px 4px #2221;
+      background: #fff;
+      color: #002d5b;
+      resize: none;
+    }
+    .feedback-form-section button {
+      width: 100%;
+      background: #ffc700;
+      color: #002d5b;
+      font-weight: 700;
+      font-size: 1.13rem;
+      padding: 14px 0;
+      border-radius: 8px;
+      border: none;
+      margin-top: 0.5rem;
+      cursor: pointer;
+      transition: background .16s, color .16s;
+    }
+    .feedback-form-section button:hover { background: #d0021b; color: #fff; }
+    .feedback-form-section #feedback-success {
+      margin-top: 1.1rem;
+      color: #ffc700;
+      font-weight: bold;
+      text-align: center;
+      font-size: 1.06rem;
+    }
+    /* --- Login + Dashboard --- */
     .login-card {
       background: transparent;
       max-width: 900px;
@@ -105,14 +164,21 @@
       border: none;
       border-radius: 8px;
     }
+    .login-card h2 {
+      color: #ffc700;
+      text-align: center;
+      font-size: 1.17rem;
+      margin-bottom: 1.09rem;
+      letter-spacing: 0.5px;
+    }
     .login-card input[type="password"] {
       width: 95%;
       max-width: 620px;
-      margin: 0.9rem auto 0.9rem auto;
-      padding: 16px;
-      font-size: 1.12rem;
+      margin: 0.6rem auto 0.9rem auto;
+      padding: 14px;
+      font-size: 1.11rem;
       border-radius: 7px;
-      border: 1.4px solid #bbb;
+      border: 1.2px solid #bbb;
       box-shadow: 0 1px 6px #2221;
       display: block;
       background: #fff;
@@ -215,11 +281,29 @@
     </div>
   </header>
   <div class="main-content">
+    <!-- Feedback Formular für Spieler (sichtbar wenn nicht eingeloggt) -->
+    <section class="feedback-form-section" id="feedback-form-section">
+      <form id="feedbackForm" autocomplete="off">
+        <h2 id="feedbackFormTitle">Spieler Reflexion</h2>
+        <label id="labelName">Name*</label>
+        <input type="text" id="name" name="name" required>
+        <label id="labelFeeling" for="feeling">🧠 Stimmung</label>
+        <select id="feeling" name="feeling" required></select>
+        <label id="labelEnergy" for="energy">⚡ Energie-Level</label>
+        <select id="energy" name="energy" required></select>
+        <label id="labelIntensity" for="intensity">🔥 Intensität Training/Spiel</label>
+        <select id="intensity" name="intensity"></select>
+        <label id="labelPerformance" for="performance">🎯 Eigene Leistung</label>
+        <select id="performance" name="performance"></select>
+        <label id="labelComment">💬 Kommentar</label>
+        <textarea id="comment" name="comment"></textarea>
+        <button type="submit" id="submitBtn">Absenden</button>
+        <div id="feedback-success"></div>
+      </form>
+    </section>
     <!-- Admin Login -->
     <section class="login-card" id="login-section">
-      <h2 style="color:var(--ehcb-yellow);text-align:center;font-size:1.23rem;margin-bottom:1.15rem;" id="loginTitle">
-        🔐 Coach Dashboard Login
-      </h2>
+      <h2 id="loginTitle">🔐 Coach Dashboard Login</h2>
       <input type="password" id="password" placeholder="Admin Passwort eingeben" autocomplete="current-password" />
       <button onclick="checkPassword()" id="loginBtn">Login</button>
       <div id="login-msg"></div>
@@ -237,12 +321,216 @@
   </footer>
   <script>
     // Sprachumschaltung identisch zu kalender.html!
+    // Feedback-Formular Übersetzungen & Dropdown-Optionen wie in feedback.html
     const translations = {
-      de: { mainTitle: "EHC BIEL-BIENNE U18-ELIT", loginTitle: "🔐 Coach Dashboard Login", loginBtn: "Login", slogan: "\"OUR STRENGTH IS OUR UNITY!\"", back: "← Back", noFeedbacks: "Keine Feedbacks vorhanden." },
-      fr: { mainTitle: "EHC BIEL-BIENNE U18-ÉLITE", loginTitle: "🔐 Connexion Dashboard Coach", loginBtn: "Connexion", slogan: "\"NOTRE FORCE EST NOTRE UNITÉ !\"", back: "← Retour", noFeedbacks: "Aucun feedback disponible." },
-      en: { mainTitle: "EHC BIEL-BIENNE U18-ELITE", loginTitle: "🔐 Coach Dashboard Login", loginBtn: "Login", slogan: "\"OUR STRENGTH IS OUR UNITY!\"", back: "← Back", noFeedbacks: "No feedbacks yet." }
+      de: {
+        mainTitle: "EHC BIEL-BIENNE U18-ELIT",
+        feedbackFormTitle: "Spieler Reflexion",
+        labelName: "Name*",
+        labelFeeling: "Wie hast du dich gefühlt?",
+        labelEnergy: "Energie-Level",
+        labelIntensity: "Intensität Training/Spiel",
+        labelPerformance: "Eigene Leistung",
+        labelComment: "Kommentar",
+        submitBtn: "Absenden",
+        loginTitle: "🔐 Coach Dashboard Login",
+        loginBtn: "Login",
+        slogan: "\"OUR STRENGTH IS OUR UNITY!\"",
+        back: "← Back",
+        noFeedbacks: "Keine Feedbacks vorhanden.",
+        feedbackSuccess: "✔️ Feedback erfolgreich übermittelt!",
+        feelingOptions: [
+          {value:"", text:"Bitte wählen..."},
+          {value:"🟢 Top", text:"🟢 Top"},
+          {value:"🟡 Okay", text:"🟡 Okay"},
+          {value:"🔴 Tired", text:"🔴 Müde"}
+        ],
+        energyOptions: [
+          {value:"", text:"Bitte wählen..."},
+          {value:"1", text:"1 – 😴 sehr müde"},
+          {value:"2", text:"2"},
+          {value:"3", text:"3"},
+          {value:"4", text:"4"},
+          {value:"5", text:"5"},
+          {value:"6", text:"6"},
+          {value:"7", text:"7"},
+          {value:"8", text:"8"},
+          {value:"9", text:"9"},
+          {value:"10", text:"10 – ⚡️ voller Power"}
+        ],
+        intensityOptions: [
+          {value:"", text:"Bitte wählen..."},
+          {value:"1", text:"1 – sehr locker"},
+          {value:"2", text:"2"},
+          {value:"3", text:"3"},
+          {value:"4", text:"4"},
+          {value:"5", text:"5 – mittel"},
+          {value:"6", text:"6"},
+          {value:"7", text:"7"},
+          {value:"8", text:"8"},
+          {value:"9", text:"9"},
+          {value:"10", text:"10 – maximal"}
+        ],
+        performanceOptions: [
+          {value:"", text:"Bitte wählen..."},
+          {value:"1", text:"1 – ausbaufähig"},
+          {value:"2", text:"2 – mässig"},
+          {value:"3", text:"3 – okay"},
+          {value:"4", text:"4 – solide"},
+          {value:"5", text:"5 – gut"},
+          {value:"6", text:"6 – sehr gut"},
+          {value:"7", text:"7 – stark"},
+          {value:"8", text:"8 – super"},
+          {value:"9", text:"9 – fast optimal"},
+          {value:"10", text:"10 – top"}
+        ]
+      },
+      fr: {
+        mainTitle: "EHC BIEL-BIENNE U18-ÉLITE",
+        feedbackFormTitle: "Réflexion Joueur",
+        labelName: "Nom*",
+        labelFeeling: "Comment tu t'es senti?",
+        labelEnergy: "Niveau d'énergie",
+        labelIntensity: "Intensité entraînement/match",
+        labelPerformance: "Performance personnelle",
+        labelComment: "Commentaire",
+        submitBtn: "Envoyer",
+        loginTitle: "🔐 Connexion Dashboard Coach",
+        loginBtn: "Connexion",
+        slogan: "\"NOTRE FORCE EST NOTRE UNITÉ !\"",
+        back: "← Retour",
+        noFeedbacks: "Aucun feedback disponible.",
+        feedbackSuccess: "✔️ Feedback transmis avec succès !",
+        feelingOptions: [
+          { value: "", label: "Veuillez choisir..." },
+          { value: "Top", label: "🟢 Top" },
+          { value: "Bien", label: "🟡 Bien" },
+          { value: "Fatigué", label: "🔴 Fatigué" }
+        ],
+        energyOptions: [
+          { value: "", label: "Veuillez choisir..." },
+          { value: "1", label: "1 – 😴 très fatigué" },
+          { value: "2", label: "2" },
+          { value: "3", label: "3" },
+          { value: "4", label: "4" },
+          { value: "5", label: "5" },
+          { value: "6", label: "6" },
+          { value: "7", label: "7" },
+          { value: "8", label: "8" },
+          { value: "9", label: "9" },
+          { value: "10", label: "10 – ⚡️ plein d'énergie" }
+        ],
+        intensityOptions: [
+          { value: "", label: "Veuillez choisir..." },
+          { value: "1", label: "1 – très facile" },
+          { value: "2", label: "2" },
+          { value: "3", label: "3" },
+          { value: "4", label: "4" },
+          { value: "5", label: "5" },
+          { value: "6", label: "6" },
+          { value: "7", label: "7" },
+          { value: "8", label: "8" },
+          { value: "9", label: "9" },
+          { value: "10", label: "10 – maximale" }
+        ],
+        performanceOptions: [
+          { value: "", label: "Veuillez choisir..." },
+          { value: "1", label: "1 – à améliorer" },
+          { value: "2", label: "2" },
+          { value: "3", label: "3" },
+          { value: "4", label: "4" },
+          { value: "5", label: "5" },
+          { value: "6", label: "6" },
+          { value: "7", label: "7" },
+          { value: "8", label: "8" },
+          { value: "9", label: "9" },
+          { value: "10", label: "10 – top" }
+        ]
+      },
+      en: {
+        mainTitle: "EHC BIEL-BIENNE U18-ELITE",
+        feedbackFormTitle: "Player Reflection",
+        labelName: "Name*",
+        labelFeeling: "How did you feel?",
+        labelEnergy: "Energy Level",
+        labelIntensity: "Training/Game Intensity",
+        labelPerformance: "Own Performance",
+        labelComment: "Comment",
+        submitBtn: "Submit",
+        loginTitle: "🔐 Coach Dashboard Login",
+        loginBtn: "Login",
+        slogan: "\"OUR STRENGTH IS OUR UNITY!\"",
+        back: "← Back",
+        noFeedbacks: "No feedbacks yet.",
+        feedbackSuccess: "✔️ Feedback submitted successfully!",
+        feelingOptions: [
+          { value: "", label: "Please select..." },
+          { value: "Top", label: "🟢 Top" },
+          { value: "Okay", label: "🟡 Okay" },
+          { value: "Tired", label: "🔴 Tired" }
+        ],
+        energyOptions: [
+          { value: "", label: "Please select..." },
+          { value: "1", label: "1 – 😴 very tired" },
+          { value: "2", label: "2" },
+          { value: "3", label: "3" },
+          { value: "4", label: "4" },
+          { value: "5", label: "5" },
+          { value: "6", label: "6" },
+          { value: "7", label: "7" },
+          { value: "8", label: "8" },
+          { value: "9", label: "9" },
+          { value: "10", label: "10 – ⚡️ full power" }
+        ],
+        intensityOptions: [
+          { value: "", label: "Please select..." },
+          { value: "1", label: "1 – very easy" },
+          { value: "2", label: "2" },
+          { value: "3", label: "3" },
+          { value: "4", label: "4" },
+          { value: "5", label: "5" },
+          { value: "6", label: "6" },
+          { value: "7", label: "7" },
+          { value: "8", label: "8" },
+          { value: "9", label: "9" },
+          { value: "10", label: "10 – maximal" }
+        ],
+        performanceOptions: [
+          { value: "", label: "Please select..." },
+          { value: "1", label: "1 – needs work" },
+          { value: "2", label: "2" },
+          { value: "3", label: "3" },
+          { value: "4", label: "4" },
+          { value: "5", label: "5" },
+          { value: "6", label: "6" },
+          { value: "7", label: "7" },
+          { value: "8", label: "8" },
+          { value: "9", label: "9" },
+          { value: "10", label: "10 – top" }
+        ]
+      }
     };
     let currentLang = localStorage.getItem('dashboard_lang') || 'de';
+    function fillDropdowns(lang) {
+      const t = translations[lang];
+      // Helper to fill a select element, supports both "label" and "text"
+      function fillSelect(selectId, options) {
+        const sel = document.getElementById(selectId);
+        if (!sel) return;
+        sel.innerHTML = "";
+        options.forEach(opt => {
+          const o = document.createElement('option');
+          o.value = opt.value;
+          // Prefer "text" if present, else "label"
+          o.textContent = typeof opt.text === "string" ? opt.text : (typeof opt.label === "string" ? opt.label : "");
+          sel.appendChild(o);
+        });
+      }
+      fillSelect("feeling", t.feelingOptions);
+      fillSelect("energy", t.energyOptions);
+      fillSelect("intensity", t.intensityOptions);
+      fillSelect("performance", t.performanceOptions);
+    }
     function changeLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('dashboard_lang', lang);
@@ -254,6 +542,16 @@
       document.getElementById('loginBtn').textContent = t.loginBtn;
       document.getElementById('backBtn').textContent = t.back;
       document.getElementById('slogan').textContent = t.slogan;
+      // Feedback Formular Felder
+      document.getElementById('feedbackFormTitle').textContent = t.feedbackFormTitle;
+      document.getElementById('labelName').textContent = t.labelName;
+      document.getElementById('labelFeeling').textContent = "🧠 " + t.labelFeeling;
+      document.getElementById('labelEnergy').textContent = "⚡ " + t.labelEnergy;
+      document.getElementById('labelIntensity').textContent = "🔥 " + t.labelIntensity;
+      document.getElementById('labelPerformance').textContent = "🎯 " + t.labelPerformance;
+      document.getElementById('labelComment').textContent = "💬 " + t.labelComment;
+      document.getElementById('submitBtn').textContent = t.submitBtn;
+      fillDropdowns(lang);
       // Feedback-List auch übersetzen
       if (typeof renderFeedbacks === "function" && window._feedbacks) renderFeedbacks(window._feedbacks);
     }
@@ -262,15 +560,15 @@
       btn.onclick = () => changeLanguage(btn.id.replace('btn-',''));
     });
 
-    // Firebase INIT (ersetze durch dein eigenes Config)
+    // Firebase INIT
     const firebaseConfig = {
-  apiKey: "AIzaSyCCvHZN1q72UQLqrkgWb-L5X6A4WesHqRw",
-  authDomain: "ehcb-news.firebaseapp.com",
-  projectId: "ehcb-news",
-  storageBucket: "ehcb-news.firebasestorage.app",
-  messagingSenderId: "250325515447",
-  appId: "1:250325515447:web:81f10ce4ac286d10b92132"
-};
+      apiKey: "AIzaSyCCvHZN1q72UQLqrkgWb-L5X6A4WesHqRw",
+      authDomain: "ehcb-news.firebaseapp.com",
+      projectId: "ehcb-news",
+      storageBucket: "ehcb-news.firebasestorage.app",
+      messagingSenderId: "250325515447",
+      appId: "1:250325515447:web:81f10ce4ac286d10b92132"
+    };
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
@@ -285,6 +583,7 @@
         msg.textContent = '';
         document.getElementById("dashboard-section").style.display = "block";
         document.getElementById("login-section").style.display = "none";
+        document.getElementById("feedback-form-section").style.display = "none";
         loadFeedbacks();
       } else {
         msg.textContent = "❌ Wrong password.";
@@ -337,15 +636,38 @@
         card.appendChild(head);
         // Alle Felder anzeigen
         card.innerHTML += `
-          <div class="f-row"><span class="f-label">🧠 Stimmung:</span> ${fb.feeling || "-"}</div>
-          <div class="f-row"><span class="f-label">⚡ Energie-Level:</span> ${fb.energy || "-"}</div>
-          <div class="f-row"><span class="f-label">🔥 Intensität:</span> ${fb.intensity || "-"}</div>
-          <div class="f-row"><span class="f-label">🎯 Eigene Leistung:</span> ${fb.performance || "-"}</div>
-          <div class="f-row"><span class="f-label">💬 Kommentar:</span> ${fb.comment || "-"}</div>
+          <div class="f-row"><span class="f-label">🧠 ${t.labelFeeling}:</span> ${fb.feeling || "-"}</div>
+          <div class="f-row"><span class="f-label">⚡ ${t.labelEnergy}:</span> ${fb.energy || "-"}</div>
+          <div class="f-row"><span class="f-label">🔥 ${t.labelIntensity}:</span> ${fb.intensity || "-"}</div>
+          <div class="f-row"><span class="f-label">🎯 ${t.labelPerformance}:</span> ${fb.performance || "-"}</div>
+          <div class="f-row"><span class="f-label">💬 ${t.labelComment}:</span> ${fb.comment || "-"}</div>
         `;
         list.appendChild(card);
       });
     }
+    // --- FEEDBACK FORM HANDLER (schreibt direkt in Firestore!) ---
+    document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Felder auslesen
+      const t = translations[currentLang];
+      const fb = {
+        name: document.getElementById('name').value,
+        feeling: document.getElementById('feeling').value,
+        energy: document.getElementById('energy').value,
+        intensity: document.getElementById('intensity').value,
+        performance: document.getElementById('performance').value,
+        comment: document.getElementById('comment').value,
+        timestamp: Date.now()
+      };
+      db.collection('feedbacks').add(fb).then(() => {
+        document.getElementById('feedback-success').textContent = t.feedbackSuccess;
+        document.getElementById('feedbackForm').reset();
+        fillDropdowns(currentLang); // reset selects to placeholder
+        setTimeout(() => { document.getElementById('feedback-success').textContent = ""; }, 2500);
+      }).catch(() => {
+        document.getElementById('feedback-success').textContent = "Fehler beim Speichern!";
+      });
+    });
   </script>
 </body>
 </html>
