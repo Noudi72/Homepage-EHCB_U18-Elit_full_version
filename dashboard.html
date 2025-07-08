@@ -595,14 +595,26 @@
 
     // Feedbacks laden & anzeigen
     function loadFeedbacks() {
-      db.collection('feedbacks').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-        const feedbacks = [];
-        snapshot.forEach(doc => {
-          feedbacks.push({ id: doc.id, ...doc.data() });
-        });
-        window._feedbacks = feedbacks;
-        renderFeedbacks(feedbacks);
-      });
+      // GOOGLE SHEETS APP SCRIPT
+      const apiUrl = "https://script.google.com/macros/s/AKfycbwL1IwFze4LFJ5vllA-s7MpnG_PTSJUMXTI-BV5Q0d54tjrscXx710xr672w3t0-ikPmw/exec?action=list";
+      fetch(apiUrl)
+        .then(r => r.json())
+        .then(data => {
+          if (data && Array.isArray(data.feedbacks)) {
+            renderFeedbacks(data.feedbacks.map(fb => ({
+              name: fb.name,
+              feeling: fb.feeling,
+              energy: fb.energy,
+              intensity: fb.intensity,
+              performance: fb.performance,
+              comment: fb.comment,
+              timestamp: Number(fb.timestamp || Date.now())
+            })));
+          } else {
+            renderFeedbacks([]);
+          }
+        })
+        .catch(() => renderFeedbacks([]));
     }
 
     function renderFeedbacks(feedbacks) {
