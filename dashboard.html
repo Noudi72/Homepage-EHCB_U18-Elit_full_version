@@ -223,7 +223,7 @@
       border-radius: 9px;
       box-shadow: 0 2px 10px #0002;
       padding: 1.2rem 1.4rem;
-      margin-bottom: 1.15rem;
+      margin-bottom: 2.2rem; /* Abstand zwischen den Karten */
       max-width: 800px;
       margin-left: auto;
       margin-right: auto;
@@ -708,11 +708,13 @@
         head.appendChild(date);
         card.appendChild(head);
         card.innerHTML += `
-          <div class="f-row"><span class="f-label">🧠 ${t.labelFeeling}:</span> ${fb.feeling || "-"}</div>
-          <div class="f-row"><span class="f-label">⚡ ${t.labelEnergy}:</span> ${fb.energy || "-"}</div>
-          <div class="f-row"><span class="f-label">🔥 ${t.labelIntensity}:</span> ${fb.intensity || "-"}</div>
-          <div class="f-row"><span class="f-label">🎯 ${t.labelPerformance}:</span> ${fb.performance || "-"}</div>
-          <div class="f-row"><span class="f-label">💬 ${t.labelComment}:</span> ${fb.comment || "-"}</div>
+          <div class="f-grid">
+            <div class="f-label">🧠 ${t.labelFeeling}:</div><div class="f-value">${fb.feeling || "-"}</div>
+            <div class="f-label">⚡ ${t.labelEnergy}:</div><div class="f-value">${fb.energy || "-"}</div>
+            <div class="f-label">🔥 ${t.labelIntensity}:</div><div class="f-value">${fb.intensity || "-"}</div>
+            <div class="f-label">🎯 ${t.labelPerformance}:</div><div class="f-value">${fb.performance || "-"}</div>
+            <div class="f-label">💬 ${t.labelComment}:</div><div class="f-value">${fb.comment || "-"}</div>
+          </div>
         `;
         list.appendChild(card);
       });

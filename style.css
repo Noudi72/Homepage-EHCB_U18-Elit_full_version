@@ -313,4 +313,21 @@ footer {
     gap: 7px;
   }
 }
-/* ---- EHCB Header/Sprachbutton Style Stand 07/2025, identisch kalender.html ---- */
+
+/* Feedback-Grid für bündige Spalten */
+.f-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  row-gap: 0.18rem;
+  column-gap: 1.1rem;
+  margin-bottom: 0.2rem;
+}
+.f-label {
+  font-weight: bold;
+  text-align: left;
+  white-space: nowrap;
+}
+.f-value {
+  text-align: left;
+  word-break: break-word;
+}
