@@ -617,6 +617,7 @@
         document.getElementById("dashboard-section").style.display = "block";
         document.getElementById("login-section").style.display = "none";
         document.getElementById("feedback-form-section").style.display = "none";
+        setDashboardListeners(); // <-- Event Listener jetzt setzen!
         loadFeedbacks();
       } else {
         msg.textContent = "❌ Wrong password.";
@@ -651,16 +652,22 @@
         .catch(() => renderFeedbacks([]));
     }
 
+    function safeIncludes(val, search) {
+      if (typeof val === "string") return val.toLowerCase().includes(search);
+      if (typeof val === "number") return val.toString().toLowerCase().includes(search);
+      return false;
+    }
+
     function renderFeedbacks(feedbacks) {
       let search = (document.getElementById('feedbackSearch')?.value || '').toLowerCase();
       let sort = (document.getElementById('sortField')?.value || 'date_desc');
       let listToShow = feedbacks.filter(fb =>
-        (fb.name && fb.name.toLowerCase().includes(search)) ||
-        (fb.comment && fb.comment.toLowerCase().includes(search)) ||
-        (fb.feeling && fb.feeling.toLowerCase().includes(search)) ||
-        (fb.energy && fb.energy.toLowerCase().includes(search)) ||
-        (fb.intensity && fb.intensity.toLowerCase().includes(search)) ||
-        (fb.performance && fb.performance.toLowerCase().includes(search))
+        safeIncludes(fb.name, search) ||
+        safeIncludes(fb.comment, search) ||
+        safeIncludes(fb.feeling, search) ||
+        safeIncludes(fb.energy, search) ||
+        safeIncludes(fb.intensity, search) ||
+        safeIncludes(fb.performance, search)
       );
       // Sortieren nach Auswahl:
       listToShow = listToShow.slice();
@@ -746,21 +753,22 @@
       });
     });
 
-    // *** Event Listener für Suchfeld & Sortierung (richtig platziert – GANZ AM ENDE!) ***
-    document.addEventListener("DOMContentLoaded", function() {
+    function setDashboardListeners() {
       const input = document.getElementById('feedbackSearch');
-      if(input) {
+      if(input && !input.dataset.listenerSet) {
         input.addEventListener('input', function() {
           renderFeedbacks(_feedbacksRaw);
         });
+        input.dataset.listenerSet = "1";
       }
       const sort = document.getElementById('sortField');
-      if(sort) {
+      if(sort && !sort.dataset.listenerSet) {
         sort.addEventListener('change', function() {
           renderFeedbacks(_feedbacksRaw);
         });
+        sort.dataset.listenerSet = "1";
       }
-    });
+    }
   </script>
   <script>
   // EHCB Loader entfernen, sobald geladen
