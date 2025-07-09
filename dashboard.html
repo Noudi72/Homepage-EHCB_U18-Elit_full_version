@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <title>EHCB Feedback & Coach Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="icon" href="ehcb-icon.png" type="image/png" />
+  <link rel="icon" href="ehcb-icon.png" type="image/png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="ehcb-icon.png" sizes="192x192" />
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <style>
     :root {
       --ehcb-blue: #002d5b;
@@ -329,6 +329,17 @@
     </section>
     <!-- Dashboard Content (hidden by default) -->
     <div id="dashboard-section" style="display:none;">
+      <!-- SUCHFELD -->
+      <input type="text" id="feedbackSearch" placeholder="Feedback durchsuchen..." style="width:100%;max-width:400px;margin:0 auto 1.3rem auto;display:block;padding:12px;font-size:1.09rem;border-radius:7px;border:1.2px solid #bbb;background:#fff;color:#002d5b;box-shadow:0 1px 6px #2221;">
+      <!-- SORTIERFELD -->
+      <div style="width:100%;max-width:400px;margin:0 auto 1.0rem auto;display:flex;gap:0.5rem;">
+        <select id="sortField" style="flex:1;padding:10px;border-radius:7px;border:1.2px solid #bbb;">
+          <option value="date_desc">⏳ Neueste zuerst</option>
+          <option value="date_asc">⏳ Älteste zuerst</option>
+          <option value="name_az">🔤 Name A–Z</option>
+          <option value="name_za">🔤 Name Z–A</option>
+        </select>
+      </div>
       <div class="feedback-list" id="feedback-list"></div>
     </div>
   </div>
@@ -339,8 +350,7 @@
     © 2025 EHC Biel-Bienne U18-Elit
   </footer>
   <script>
-    // Sprachumschaltung identisch zu kalender.html!
-    // Feedback-Formular Übersetzungen & Dropdown-Optionen wie in feedback.html
+    // Übersetzungen & Dropdowns
     const translations = {
       de: {
         mainTitle: "EHC BIEL-BIENNE U18-ELIT",
@@ -530,9 +540,11 @@
       }
     };
     let currentLang = localStorage.getItem('dashboard_lang') || 'de';
+    let _feedbacksRaw = [];
+    let currentSort = 'date_desc';
+
     function fillDropdowns(lang) {
       const t = translations[lang];
-      // Helper to fill a select element, supports both "label" and "text"
       function fillSelect(selectId, options) {
         const sel = document.getElementById(selectId);
         if (!sel) return;
@@ -540,7 +552,6 @@
         options.forEach(opt => {
           const o = document.createElement('option');
           o.value = opt.value;
-          // Prefer "text" if present, else "label"
           o.textContent = typeof opt.text === "string" ? opt.text : (typeof opt.label === "string" ? opt.label : "");
           sel.appendChild(o);
         });
@@ -550,6 +561,7 @@
       fillSelect("intensity", t.intensityOptions);
       fillSelect("performance", t.performanceOptions);
     }
+
     function changeLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('dashboard_lang', lang);
@@ -561,7 +573,6 @@
       document.getElementById('loginBtn').textContent = t.loginBtn;
       document.getElementById('backBtn').textContent = t.back;
       document.getElementById('slogan').textContent = t.slogan;
-      // Feedback Formular Felder
       document.getElementById('feedbackFormTitle').textContent = t.feedbackFormTitle;
       document.getElementById('labelName').textContent = t.labelName;
       document.getElementById('labelFeeling').textContent = "🧠 " + t.labelFeeling;
@@ -571,27 +582,30 @@
       document.getElementById('labelComment').textContent = "💬 " + t.labelComment;
       document.getElementById('submitBtn').textContent = t.submitBtn;
       fillDropdowns(lang);
-      // Feedback-List auch übersetzen
-      if (typeof renderFeedbacks === "function" && window._feedbacks) renderFeedbacks(window._feedbacks);
+      renderFeedbacks(_feedbacksRaw);
+      // Suchfeld-Placeholder
+      if(document.getElementById('feedbackSearch')) {
+        document.getElementById('feedbackSearch').placeholder = {
+          de: "Feedback durchsuchen...",
+          fr: "Rechercher dans les feedbacks...",
+          en: "Search feedbacks..."
+        }[lang] || "Feedback durchsuchen...";
+      }
+      // Sortieroptionen übersetzen
+      if(document.getElementById('sortField')) {
+        const options = {
+          de: ["⏳ Neueste zuerst","⏳ Älteste zuerst","🔤 Name A–Z","🔤 Name Z–A"],
+          fr: ["⏳ Les plus récents","⏳ Les plus anciens","🔤 Nom A–Z","🔤 Nom Z–A"],
+          en: ["⏳ Newest first","⏳ Oldest first","🔤 Name A–Z","🔤 Name Z–A"]
+        }[lang] || options['de'];
+        Array.from(document.getElementById('sortField').options).forEach((opt,i)=>{opt.textContent=options[i]});
+      }
     }
+
     window.addEventListener('DOMContentLoaded', () => { changeLanguage(currentLang); });
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.onclick = () => changeLanguage(btn.id.replace('btn-',''));
     });
-
-    // Firebase INIT
-    const firebaseConfig = {
-      apiKey: "AIzaSyCCvHZN1q72UQLqrkgWb-L5X6A4WesHqRw",
-      authDomain: "ehcb-news.firebaseapp.com",
-      projectId: "ehcb-news",
-      storageBucket: "ehcb-news.firebasestorage.app",
-      messagingSenderId: "250325515447",
-      appId: "1:250325515447:web:81f10ce4ac286d10b92132"
-    };
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-    const db = firebase.firestore();
 
     // Admin Login
     const correctPassword = "Coach7274";
@@ -612,15 +626,14 @@
       if(e.key === "Enter") checkPassword();
     });
 
-    // Feedbacks laden & anzeigen
+    // Feedbacks laden & anzeigen (mit Sortierung und Suchfunktion)
     function loadFeedbacks() {
-      // GOOGLE SHEETS APP SCRIPT - NEUE URL
       const apiUrl = "https://script.google.com/macros/s/AKfycbzb-b7BmMtV2qGtmYyg6xte2o1lRKlt4BCPbU0PcfuGDdN95TBgHYtPxmNWs5VEASTn0w/exec?action=list";
       fetch(apiUrl)
         .then(r => r.json())
         .then(data => {
           if (data && Array.isArray(data.feedbacks)) {
-            renderFeedbacks(data.feedbacks.map(fb => ({
+            _feedbacksRaw = data.feedbacks.map(fb => ({
               name: fb.name,
               feeling: fb.feeling,
               energy: fb.energy,
@@ -628,8 +641,10 @@
               performance: fb.performance,
               comment: fb.comment,
               timestamp: Number(fb.timestamp || Date.now())
-            })));
+            }));
+            renderFeedbacks(_feedbacksRaw);
           } else {
+            _feedbacksRaw = [];
             renderFeedbacks([]);
           }
         })
@@ -637,10 +652,31 @@
     }
 
     function renderFeedbacks(feedbacks) {
+      let search = (document.getElementById('feedbackSearch')?.value || '').toLowerCase();
+      let sort = (document.getElementById('sortField')?.value || 'date_desc');
+      let listToShow = feedbacks.filter(fb =>
+        (fb.name && fb.name.toLowerCase().includes(search)) ||
+        (fb.comment && fb.comment.toLowerCase().includes(search)) ||
+        (fb.feeling && fb.feeling.toLowerCase().includes(search)) ||
+        (fb.energy && fb.energy.toLowerCase().includes(search)) ||
+        (fb.intensity && fb.intensity.toLowerCase().includes(search)) ||
+        (fb.performance && fb.performance.toLowerCase().includes(search))
+      );
+      // Sortieren nach Auswahl:
+      listToShow = listToShow.slice();
+      if (sort === 'date_desc') {
+        listToShow.sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
+      } else if (sort === 'date_asc') {
+        listToShow.sort((a, b) => Number(a.timestamp) - Number(b.timestamp));
+      } else if (sort === 'name_az') {
+        listToShow.sort((a, b) => (a.name || '').localeCompare(b.name || '', undefined, {sensitivity:'base'}));
+      } else if (sort === 'name_za') {
+        listToShow.sort((a, b) => (b.name || '').localeCompare(a.name || '', undefined, {sensitivity:'base'}));
+      }
       const t = translations[currentLang];
       const list = document.getElementById('feedback-list');
       list.innerHTML = '';
-      if (!feedbacks.length) {
+      if (!listToShow.length) {
         const p = document.createElement('p');
         p.textContent = t.noFeedbacks;
         p.style.color = "#ffc700";
@@ -649,10 +685,9 @@
         list.appendChild(p);
         return;
       }
-      feedbacks.forEach(fb => {
+      listToShow.forEach(fb => {
         const card = document.createElement('div');
         card.className = "feedback-card";
-        // Kopfzeile (Name, Datum)
         const head = document.createElement('div');
         head.className = "f-header";
         const name = document.createElement('span');
@@ -665,7 +700,6 @@
         head.appendChild(name);
         head.appendChild(date);
         card.appendChild(head);
-        // Alle Felder anzeigen
         card.innerHTML += `
           <div class="f-row"><span class="f-label">🧠 ${t.labelFeeling}:</span> ${fb.feeling || "-"}</div>
           <div class="f-row"><span class="f-label">⚡ ${t.labelEnergy}:</span> ${fb.energy || "-"}</div>
@@ -676,45 +710,58 @@
         list.appendChild(card);
       });
     }
-    // --- FEEDBACK FORM HANDLER (schreibt in Google Sheets via App Script!) ---
-document.getElementById('feedbackForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const t = translations[currentLang];
-  const fb = {
-    name: document.getElementById('name').value,
-    feeling: document.getElementById('feeling').value,
-    energy: document.getElementById('energy').value,
-    intensity: document.getElementById('intensity').value,
-    performance: document.getElementById('performance').value,
-    comment: document.getElementById('comment').value,
-    timestamp: Date.now()
-  };
 
-  // FormData statt JSON!
-  const formData = new FormData();
-  Object.entries(fb).forEach(([k, v]) => formData.append(k, v));
+    // Feedback Formular Senden (wie gehabt)
+    document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const t = translations[currentLang];
+      const fb = {
+        name: document.getElementById('name').value,
+        feeling: document.getElementById('feeling').value,
+        energy: document.getElementById('energy').value,
+        intensity: document.getElementById('intensity').value,
+        performance: document.getElementById('performance').value,
+        comment: document.getElementById('comment').value,
+        timestamp: Date.now()
+      };
+      const formData = new FormData();
+      Object.entries(fb).forEach(([k, v]) => formData.append(k, v));
+      fetch("https://script.google.com/macros/s/AKfycbyQtoffTq0b87Dor8wC6E1P4_ZQUHSJAOL9FNZxphz0k09YXMeI6g_C3ieyAiS4kFZ2qQ/exec", {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "success") {
+          document.getElementById('feedback-success').textContent = t.feedbackSuccess;
+          document.getElementById('feedbackForm').reset();
+          fillDropdowns(currentLang);
+          setTimeout(() => { document.getElementById('feedback-success').textContent = ""; }, 2500);
+        } else {
+          document.getElementById('feedback-success').textContent = "Fehler beim Speichern!";
+        }
+      })
+      .catch(() => {
+        document.getElementById('feedback-success').textContent = "Fehler beim Speichern!";
+      });
+    });
 
-  fetch("https://script.google.com/macros/s/AKfycbyQtoffTq0b87Dor8wC6E1P4_ZQUHSJAOL9FNZxphz0k09YXMeI6g_C3ieyAiS4kFZ2qQ/exec", {
-    method: "POST",
-    body: formData
-    // KEIN Content-Type explizit setzen!
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.status === "success") {
-      document.getElementById('feedback-success').textContent = t.feedbackSuccess;
-      document.getElementById('feedbackForm').reset();
-      fillDropdowns(currentLang); // reset selects to placeholder
-      setTimeout(() => { document.getElementById('feedback-success').textContent = ""; }, 2500);
-    } else {
-      document.getElementById('feedback-success').textContent = "Fehler beim Speichern!";
-    }
-  })
-  .catch(() => {
-    document.getElementById('feedback-success').textContent = "Fehler beim Speichern!";
-  });
-});
-</script>
+    // *** Event Listener für Suchfeld & Sortierung (richtig platziert – GANZ AM ENDE!) ***
+    document.addEventListener("DOMContentLoaded", function() {
+      const input = document.getElementById('feedbackSearch');
+      if(input) {
+        input.addEventListener('input', function() {
+          renderFeedbacks(_feedbacksRaw);
+        });
+      }
+      const sort = document.getElementById('sortField');
+      if(sort) {
+        sort.addEventListener('change', function() {
+          renderFeedbacks(_feedbacksRaw);
+        });
+      }
+    });
+  </script>
   <script>
   // EHCB Loader entfernen, sobald geladen
   window.addEventListener('DOMContentLoaded', function() {
