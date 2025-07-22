@@ -17,8 +17,6 @@ html, body {
   background: #073166;
   color: var(--ehcb-white);
   min-height: 100vh;
-  width: 100vw;
-  overflow-x: hidden;
 }
 .main-title, h2 {
   color: #ffc700 !important;
@@ -131,7 +129,6 @@ button:hover, .main-btn:hover {
   background: #d0021b;
   color: #fff;
 }
-/* Slogan jetzt volle Breite am Desktop */
 .yellow-slogan {
   margin: 2.1rem auto 1.1rem auto;
   background: #ffc700;
@@ -139,18 +136,14 @@ button:hover, .main-btn:hover {
   text-align: center;
   font-size: 2.1rem;
   font-weight: bold;
-  border-radius: 0;
-  width: 100vw;
-  max-width: none;
+  border-radius: 0.2rem;
+  max-width: 100vw;
   padding: 0.8rem 1rem 0.7rem 1rem;
   letter-spacing: 1.4px;
   box-shadow: 0 1px 7px #0002;
-  box-sizing: border-box;
-  overflow-x: hidden;
 }
 
 @media (max-width: 700px) {
-  html, body { width: 100vw; }
   main, .main-content { max-width: 100vw !important; padding: 0 !important; }
   #searchSection, #resultSection {
     padding: 1rem 0.2rem !important;
@@ -168,22 +161,10 @@ button:hover, .main-btn:hover {
   .main-title, h2 { font-size: 1.13rem; }
   .lang-btn { font-size: 1rem; padding: 7px 13vw; }
   .lang-switcher { gap: 0.18rem; }
-  /* Slogan mobil wie App */
-  .yellow-slogan {
-    font-size: 1.22rem; 
-    border-radius: 7px; 
-    padding: 0.7rem 0.5rem; 
-    max-width: 99vw; 
-    width: 99vw;
-  }
 }
   </style>
 </head>
 <body>
-  <!-- Dein Body-Inhalt bleibt unverändert -->
-  <!-- Füge hier einfach die gleiche Slogan-Section wie in der Spieler-Version ein, z.B.: -->
-  <section class="yellow-slogan" id="slogan">
-    "OUR STRENGTH IS OUR UNITY!"
-  </section>
+  <!-- Body content remains unchanged -->
 </body>
 </html>
