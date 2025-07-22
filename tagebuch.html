@@ -159,46 +159,48 @@ input[type="text"]::placeholder {
   input[type="text"], textarea, select { font-size: 1rem; padding: 9px; }
 }
 
-/* Ergänzte Styles */
+/* Ergänzte & überschreibende Styles */
 main, .main-content {
   max-width: 620px;
   margin: 0 auto;
 }
 
-textarea, input[type="text"], select {
-  font-size: 1.23rem;
-  padding: 18px;
-  margin-bottom: 1.4rem;
+input[type="text"], textarea, select {
+  font-size: 1.13rem;
+  padding: 12px;
+  margin-bottom: 1.02rem;
+  border-radius: 7px;
+  border: 1.3px solid #bbb;
+  box-shadow: 0 1px 4px #2221;
+  background: #fff;
+  color: #002d5b;
 }
 
 button, .main-btn {
-  font-size: 1.25rem;
-  padding: 16px 0;
-  max-width: 380px;
+  font-size: 1.13rem;
+  padding: 14px 0;
+  max-width: 100%;
+  background: #ffc700;
+  color: #002d5b;
+  border-radius: 8px;
+  font-weight: 700;
+  margin-top: 0.5rem;
+  border: none;
+  transition: background .16s, color .16s;
 }
 
-.diary-card {
-  padding: 1.8rem 1.3rem;
-  font-size: 1.13rem;
+button:hover, .main-btn:hover {
+  background: #d0021b;
+  color: #fff;
 }
 
 @media (max-width: 700px) {
-  main, .main-content {
-    max-width: 98vw;
-    padding: 0 1vw;
-  }
-  .diary-card {
-    padding: 1.1rem 0.4rem;
-  }
-  textarea, input[type="text"], select {
-    font-size: 1.08rem;
-    padding: 12px;
-  }
-  button, .main-btn {
-    font-size: 1.07rem;
-    padding: 12px 0;
-    max-width: 99vw;
-  }
+  .main-title, h2 { font-size: 1.13rem; }
+  .lang-btn { font-size: 1rem; padding: 7px 13vw; }
+  .lang-switcher { gap: 0.18rem; }
+  button, .main-btn { font-size: 1rem; padding: 12px 0; }
+  input[type="text"], textarea, select { font-size: 1rem; padding: 9px; }
+  .diary-card { padding: 1rem 0.7rem; }
 }
 </style>
 </head>
