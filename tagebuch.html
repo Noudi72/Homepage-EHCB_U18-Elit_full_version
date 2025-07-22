@@ -18,196 +18,118 @@ html, body {
   color: var(--ehcb-white);
   min-height: 100vh;
 }
+header { margin-bottom: 0.4rem; }
+.header-logo { max-width: 112px; display: block; margin: 26px auto 10px auto; }
 .main-title, h2 {
   color: #ffc700 !important;
   text-align: center;
   font-size: 2.2rem;
   font-weight: 900;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.1rem;
   letter-spacing: 2px;
 }
-#loginSection h2 {
-  color: #ffc700 !important;
-  font-size: 1.7rem;
-  font-weight: bold;
-  text-align: center;
-}
+#loginSection h2 { color: #ffc700 !important; font-size: 1.5rem; font-weight: bold; text-align: center; }
 label, .diary-actions button, #diaryCoachOk + label {
   color: #ffc700 !important;
-  font-size: 1.07rem;
+  font-size: 1.09rem;
 }
 input[type="checkbox"] + label, label[for="diaryCoachOk"] {
-  color: #ffc700 !important;
-  opacity: 1 !important;
-  font-weight: 600 !important;
+  color: #ffc700 !important; opacity: 1 !important; font-weight: 600 !important;
 }
-.diary-card { background:#fff;color:#002d5b; border-radius:12px; padding:1.2rem; box-shadow:0 2px 10px #0001; margin-bottom:1rem;}
-.diary-date { color:#888; font-size:0.96rem;}
-  .diary-actions button {
-    display: inline-block;
-    width: auto;
-    margin-top: 0;
-    margin-bottom: 0;
-    margin-right: 8px;
-    background: #d0021b !important;
-    color: #ffc700 !important;
-    font-weight: bold;
-    border-radius: 8px;
-    border: none;
-    padding: 10px 24px;
-    font-size: 1.13rem;
-    box-shadow: 0 1px 8px #2222;
-    transition: background 0.18s, color 0.18s;
-  }
-  .diary-actions button:hover {
-    background: #ffc700 !important;
-    color: #d0021b !important;
-  }
-.emoji { font-size:1.22em; }
+.diary-card { background:#fff;color:#002d5b; border-radius:13px; padding:1.2rem; box-shadow:0 2px 14px #0002; margin-bottom:1rem;}
+.diary-date { color:#888; font-size:1.06rem;}
+.diary-actions button {
+  display: inline-block; width: auto; margin-top: 0; margin-bottom: 0; margin-right: 8px;
+  background: #d0021b !important; color: #ffc700 !important; font-weight: bold; border-radius: 11px;
+  border: none; padding: 13px 28px; font-size: 1.15rem; box-shadow: 0 1px 8px #2222; transition: background 0.18s, color 0.18s;
+}
+.diary-actions button:hover { background: #ffc700 !important; color: #d0021b !important; }
+.emoji { font-size:1.29em; }
 
-/* Sprachumschalter wie in news.html */
 .lang-switcher {
-  display: flex;
-  gap: 0.45rem;
-  margin-bottom: 0.7rem;
-  justify-content: center;
-  max-width: 630px;
-  margin-left: auto;
-  margin-right: auto;
+  display: flex; gap: 0.18rem; margin-bottom: 0.6rem; justify-content: center;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+  background: #002d5b; border-radius: 15px; box-shadow: 0 1px 6px #0001; overflow: hidden;
 }
 .lang-btn {
-  background: #fff;
-  color: #002d5b;
-  border: none;
-  border-radius: 8px;
-  padding: 7px 35px;
-  font-weight: bold;
-  font-size: 1.1rem;
-  cursor: pointer;
-  box-shadow: 0 1px 8px #2222;
-  transition: background 0.18s;
-  outline: none;
+  background: #fff; color: #002d5b; border: none; border-radius: 0; flex:1;
+  font-weight: bold; font-size: 1.13rem; cursor: pointer;
+  box-shadow: none; transition: background 0.18s; outline: none; padding: 13px 0;
+  min-width: 0; max-width: none; 
 }
-.lang-btn.active, .lang-btn:focus {
-  background: #ffc700;
-  color: #002d5b;
-}
-.lang-btn:hover:not(.active) {
-  background: #d0021b;
-  color: #fff;
-}
+.lang-btn.active, .lang-btn:focus { background: #ffc700; color: #002d5b; }
+.lang-btn:hover:not(.active) { background: #d0021b; color: #fff; }
 
-/* Buttons wie news.html */
 button, .main-btn, .diary-actions button {
-  background: #ffc700;
-  color: #002d5b;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1.13rem;
-  padding: 12px 0;
-  cursor: pointer;
-  box-shadow: 0 1px 8px #2222;
-  transition: background 0.18s, color 0.18s;
-  margin-bottom: 8px;
-  margin-top: 8px;
-  /* width/max-width now set below for all relevant elements */
+  background: #ffc700; color: #002d5b; border: none; border-radius: 12px;
+  font-weight: bold; font-size: 1.17rem; padding: 16px 0;
+  cursor: pointer; box-shadow: 0 2px 10px #2221;
+  margin-bottom: 10px; margin-top: 8px;
+  width: 100%; max-width: 100%;
   display: block;
 }
 button:hover, .main-btn:hover, .diary-actions button:hover {
-  background: #d0021b;
-  color: #fff;
-}
-.diary-actions button {
-  display: inline-block;
-  width: auto;
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-right: 8px;
+  background: #d0021b; color: #fff;
 }
 
-/* Inputfelder wie news.html */
 input[type="text"], textarea, select {
-  border: 1.3px solid #bbb;
-  border-radius: 7px;
-  background: #fff;
-  color: #002d5b;
-  padding: 12px;
-  font-size: 1.13rem;
-  margin-bottom: 1.02rem;
-  box-shadow: 0 1px 4px #2221;
-  resize: none;
+  border: 1.5px solid #bbb; border-radius: 11px;
+  background: #fff; color: #002d5b; padding: 16px 14px;
+  font-size: 1.15rem; margin-bottom: 1.1rem;
+  box-shadow: 0 1px 8px #2221; resize: none;
+  width: 100%; max-width: 100%;
+  box-sizing: border-box;
 }
 input[type="text"]:focus, textarea:focus, select:focus {
   border: 2px solid #ffc700;
   outline: none;
 }
-input[type="text"]::placeholder {
-  color: #999;
-  opacity: 1;
-}
+input[type="text"]::placeholder { color: #999; opacity: 1; }
 
-/* Responsive wie news.html */
-@media (max-width: 700px) {
-  .main-title, h2 { font-size: 1.13rem; }
-  .lang-btn { font-size: 1rem; padding: 7px 13vw; }
-  .lang-switcher { gap: 0.18rem; max-width: 96vw !important; width: 100% !important; }
-  button, .main-btn, .diary-actions button { font-size: 1.03rem; padding: 10px 0; max-width: 96vw !important; width: 100% !important; }
-  .diary-card { padding: 1rem 0.7rem; }
-  input[type="text"], textarea, select { font-size: 1rem; padding: 9px; max-width: 96vw !important; width: 100% !important; }
-}
-
-/* Mobile Optimierung: Volle Breite und Luft an den Seiten für Inputs, Buttons, lang-switcher, main-content */
-@media (max-width: 700px) {
-  .main-content {
-    max-width: 100vw !important;
-    padding: 0 !important;
-  }
-  .lang-switcher,
-  input[type="text"], textarea, select, button, .main-btn {
-    max-width: 100vw !important;
-    width: 100vw !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    border-radius: 0 !important;
-    box-sizing: border-box !important;
-    padding-left: 2vw !important;
-    padding-right: 2vw !important;
-  }
-}
-
-/* Vereinheitlichte Breite für Eingabefelder und Buttons */
-input[type="text"], textarea, select, button, .main-btn {
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-/* Neue form-block Regeln */
 .form-block {
-  max-width: 630px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
+  background: #012046;
+  border-radius: 22px;
+  box-shadow: 0 7px 42px #0004;
+  padding: 28px 20px 20px 20px;
+  margin: 24px auto 12px auto;
+  max-width: 520px;
+  width: 98vw;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
-.form-block > * {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-}
+
 @media (max-width: 700px) {
+  .main-title, h2 { font-size: 1.29rem; margin-bottom: 8px; }
+  .header-logo { max-width: 74px; margin-top: 15px;}
+  .lang-btn { font-size: 1.12rem; padding: 12px 0; }
+  .lang-switcher { gap: 0; max-width: 99vw !important; width: 99vw !important; border-radius: 13px;}
+  button, .main-btn, .diary-actions button { font-size: 1.09rem; padding: 15px 0; max-width: 99vw !important; width: 99vw !important; border-radius: 13px; }
+  .diary-card { padding: 1rem 0.7rem; border-radius: 13px;}
+  input[type="text"], textarea, select { font-size: 1.09rem; padding: 13px 11px; max-width: 99vw !important; width: 99vw !important; border-radius: 13px;}
   .form-block {
-    max-width: 96vw !important;
-    padding-left: 2vw;
-    padding-right: 2vw;
-  }
-  .form-block > * {
-    width: 100% !important;
-    max-width: 100vw !important;
-    border-radius: 8px !important;
+    max-width: 99vw !important;
+    width: 99vw !important;
+    padding: 14px 2vw 16px 2vw;
+    border-radius: 19px;
+    margin: 16px auto 8px auto;
   }
 }
-  </style>
+.yellow-slogan {
+  margin: 2.1rem auto 1.1rem auto;
+  background: #ffc700;
+  color: #002d5b;
+  text-align: center;
+  font-size: 2.1rem;
+  font-weight: bold;
+  border-radius: 0.2rem;
+  max-width: 100vw;
+  padding: 0.8rem 1rem 0.7rem 1rem;
+  letter-spacing: 1.4px;
+  box-shadow: 0 1px 7px #0002;
+}
+footer { text-align:center; margin-top: 0.7rem; color: #fff; opacity: 0.77; font-size: 1rem; }
+</style>
 </head>
 <body>
   <a class="back-btn" href="index.html">← Zurück</a>
@@ -216,18 +138,18 @@ input[type="text"], textarea, select, button, .main-btn {
     <div class="main-title">Mein Tagebuch</div>
   </header>
   <div class="form-block">
-    <div class="lang-switcher" style="margin-bottom:12px;">
+    <div class="lang-switcher">
       <button class="lang-btn" id="btn-de">DE</button>
       <button class="lang-btn" id="btn-fr">FR</button>
       <button class="lang-btn" id="btn-en">EN</button>
     </div>
     <section id="loginSection">
-      <h2 id="diaryTitle">Dein Tagebuch</h2>
-      <input type="text" id="playerCode" placeholder="Dein Spieler-Code (z.B. U18-23-012)" style="margin-bottom:16px;">
+      <h2 id="diaryTitle" class="main-title">Dein Tagebuch</h2>
+      <input type="text" id="playerCode" placeholder="Dein Spieler-Code (z.B. U18-23-012)">
       <button id="btn-login" onclick="loginDiary()">Einloggen</button>
     </section>
     <section id="diarySection" style="display:none;">
-      <form id="diaryForm" style="margin-bottom:24px;">
+      <form id="diaryForm">
         <textarea id="diaryText" placeholder="Schreibe deinen Eintrag..." required></textarea>
         <select id="diaryMood">
           <option value="🙂">🙂 Normal</option>
