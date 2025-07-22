@@ -43,7 +43,26 @@ input[type="checkbox"] + label, label[for="diaryCoachOk"] {
 }
 .diary-card { background:#fff;color:#002d5b; border-radius:12px; padding:1.2rem; box-shadow:0 2px 10px #0001; margin-bottom:1rem;}
 .diary-date { color:#888; font-size:0.96rem;}
-.diary-actions button { margin-right: 8px; }
+  .diary-actions button {
+    display: inline-block;
+    width: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: 8px;
+    background: #d0021b;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    padding: 10px 24px;
+    font-size: 1.13rem;
+    box-shadow: 0 1px 8px #2222;
+    transition: background 0.18s, color 0.18s;
+  }
+  .diary-actions button:hover {
+    background: #ffc700;
+    color: #002d5b;
+  }
 .emoji { font-size:1.22em; }
 
 /* Sprachumschalter wie in news.html */
@@ -207,7 +226,11 @@ input[type="text"]::placeholder {
             const li = document.createElement('li');
             li.className = 'diary-card';
             li.innerHTML = `
-              <div class="diary-date">${new Date(Number(e.date)).toLocaleString()} <span class="emoji">${e.mood||""}</span> 
+              <div class="diary-date">${
+                e.date && !isNaN(Number(e.date)) && Number(e.date) > 1000000000
+                  ? new Date(Number(e.date)).toLocaleString()
+                  : "(kein Datum)"
+              } <span class="emoji">${e.mood||""}</span> 
                 ${e.coachOk==="true"||e.coachOk===true?'👀 (Coach darf sehen)':''}
               </div>
               <div class="diary-text">${e.text}</div>
