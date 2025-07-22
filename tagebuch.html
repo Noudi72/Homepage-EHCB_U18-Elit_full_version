@@ -158,6 +158,48 @@ input[type="text"]::placeholder {
   .diary-card { padding: 1rem 0.7rem; }
   input[type="text"], textarea, select { font-size: 1rem; padding: 9px; }
 }
+
+/* Ergänzte Styles */
+main, .main-content {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+textarea, input[type="text"], select {
+  font-size: 1.23rem;
+  padding: 18px;
+  margin-bottom: 1.4rem;
+}
+
+button, .main-btn {
+  font-size: 1.25rem;
+  padding: 16px 0;
+  max-width: 380px;
+}
+
+.diary-card {
+  padding: 1.8rem 1.3rem;
+  font-size: 1.13rem;
+}
+
+@media (max-width: 700px) {
+  main, .main-content {
+    max-width: 98vw;
+    padding: 0 1vw;
+  }
+  .diary-card {
+    padding: 1.1rem 0.4rem;
+  }
+  textarea, input[type="text"], select {
+    font-size: 1.08rem;
+    padding: 12px;
+  }
+  button, .main-btn {
+    font-size: 1.07rem;
+    padding: 12px 0;
+    max-width: 99vw;
+  }
+}
 </style>
 </head>
 <body>
@@ -227,7 +269,7 @@ input[type="text"]::placeholder {
             li.className = 'diary-card';
             li.innerHTML = `
               <div class="diary-date">${
-                e.date && !isNaN(Number(e.date)) && Number(e.date) > 1000000000
+                e.date && !isNaN(Number(e.date)) && String(e.date).length >= 13
                   ? new Date(Number(e.date)).toLocaleString()
                   : "(kein Datum)"
               } <span class="emoji">${e.mood||""}</span> 
