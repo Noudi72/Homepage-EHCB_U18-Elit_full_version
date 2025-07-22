@@ -178,11 +178,34 @@ input[type="text"]::placeholder {
 
 /* Vereinheitlichte Breite für Eingabefelder und Buttons */
 input[type="text"], textarea, select, button, .main-btn {
-  width: 100% !important;
-  max-width: 630px !important;
   margin-left: auto;
   margin-right: auto;
   display: block;
+}
+
+/* Neue form-block Regeln */
+.form-block {
+  max-width: 630px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+.form-block > * {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+@media (max-width: 700px) {
+  .form-block {
+    max-width: 96vw !important;
+    padding-left: 2vw;
+    padding-right: 2vw;
+  }
+  .form-block > * {
+    width: 100% !important;
+    max-width: 100vw !important;
+    border-radius: 8px !important;
+  }
 }
   </style>
 </head>
@@ -192,12 +215,12 @@ input[type="text"], textarea, select, button, .main-btn {
     <img src="wikinger.png" class="header-logo" alt="Logo" />
     <div class="main-title">Mein Tagebuch</div>
   </header>
-  <div class="lang-switcher" style="margin-bottom:12px;">
-    <button class="lang-btn" id="btn-de">DE</button>
-    <button class="lang-btn" id="btn-fr">FR</button>
-    <button class="lang-btn" id="btn-en">EN</button>
-  </div>
-  <main class="main-content">
+  <div class="form-block">
+    <div class="lang-switcher" style="margin-bottom:12px;">
+      <button class="lang-btn" id="btn-de">DE</button>
+      <button class="lang-btn" id="btn-fr">FR</button>
+      <button class="lang-btn" id="btn-en">EN</button>
+    </div>
     <section id="loginSection">
       <h2 id="diaryTitle">Dein Tagebuch</h2>
       <input type="text" id="playerCode" placeholder="Dein Spieler-Code (z.B. U18-23-012)" style="margin-bottom:16px;">
@@ -220,7 +243,7 @@ input[type="text"], textarea, select, button, .main-btn {
       </form>
       <ul id="diaryList" style="list-style:none;padding:0;"></ul>
     </section>
-  </main>
+  </div>
   <section class="yellow-slogan" id="slogan">
     "OUR STRENGTH IS OUR UNITY!"
   </section>
