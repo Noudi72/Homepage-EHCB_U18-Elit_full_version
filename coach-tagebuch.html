@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Coach – Tagebuch Einträge</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .diary-card { background:#fff;color:#002d5b; border-radius:12px; padding:1.2rem; box-shadow:0 2px 10px #0001; margin-bottom:1rem;}
+    .diary-date { color:#888; font-size:0.96rem;}
+    .emoji { font-size:1.22em; }
+    .main-title { color: #ffc700; text-align: center; font-size: 2.2rem; font-weight: 900; margin-bottom: 1.5rem; letter-spacing: 2px; }
+    #coach-login { max-width:340px; margin:60px auto 0 auto; text-align:center; }
+    #coach-login input[type="password"] { padding:12px; font-size:1.07rem; border-radius:8px; border:1.3px solid #bbb; width: 80%; margin-bottom:14px; }
+    #coach-login button { background:#ffc700; color:#002d5b; font-weight:bold; border-radius:9px; padding:12px 0; border:none; width:80%; font-size:1.17rem; cursor:pointer; margin-bottom:12px; }
+    #coach-login button:hover { background: #d0021b; color:#fff; }
+    #login-fail { color:#d0021b; font-weight:bold; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <a class="back-btn" href="index.html">← Zurück</a>
+  <header>
+    <img src="wikinger.png" class="header-logo" alt="Logo" />
+    <div class="main-title">Coach – Tagebuch Einträge</div>
+  </header>
+  <div id="coach-login">
+    <input type="password" id="coachPass" placeholder="Coach-Passwort" autocomplete="current-password" />
+    <button onclick="checkCoachPass()">Login</button>
+    <div id="login-fail"></div>
+  </div>
+  <main id="coach-area" style="max-width:650px;margin:0 auto;display:none;">
+    <h3 style="color:#ffc700;text-align:center;">Freigegebene Einträge suchen</h3>
+    <input id="searchCode" placeholder="Spieler-Code (z.B. U18-23-012)" style="padding:10px;width:80%;max-width:320px;display:block;margin:10px auto;">
+    <button onclick="loadCoachDiary()" style="background:#ffc700;color:#002d5b;font-weight:bold;">Einträge anzeigen</button>
+    <ul id="coachDiaryList" style="list-style:none;padding:0;"></ul>
+  </main>
+  <section class="yellow-slogan">
+    "OUR STRENGTH IS OUR UNITY!"
+  </section>
+  <footer>
+    © 2025 EHC Biel-Bienne U18-Elit
+  </footer>
+  <script>
+    // --- Coach Login ---
+    const correctPass = "Coach7274";
+    function checkCoachPass() {
+      const pw = document.getElementById('coachPass').value;
+      if (pw === correctPass) {
+        document.getElementById('coach-login').style.display = "none";
+        document.getElementById('coach-area').style.display = "";
+        document.getElementById('login-fail').textContent = '';
+      } else {
+        document.getElementById('login-fail').textContent = "Falsches Passwort!";
+      }
+    }
+    document.getElementById('coachPass').addEventListener('keyup', function(e){
+      if(e.key === "Enter") checkCoachPass();
+    });
+
+    // --- Tagebuch-Anzeige ---
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycby11RYwWoUs9IV6QNS218SkkOWelSY9pAiIKy-Kk3DHp6_9xSdzczK2OhGfKbsYp_tNVA/exec'; // <-- eintragen!
+    function loadCoachDiary() {
+      const code = document.getElementById('searchCode').value.trim();
+      if (!code) return alert('Bitte Spieler-Code eingeben!');
+      fetch(`${scriptUrl}?code=${encodeURIComponent(code)}`)
+        .then(r=>r.json())
+        .then(entries=>{
+          const ul = document.getElementById('coachDiaryList');
+          ul.innerHTML = '';
+          const visible = entries.filter(e => e.coachOk === "true" || e.coachOk === true);
+          if (!visible.length) {
+            ul.innerHTML = '<li style="color:#ffc700;text-align:center;">Keine freigegebenen Einträge gefunden.</li>';
+            return;
+          }
+          visible.reverse().forEach(e=>{
+            const li = document.createElement('li');
+            li.className = 'diary-card';
+            li.innerHTML = `
+              <div class="diary-date">${new Date(Number(e.date)).toLocaleString()} <span class="emoji">${e.mood||""}</span></div>
+              <div class="diary-text">${e.text}</div>
+            `;
+            ul.appendChild(li);
+          });
+        });
+    }
+  </script>
+</body>
+</html>

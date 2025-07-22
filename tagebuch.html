@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mein Tagebuch – EHCB U18</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+:root {
+  --ehcb-blue: #002d5b;
+  --ehcb-yellow: #ffc700;
+  --ehcb-white: #fff;
+  --ehcb-red: #d0021b;
+}
+html, body {
+  margin: 0; padding: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #073166;
+  color: var(--ehcb-white);
+  min-height: 100vh;
+}
+.main-title, h2 {
+  color: #ffc700 !important;
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  letter-spacing: 2px;
+}
+#loginSection h2 {
+  color: #ffc700 !important;
+  font-size: 1.7rem;
+  font-weight: bold;
+  text-align: center;
+}
+label, .diary-actions button, #diaryCoachOk + label {
+  color: #ffc700 !important;
+  font-size: 1.07rem;
+}
+input[type="checkbox"] + label, label[for="diaryCoachOk"] {
+  color: #ffc700 !important;
+  opacity: 1 !important;
+  font-weight: 600 !important;
+}
+.diary-card { background:#fff;color:#002d5b; border-radius:12px; padding:1.2rem; box-shadow:0 2px 10px #0001; margin-bottom:1rem;}
+.diary-date { color:#888; font-size:0.96rem;}
+.diary-actions button { margin-right: 8px; }
+.emoji { font-size:1.22em; }
+
+/* Sprachumschalter wie in news.html */
+.lang-switcher {
+  display: flex;
+  gap: 0.45rem;
+  margin-bottom: 0.7rem;
+  justify-content: center;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.lang-btn {
+  background: #fff;
+  color: #002d5b;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 35px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 1px 8px #2222;
+  transition: background 0.18s;
+  outline: none;
+}
+.lang-btn.active, .lang-btn:focus {
+  background: #ffc700;
+  color: #002d5b;
+}
+.lang-btn:hover:not(.active) {
+  background: #d0021b;
+  color: #fff;
+}
+
+/* Buttons wie news.html */
+button, .main-btn, .diary-actions button {
+  background: #ffc700;
+  color: #002d5b;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.13rem;
+  padding: 12px 0;
+  cursor: pointer;
+  box-shadow: 0 1px 8px #2222;
+  transition: background 0.18s, color 0.18s;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  width: 100%;
+  max-width: 320px;
+  display: block;
+}
+button:hover, .main-btn:hover, .diary-actions button:hover {
+  background: #d0021b;
+  color: #fff;
+}
+.diary-actions button {
+  display: inline-block;
+  width: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: 8px;
+}
+
+/* Inputfelder wie news.html */
+input[type="text"], textarea, select {
+  width: 100%;
+  border: 1.3px solid #bbb;
+  border-radius: 7px;
+  background: #fff;
+  color: #002d5b;
+  padding: 12px;
+  font-size: 1.13rem;
+  margin-bottom: 1.02rem;
+  box-shadow: 0 1px 4px #2221;
+  resize: none;
+}
+input[type="text"]:focus, textarea:focus, select:focus {
+  border: 2px solid #ffc700;
+  outline: none;
+}
+input[type="text"]::placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+/* Responsive wie news.html */
+@media (max-width: 700px) {
+  .main-title, h2 { font-size: 1.13rem; }
+  .lang-btn { font-size: 1rem; padding: 7px 13vw; }
+  .lang-switcher { gap: 0.18rem; }
+  button, .main-btn, .diary-actions button { font-size: 1.03rem; padding: 10px 0; }
+  .diary-card { padding: 1rem 0.7rem; }
+  input[type="text"], textarea, select { font-size: 1rem; padding: 9px; }
+}
+</style>
+</head>
+<body>
+  <a class="back-btn" href="index.html">← Zurück</a>
+  <header>
+    <img src="wikinger.png" class="header-logo" alt="Logo" />
+    <div class="main-title">Mein Tagebuch</div>
+  </header>
+  <div style="max-width:420px;margin:0 auto;">
+    <div class="lang-switcher" style="margin-bottom:12px;">
+      <button class="lang-btn" id="btn-de">DE</button>
+      <button class="lang-btn" id="btn-fr">FR</button>
+      <button class="lang-btn" id="btn-en">EN</button>
+    </div>
+  </div>
+  <main style="max-width:550px;margin:0 auto;">
+    <section id="loginSection">
+      <h2 id="diaryTitle">Dein Tagebuch</h2>
+      <input type="text" id="playerCode" placeholder="Dein Spieler-Code (z.B. U18-23-012)" style="margin-bottom:16px;">
+      <button id="btn-login" onclick="loginDiary()">Einloggen</button>
+    </section>
+    <section id="diarySection" style="display:none;">
+      <form id="diaryForm" style="margin-bottom:24px;">
+        <textarea id="diaryText" placeholder="Schreibe deinen Eintrag..." required></textarea>
+        <select id="diaryMood">
+          <option value="🙂">🙂 Normal</option>
+          <option value="😃">😃 Gut</option>
+          <option value="😔">😔 Traurig</option>
+          <option value="😡">😡 Wütend</option>
+          <option value="🤩">🤩 Super</option>
+        </select>
+        <label style="display:block;margin-top:8px;">
+          <input type="checkbox" id="diaryCoachOk" /> <span id="labelCoachView">Coach darf diesen Eintrag sehen</span>
+        </label>
+        <button type="submit" id="btn-save" style="margin-top:10px;">Speichern</button>
+      </form>
+      <ul id="diaryList" style="list-style:none;padding:0;"></ul>
+    </section>
+  </main>
+  <section class="yellow-slogan" id="slogan">
+    "OUR STRENGTH IS OUR UNITY!"
+  </section>
+  <footer>
+    © 2025 EHC Biel-Bienne U18-Elit
+  </footer>
+  <script>
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycby11RYwWoUs9IV6QNS218SkkOWelSY9pAiIKy-Kk3DHp6_9xSdzczK2OhGfKbsYp_tNVA/exec'; // <-- App Script Web App URL hier einfügen!
+    let playerCode = '';
+    let editId = null;
+
+    function loginDiary() {
+      playerCode = document.getElementById('playerCode').value.trim();
+      if (!playerCode) return alert('Bitte Spieler-Code eingeben!');
+      document.getElementById('loginSection').style.display = 'none';
+      document.getElementById('diarySection').style.display = '';
+      loadDiary();
+    }
+
+    function loadDiary() {
+      fetch(`${scriptUrl}?code=${encodeURIComponent(playerCode)}`)
+        .then(r=>r.json())
+        .then(entries=>{
+          const ul = document.getElementById('diaryList');
+          ul.innerHTML = '';
+          entries.reverse().forEach(e=>{
+            const li = document.createElement('li');
+            li.className = 'diary-card';
+            li.innerHTML = `
+              <div class="diary-date">${new Date(Number(e.date)).toLocaleString()} <span class="emoji">${e.mood||""}</span> 
+                ${e.coachOk==="true"||e.coachOk===true?'👀 (Coach darf sehen)':''}
+              </div>
+              <div class="diary-text">${e.text}</div>
+              <div class="diary-actions">
+                <button onclick="editDiary('${e.id}','${e.text.replace(/'/g,"&#39;")}','${e.mood}','${e.coachOk}')">Bearbeiten</button>
+                <button onclick="deleteDiary('${e.id}')">Löschen</button>
+              </div>
+            `;
+            ul.appendChild(li);
+          });
+        });
+    }
+
+    document.getElementById('diaryForm').onsubmit = function(e) {
+      e.preventDefault();
+      const text = document.getElementById('diaryText').value;
+      const mood = document.getElementById('diaryMood').value;
+      const coachOk = document.getElementById('diaryCoachOk').checked;
+      if(editId !== null) {
+        // Edit
+        fetch(scriptUrl+'?action=edit&id='+editId+'&code='+encodeURIComponent(playerCode)+
+              '&text='+encodeURIComponent(text)+'&mood='+encodeURIComponent(mood)+
+              '&coachOk='+(coachOk?'true':'false'),
+              {method:'POST'}
+        ).then(()=>{ editId=null; this.reset(); loadDiary(); });
+      } else {
+        // New
+        fetch(scriptUrl+'?action=add&code='+encodeURIComponent(playerCode)+
+              '&text='+encodeURIComponent(text)+'&mood='+encodeURIComponent(mood)+
+              '&coachOk='+(coachOk?'true':'false'),
+              {method:'POST'}
+        ).then(()=>{ this.reset(); loadDiary(); });
+      }
+    };
+
+    function editDiary(id, text, mood, coachOk) {
+      editId = id;
+      document.getElementById('diaryText').value = text.replace(/&#39;/g,"'");
+      document.getElementById('diaryMood').value = mood;
+      document.getElementById('diaryCoachOk').checked = coachOk==="true"||coachOk===true;
+    }
+
+    function deleteDiary(id) {
+      if(confirm("Eintrag wirklich löschen?")) {
+        fetch(scriptUrl+'?action=delete&id='+id+'&code='+encodeURIComponent(playerCode), {method:'POST'})
+          .then(()=>{ loadDiary(); });
+      }
+    }
+
+    const diaryTranslations = {
+      de: {
+        diaryTitle: "Dein Tagebuch",
+        loginBtn: "Einloggen",
+        codePlaceholder: "Dein Spieler-Code (z.B. U18-23-012)",
+        saveBtn: "Speichern",
+        coachLabel: "Coach darf diesen Eintrag sehen",
+        slogan: "\"OUR STRENGTH IS OUR UNITY!\""
+      },
+      fr: {
+        diaryTitle: "Ton journal",
+        loginBtn: "Connexion",
+        codePlaceholder: "Code joueur (ex: U18-23-012)",
+        saveBtn: "Enregistrer",
+        coachLabel: "Le coach peut voir cette entrée",
+        slogan: "\"NOTRE FORCE EST NOTRE UNITÉ !\""
+      },
+      en: {
+        diaryTitle: "Your Diary",
+        loginBtn: "Login",
+        codePlaceholder: "Your player code (e.g. U18-23-012)",
+        saveBtn: "Save",
+        coachLabel: "Coach may see this entry",
+        slogan: "\"OUR STRENGTH IS OUR UNITY!\""
+      }
+    };
+    let diaryLang = localStorage.getItem('diary_lang') || 'de';
+
+    function changeDiaryLanguage(lang) {
+      diaryLang = lang;
+      localStorage.setItem('diary_lang', lang);
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('btn-' + lang).classList.add('active');
+      const t = diaryTranslations[lang];
+      document.getElementById('diaryTitle').textContent = t.diaryTitle;
+      document.getElementById('btn-login').textContent = t.loginBtn;
+      document.getElementById('playerCode').placeholder = t.codePlaceholder;
+      document.getElementById('btn-save').textContent = t.saveBtn;
+      document.getElementById('labelCoachView').textContent = t.coachLabel;
+      document.getElementById('slogan').textContent = t.slogan;
+    }
+    window.addEventListener('DOMContentLoaded', function() {
+      changeDiaryLanguage(diaryLang);
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.onclick = () => changeDiaryLanguage(btn.id.replace('btn-',''));
+      });
+    });
+  </script>
+</body>
+</html>
