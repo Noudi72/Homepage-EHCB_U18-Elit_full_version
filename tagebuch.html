@@ -23,6 +23,8 @@ html, body {
   background: var(--ehcb-blue-dark);
   color: var(--ehcb-white);
   box-sizing: border-box;
+  width: 100vw;
+  overflow-x: hidden;
 }
 body, .app-shell {
   min-height: 100vh; height: 100dvh;
@@ -35,12 +37,9 @@ header {
   background: transparent;
 }
 .header-logo {
-  width: 84px; height: 84px;
-  margin: 0 auto 4px auto;
+  max-width: 112px;
   display: block;
-  border-radius: 30px;
-  background: #fff1;
-  box-shadow: 0 4px 24px #0002;
+  margin: 26px auto 10px auto;
 }
 .main-title {
   font-size: 2.08rem;
@@ -79,20 +78,25 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  width: 100vw;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .form-block {
   background: var(--ehcb-blue);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-main);
-  width: 100%;
-  max-width: 410px;
-  padding: 32px 6vw 24px 6vw;
-  margin: 0 auto 26px auto;
+  width: 96vw;
+  max-width: 430px;
+  padding: 32px 5vw 24px 5vw;
+  margin: 24px auto 22px auto;
   display: flex; flex-direction: column;
   align-items: stretch;
   animation: fadeIn .65s;
   border: 1.5px solid #11356d;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 @keyframes fadeIn {
@@ -101,15 +105,15 @@ header {
 }
 
 .lang-switcher {
-  display: flex; gap: 0.14rem; justify-content: center; margin-bottom: 1.1rem;
+  display: flex; gap: 0.22rem; justify-content: center; margin-bottom: 1.05rem;
 }
 .lang-btn {
-  background: var(--ehcb-yellow-light); color: var(--ehcb-blue); border: none;
-  font-weight: 800; font-size: 1.1rem; cursor: pointer;
+  background: var(--ehcb-yellow); color: var(--ehcb-blue); border: none;
+  font-weight: 800; font-size: 1.16rem; cursor: pointer;
   transition: background .17s, color .17s;
-  padding: 13px 0; flex: 1 1 0px;
-  border-radius: 13px;
-  margin: 0 2px;
+  padding: 16px 0; flex: 1 1 0px;
+  border-radius: 18px;
+  margin: 0 5px;
   box-shadow: 0 2px 6px #0012;
   outline: none;
 }
@@ -121,57 +125,53 @@ header {
 
 input[type="text"], textarea, select {
   width: 100%;
-  border-radius: 13px;
-  font-size: 1.12rem;
-  margin-bottom: 17px;
+  border-radius: 14px;
+  font-size: 1.15rem;
+  margin-bottom: 14px;
   border: 1.7px solid #bbb;
   background: #f8fafb;
   color: var(--ehcb-blue);
-  padding: 15px 13px;
+  padding: 16px 15px;
   box-shadow: 0 1px 8px #2221;
   transition: border .19s;
+  box-sizing: border-box;
 }
-input[type="text"]:focus, textarea:focus, select:focus {
-  border: 2px solid var(--ehcb-yellow);
-  outline: none;
-}
-
 button, .main-btn {
   background: var(--ehcb-yellow); color: var(--ehcb-blue); border: none;
-  font-weight: bold; font-size: 1.18rem; padding: 16px 0;
+  font-weight: bold; font-size: 1.22rem; padding: 17px 0;
   cursor: pointer; box-shadow: 0 2px 10px #2221;
-  border-radius: 14px; margin-bottom: 7px; margin-top: 10px;
+  border-radius: 16px; margin-bottom: 7px; margin-top: 10px;
   width: 100%;
   transition: background .18s, color .18s;
 }
-button:hover, .main-btn:hover {
-  background: var(--ehcb-red); color: #fff;
+.yellow-slogan {
+  margin: 2.1rem auto 1.1rem auto;
+  background: #ffc700;
+  color: #002d5b;
+  text-align: center;
+  font-size: 2.1rem;
+  font-weight: bold;
+  border-radius: 0.2rem;
+  width: 96vw;
+  max-width: 520px;
+  padding: 0.8rem 1rem 0.7rem 1rem;
+  letter-spacing: 1.4px;
+  box-shadow: 0 1px 7px #0002;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
-
+footer {
+  text-align:center; margin: 18px auto 6px auto; color: #fff;
+  opacity: 0.69; font-size: 1.03rem;
+  width: 96vw;
+  max-width: 520px;
+  box-sizing: border-box;
+}
 #diaryForm label {
   display: block;
   margin-top: 10px;
   font-size: 1.02rem;
   color: #fff;
-}
-
-.yellow-slogan {
-  margin: 0 auto 0.7rem auto;
-  background: var(--ehcb-yellow);
-  color: var(--ehcb-blue);
-  text-align: center;
-  font-size: 1.34rem;
-  font-weight: bold;
-  border-radius: 12px;
-  width: 95vw; max-width: 370px;
-  padding: 0.77rem 1rem 0.67rem 1rem;
-  letter-spacing: 1.1px;
-  box-shadow: 0 1px 7px #0002;
-}
-
-footer {
-  text-align:center; margin: 18px auto 6px auto; color: #fff;
-  opacity: 0.69; font-size: 1.03rem;
 }
 
 /* Diary Entries styling */
@@ -183,6 +183,7 @@ footer {
   box-shadow: 0 2px 16px #0018;
   color: #fff;
   animation: fadeIn .5s;
+  box-sizing: border-box;
 }
 .diary-date {
   font-size: 1.01rem;
@@ -215,13 +216,34 @@ footer {
   color: #fff;
 }
 
-@media (max-width: 480px) {
-  .header-logo { width: 62px; height: 62px; }
-  .main-title { font-size: 1.24rem; }
-  .form-block { padding: 17px 4vw 12px 4vw; border-radius: 13px; }
-  .yellow-slogan { font-size: 1.02rem; border-radius: 7px; padding: 0.6rem 0.5rem; }
-  .back-btn { top: 11px; left: 9px; font-size: 0.97rem; padding: 7px 14px 7px 9px;}
-  footer { font-size: 0.95rem; margin-top: 7px; }
+@media (max-width: 520px) {
+  html, body, .app-shell { width: 100vw; }
+  .header-logo { max-width: 86px; margin-top: 11px;}
+  .main-title { font-size: 1.31rem; }
+  .form-block { 
+    padding: 14px 2vw 14px 2vw; 
+    border-radius: 13px; 
+    max-width: 99vw; 
+    width: 99vw;
+  }
+  .yellow-slogan { 
+    font-size: 1.22rem; 
+    border-radius: 7px; 
+    padding: 0.7rem 0.5rem; 
+    max-width: 99vw; 
+    width: 99vw;
+  }
+  .back-btn { 
+    top: 9px; left: 7px; 
+    font-size: 0.97rem; 
+    padding: 7px 14px 7px 9px;
+  }
+  footer { 
+    font-size: 0.91rem; 
+    margin-top: 5px; 
+    max-width: 99vw; 
+    width: 99vw;
+  }
 }
   </style>
 </head>
@@ -270,8 +292,6 @@ footer {
     © 2025 EHC Biel-Bienne U18-Elit
   </footer>
   <script>
-    // Hier dein JavaScript wie gehabt – unverändert!
-    // (Falls du Anpassungen willst, sag Bescheid.)
     const scriptUrl = 'https://script.google.com/macros/s/AKfycbx26Nld52aQijWOTEbTE6EQ9yLQTUF0iRsudCQV_35OS7a9XDF6wMkjxtNGx83lPH7raw/exec';
     let playerCode = '';
     let editId = null;
