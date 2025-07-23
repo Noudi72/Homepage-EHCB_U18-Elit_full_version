@@ -173,32 +173,47 @@ button:hover, .main-btn:hover {
   font-weight: bold;
 }
 
-.yellow-slogan {
-  margin: 2.1rem auto 1.1rem auto;
-  background: #ffc700;
-  color: #002d5b;
-  text-align: center;
-  font-size: 2.1rem;
-  font-weight: bold;
-  border-radius: 0;
-  width: 100vw;
-  max-width: none;
-  padding: 0.8rem 1rem 0.7rem 1rem;
-  letter-spacing: 1.4px;
-  box-shadow: 0 1px 7px #0002;
-  border-top: 4px solid #d0021b;
-  border-bottom: 4px solid #d0021b;
-  box-sizing: border-box;
-  overflow-x: hidden;
-}
-footer {
-  text-align:center; margin: 18px auto 6px auto; color: #002d5b;
-  opacity: 0.82; font-size: 1.04rem;
-  width: 96vw;
-  max-width: 520px;
-  box-sizing: border-box;
-  font-weight: bold;
-}
+  .yellow-slogan {
+    background: var(--ehcb-yellow);
+    color: var(--ehcb-blue);
+    text-align: center;
+    font-size: 1.29rem;
+    font-weight: bold;
+    border-radius: 0;
+    width: 100vw;
+    max-width: none;
+    padding: 0.85rem 1rem 0.79rem 1rem;
+    letter-spacing: 1.4px;
+    box-shadow: 0 1px 7px #0002;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    position: fixed;
+    left: 0; bottom: 44px; /* Footerhöhe */
+    z-index: 100;
+    border-top: 4px solid #d0021b;
+    transition: background .3s, color .3s;
+  }
+  footer {
+    text-align:center;
+    margin: 0 auto;
+    color: #002d5b;
+    background: #fff;
+    opacity: 0.69;
+    font-size: 1.03rem;
+    width: 100vw;
+    max-width: none;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0; bottom: 0;
+    padding: 11px 0 6px 0;
+    z-index: 101;
+    border-top: 1.5px solid #e9ecf2;
+    transition: background .3s, color .3s;
+  }
+  @media (max-width: 600px) {
+    .yellow-slogan { font-size: 1.05rem; padding: 0.7rem 0.2rem; }
+    footer { font-size: 0.87rem; }
+  }
 
 /* Diary Entries styling */
 #diaryList .diary-card {
@@ -319,9 +334,9 @@ footer {
         <ul id="diaryList" style="list-style:none;padding:0;margin-top:9px;"></ul>
       </section>
     </div>
-    <section class="yellow-slogan" id="slogan">
-      "OUR STRENGTH IS OUR UNITY!"
-    </section>
+  </div>
+  <div class="yellow-slogan" id="slogan">
+    "OUR STRENGTH IS OUR UNITY!"
   </div>
   <footer>
     © 2025 EHC Biel-Bienne U18-Elit

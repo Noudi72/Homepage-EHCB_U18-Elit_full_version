@@ -162,44 +162,46 @@ label {
   color: #002d5b;
   font-weight: bold;
 }
-/* Footer/Slogan styles */
-.main-footer {
-  position: fixed;
-  left: 0; bottom: 0; width: 100vw;
-  z-index: 100;
-  box-sizing: border-box;
-}
+/* Footer/Slogan styles (match index.html) */
 .yellow-slogan {
-  margin: 0;
-  background: #ffc700;
-  color: #002d5b;
+  background: var(--ehcb-yellow);
+  color: var(--ehcb-blue);
   text-align: center;
-  font-size: 1.3rem;
+  font-size: 1.29rem;
   font-weight: bold;
   border-radius: 0;
   width: 100vw;
   max-width: none;
-  padding: 0.6rem 1rem 0.55rem 1rem;
-  letter-spacing: 1.2px;
+  padding: 0.85rem 1rem 0.79rem 1rem;
+  letter-spacing: 1.4px;
   box-shadow: 0 1px 7px #0002;
-  border-top: 4px solid #d0021b;
-  border-bottom: none;
   box-sizing: border-box;
   overflow-x: hidden;
+  position: fixed;
+  left: 0; bottom: 44px;
+  z-index: 100;
+  border-top: 4px solid #d0021b;
+  transition: background .3s, color .3s;
 }
-.copyright-footer {
-  background: #fff;
+@media (max-width: 600px) {
+  .yellow-slogan { font-size: 1.05rem; padding: 0.7rem 0.2rem; }
+}
+footer {
+  text-align:center;
+  margin: 0 auto;
   color: #002d5b;
-  text-align: center;
-  font-size: 1.02rem;
-  font-weight: bold;
-  padding: 7px 0 10px 0;
-  box-shadow: 0 -2px 9px #0001;
-  border-bottom: 1px solid #e9ecf2;
-}
-@media (max-width: 540px) {
-  .yellow-slogan { font-size: 1.02rem; padding: 0.5rem 0.3rem; }
-  .copyright-footer { font-size: 0.93rem; }
+  background: #fff;
+  opacity: 0.69;
+  font-size: 1.03rem;
+  width: 100vw;
+  max-width: none;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0; bottom: 0;
+  padding: 11px 0 6px 0;
+  z-index: 101;
+  border-top: 1.5px solid #e9ecf2;
+  transition: background .3s, color .3s;
 }
 .feedback-list .feedback-card {
   background: #fff;
@@ -342,13 +344,11 @@ label {
       <div id="feedback-list"></div>
     </div>
   </div>
-  <footer class="main-footer">
-    <div class="yellow-slogan" id="slogan">
-      "OUR STRENGTH IS OUR UNITY!"
-    </div>
-    <div class="copyright-footer">
-      © 2025 EHC Biel-Bienne U18-Elit
-    </div>
+  <div class="yellow-slogan" id="slogan">
+    "OUR STRENGTH IS OUR UNITY!"
+  </div>
+  <footer>
+    © 2025 EHC Biel-Bienne U18-Elit
   </footer>
   <script>
     const translations = {

@@ -157,22 +157,45 @@
       text-align:center;color:#ffe16b;font-size:0.98rem;margin-top:1.1rem;
     }
     .yellow-slogan {
-      color: var(--ehc-yellow);
+      background: #ffd600;
+      color: #002b5c;
       text-align: center;
-      margin: 44px 0 0 0;
-      font-size: 1.18rem;
-      font-weight: 800;
-      letter-spacing: 1.2px;
+      font-size: 1.29rem;
+      font-weight: bold;
+      border-radius: 0;
+      width: 100vw;
+      max-width: none;
+      padding: 0.85rem 1rem 0.79rem 1rem;
+      letter-spacing: 1.4px;
+      box-shadow: 0 1px 7px #0002;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      position: fixed;
+      left: 0; bottom: 44px; /* Footerhöhe */
+      z-index: 100;
+      border-top: 4px solid #d0021b;
+      transition: background .3s, color .3s;
     }
     footer {
-      margin-top: 65px;
-      background: var(--ehc-blue);
-      color: #ffd600;
-      text-align: center;
-      padding: 13px 0 10px 0;
-      font-size: 1.01rem;
-      opacity: 0.86;
-      border-top: 2px solid var(--ehc-red);
+      text-align:center;
+      margin: 0 auto;
+      color: #002b5c;
+      background: #fff;
+      opacity: 0.69;
+      font-size: 1.03rem;
+      width: 100vw;
+      max-width: none;
+      box-sizing: border-box;
+      position: fixed;
+      left: 0; bottom: 0;
+      padding: 11px 0 6px 0;
+      z-index: 101;
+      border-top: 1.5px solid #e9ecf2;
+      transition: background .3s, color .3s;
+    }
+    @media (max-width: 600px) {
+      .yellow-slogan { font-size: 1.05rem; padding: 0.7rem 0.2rem; }
+      footer { font-size: 0.87rem; }
     }
 
     /* Loader-Styles */
@@ -232,9 +255,9 @@
       </p>
     </section>
   </div>
-  <section class="yellow-slogan" id="slogan">
+  <div class="yellow-slogan" id="slogan">
     "OUR STRENGTH IS OUR UNITY!"
-  </section>
+  </div>
   <footer>
     © 2025 EHC Biel-Bienne U18-Elit
   </footer>
