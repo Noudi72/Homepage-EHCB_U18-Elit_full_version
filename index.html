@@ -6,143 +6,190 @@
   <title>EHC Biel-Bienne U18-Elit</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="ehcb-icon.png" type="image/png" />
-  <link rel="stylesheet" href="style.css">
   <style>
-    body {
+    :root {
+      --ehcb-blue: #002d5b;
+      --ehcb-yellow: #ffc700;
+      --ehcb-red: #d0021b;
+      --ehcb-white: #fff;
+      --radius-xl: 30px;
+      --shadow-main: 0 12px 32px #0006, 0 2px 8px #002d5b10;
+    }
+    html, body {
       margin: 0; padding: 0;
-      background: linear-gradient(to bottom, #063263 0%, #02306b 100%);
-      font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       min-height: 100vh;
-      color: #fff;
+      background: #f8fafc;
+      color: var(--ehcb-blue);
+      box-sizing: border-box;
+      width: 100vw;
+      overflow-x: hidden;
+      padding-bottom: 116px;
     }
     header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 2.5rem;
-      padding-bottom: 1rem;
-      margin-bottom: 0.5rem;
-    }
-    .logo {
-      width: 120px;
-      max-width: 100%;
-      height: auto;
-      margin-bottom: 18px;
-    }
-    h1#main-title {
-      font-size: 2.2rem;
-      font-weight: bold;
-      letter-spacing: 0.03em;
       text-align: center;
-      margin-bottom: 16px;
+      padding: 34px 0 2px 0;
+      background: transparent;
+    }
+    .header-logo {
+      max-width: 112px;
+      display: block;
+      margin: 0 auto 10px auto;
+    }
+    .main-title {
+      font-size: 2.28rem;
+      color: var(--ehcb-blue);
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 8px #0002;
+      margin: 9px auto 0 auto;
     }
     .lang-switcher {
-      margin-top: 12px; margin-bottom: 8px; display: flex; gap: 10px; justify-content: center;
+      display: flex;
+      gap: 0.45rem;
+      margin: 18px auto 0 auto;
+      justify-content: center;
     }
     .lang-btn {
-      background: #fff; color: #002b5c; border: none; border-radius: 8px; padding: 7px 18px;
-      font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 1px 8px #2222;
-      transition: background 0.18s;
+      background: #fff;
+      color: var(--ehcb-blue);
+      border: none;
+      border-radius: 8px;
+      padding: 9px 40px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 1px 8px #2222;
+      transition: background 0.18s, color 0.18s;
+      outline: none;
+      margin-bottom: 3px;
     }
     .lang-btn.active, .lang-btn:focus {
-      background: #FFD600; color: #002b5c;
+      background: var(--ehcb-yellow);
+      color: var(--ehcb-blue);
     }
-    .main-buttons {
-      display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin: 28px 0;
+    .lang-btn:hover:not(.active) {
+      background: var(--ehcb-red);
+      color: #fff;
+    }
+    .form-block {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-main);
+      width: 97vw;
+      max-width: 520px;
+      padding: 34px 5vw 26px 5vw;
+      margin: 36px auto 22px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      border: 2px solid var(--ehcb-red);
+      box-sizing: border-box;
+      overflow-x: hidden;
+      animation: fadeIn .55s;
     }
     .main-btn {
-      background: #d0021b; color: #fff; border: none; border-radius: 16px;
-      padding: 22px 34px; font-size: 1.3rem; font-weight: bold; min-width: 220px;
-      box-shadow: 0 2px 12px #002b5c26;
-      cursor: pointer; transition: background 0.15s;
+      background: var(--ehcb-red);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      padding: 22px 0;
+      font-size: 1.22rem;
+      font-weight: bold;
+      margin-bottom: 17px;
+      margin-top: 0;
+      width: 100%;
+      transition: background .18s, color .18s;
+      box-shadow: 0 2px 10px #2221;
+      cursor: pointer;
       text-align: center;
       text-decoration: none;
-      display: inline-block;
+      letter-spacing: 0.02em;
+      display: block;
+    }
+    .main-btn:last-child {
+      margin-bottom: 0;
     }
     .main-btn:hover, .main-btn:focus {
-      background: #a00117;
+      background: var(--ehcb-blue);
+      color: var(--ehcb-yellow);
     }
     .yellow-slogan {
-      background: #ffd600; color: #002b5c; text-align: center; font-size: 1.25rem;
-      font-weight: bold; letter-spacing: .01em; margin: 44px 0 0 0; padding: 18px 0;
+      background: var(--ehcb-yellow);
+      color: var(--ehcb-blue);
+      text-align: center;
+      font-size: 1.29rem;
+      font-weight: bold;
+      border-radius: 0;
+      width: 100vw;
+      max-width: none;
+      padding: 0.85rem 1rem 0.79rem 1rem;
+      letter-spacing: 1.4px;
+      box-shadow: 0 1px 7px #0002;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      position: fixed;
+      left: 0; bottom: 44px; /* Footerhöhe */
+      z-index: 100;
+      border-top: 4px solid #d0021b;
     }
     footer {
-      text-align: center; color: #fff; opacity: .77; padding: 24px 0 12px 0;
-      font-size: .95rem; letter-spacing: .01em;
-    }
-    @media (max-width: 700px) {
-      .main-buttons {
-        flex-direction: column; gap: 16px; align-items: center;
-      }
-      .main-btn { min-width: 88vw; font-size: 1.04rem; padding: 18px 10px; }
-      .logo {
-        width: 85px;
-        margin-bottom: 10px;
-      }
-      h1#main-title {
-        font-size: 1.15rem;
-        margin-bottom: 9px;
-      }
-      header {
-        padding-top: 1.2rem;
-        padding-bottom: 0.6rem;
-      }
-    }
-    #global-loader {
+      text-align:center;
+      margin: 0 auto;
+      color: #002d5b;
+      background: #fff;
+      opacity: 0.69;
+      font-size: 1.03rem;
+      width: 100vw;
+      max-width: none;
+      box-sizing: border-box;
       position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      z-index: 2000;
-      display: flex; justify-content: center; align-items: center;
-      background: rgba(10,23,54, 0.77);
-      transition: opacity 0.35s;
+      left: 0; bottom: 0;
+      padding: 11px 0 6px 0;
+      z-index: 101;
+      border-top: 1.5px solid #e9ecf2;
     }
-    #global-loader svg {
-      animation: rotate 1.15s linear infinite;
-      width: 64px; height: 64px;
-      stroke: #FFD600;
-      stroke-width: 8;
-      fill: none;
-      stroke-linecap: round;
+    @keyframes fadeIn {
+      0% { transform: translateY(30px) scale(.96); opacity: 0.3;}
+      100% { transform: none; opacity: 1;}
     }
-    @keyframes rotate {
-      0% { transform: rotate(0deg);}
-      100% { transform: rotate(360deg);}
+    @media (max-width: 600px) {
+      .form-block { 
+        padding: 17px 1.5vw 17px 1.5vw; 
+        border-radius: 15px; 
+        max-width: 99vw; 
+        width: 99vw;
+      }
+      .header-logo { max-width: 80px; }
+      .main-title { font-size: 1.24rem; }
+      .lang-btn { font-size: 0.98rem; padding: 8px 12vw; }
+      .yellow-slogan { font-size: 1.05rem; padding: 0.7rem 0.2rem; }
+      footer { font-size: 0.87rem; }
     }
   </style>
 </head>
 <body>
-  <div id="global-loader" aria-hidden="true" role="status" aria-label="Lädt">
-    <svg viewBox="0 0 50 50">
-      <circle cx="25" cy="25" r="20" stroke-dasharray="90,150" stroke-dashoffset="0"></circle>
-    </svg>
-  </div>
-  <a class="back-btn" href="index.html" id="backBtn" style="display:none;">← Back</a>
-  <!-- Hinweis: Der Button ist auf der Startseite standardmäßig ausgeblendet, damit keine Dopplung entsteht -->
   <header>
-    <img src="wikinger.png" class="logo" alt="Logo" />
-    <h1 id="main-title">EHC BIEL-BIENNE U18-ELIT</h1>
-    <div class="lang-switcher">
-      <button class="lang-btn" data-lang="de" id="btn-de">DE</button>
-      <button class="lang-btn" data-lang="fr" id="btn-fr">FR</button>
-      <button class="lang-btn" data-lang="en" id="btn-en">EN</button>
-    </div>
+    <img src="wikinger.png" class="header-logo" alt="Logo" />
+    <div class="main-title" id="main-title">EHC BIEL-BIENNE U18-ELIT</div>
   </header>
-
-  <main>
-    <div class="main-buttons">
-      <a href="kalender.html" class="main-btn" id="btn-kalender">MIH Kalender U18</a>
-      <a href="news.html" class="main-btn" id="btn-news">News & Info</a>
-      <!-- KORREKTER LINK ZU CARDIO-APP: -->
-      <a href="https://noudi72.github.io/Cardio-App-EHCB-U18/" class="main-btn" id="btn-cardio" target="_blank">Cardio-Programme</a>
-      <a href="https://script.google.com/macros/s/AKfycbyA6rW0ENHJSLGbi-6x1jQd6jFemVkT5jZ9_4yd9yl_7lKZpkG4MsZ0VbqIHBLPAtGAsw/exec" class="main-btn" id="btn-sponser" target="_blank">Sponser Sport Food</a>
-      <a href="https://www.ehcb.ch/de/teams/u18-elit" class="main-btn" id="btn-spirit" target="_blank">Spirit Homepage</a>
-      <a href="dashboard.html" class="main-btn" id="btn-dashboard">Spieler Reflexion</a>
-      <a href="tagebuch.html" class="main-btn" id="btn-tagebuch">Mein Tagebuch</a>
-    </div>
-  </main>
-  <section class="yellow-slogan" id="slogan">
+  <div class="lang-switcher">
+    <button class="lang-btn" id="btn-de">DE</button>
+    <button class="lang-btn" id="btn-fr">FR</button>
+    <button class="lang-btn" id="btn-en">EN</button>
+  </div>
+  <div class="form-block" id="mainNav">
+    <a href="kalender.html" class="main-btn" id="btn-kalender">MIH Kalender U18</a>
+    <a href="news.html" class="main-btn" id="btn-news">News & Info</a>
+    <a href="https://noudi72.github.io/Cardio-App-EHCB-U18/" class="main-btn" id="btn-cardio" target="_blank">Cardio-Programme</a>
+    <a href="https://script.google.com/macros/s/AKfycbyA6rW0ENHJSLGbi-6x1jQd6jFemVkT5jZ9_4yd9yl_7lKZpkG4MsZ0VbqIHBLPAtGAsw/exec" class="main-btn" id="btn-sponser" target="_blank">Sponser Sport Food</a>
+    <a href="https://www.ehcb.ch/de/teams/u18-elit" class="main-btn" id="btn-spirit" target="_blank">Spirit Homepage</a>
+    <a href="dashboard.html" class="main-btn" id="btn-dashboard">Spieler Reflexion</a>
+    <a href="tagebuch.html" class="main-btn" id="btn-tagebuch">Mein Tagebuch</a>
+  </div>
+  <div class="yellow-slogan" id="slogan">
     "OUR STRENGTH IS OUR UNITY!"
-  </section>
+  </div>
   <footer>
     © 2025 EHC Biel-Bienne U18-Elit
   </footer>
@@ -187,7 +234,6 @@
       }
     };
 
-    // Sprache erkennen (URL, LocalStorage, sonst Browser)
     function getUserLang() {
       const urlLang = (window.location.search.match(/lang=(de|fr|en)/) || [])[1];
       if (urlLang) return urlLang;
@@ -209,26 +255,28 @@
       document.getElementById('btn-dashboard').textContent = t.feedback;
       document.getElementById('slogan').textContent = t.slogan;
       document.getElementById('btn-tagebuch').textContent = t.tagebuch;
-      document.getElementById('btn-coach-tagebuch').textContent = t.coachTagebuch;
+      if(document.getElementById('btn-coach-tagebuch')) {
+        document.getElementById('btn-coach-tagebuch').textContent = t.coachTagebuch;
+      }
     }
 
-    // Highlight active language button
+    function updateActiveLangBtn(lang) {
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.id === 'btn-' + lang);
+      });
+    }
+
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.onclick = () => {
-        setLang(btn.dataset.lang);
+        setLang(btn.id.replace('btn-', ''));
+        updateActiveLangBtn(btn.id.replace('btn-', ''));
       };
     });
 
     // Init
-    setLang(getUserLang());
+    const userLang = getUserLang();
+    setLang(userLang);
+    updateActiveLangBtn(userLang);
   </script>
-<script>
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    const loader = document.getElementById('global-loader');
-    if(loader){ loader.style.opacity = '0'; setTimeout(()=>loader.style.display='none',340);}
-  }, 800); // nach spätestens 0.8s ausgeblendet
-});
-</script>
 </body>
 </html>
