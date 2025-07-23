@@ -12,6 +12,7 @@
       --ehcb-yellow: #ffc700;
       --ehcb-red: #d0021b;
       --ehcb-white: #fff;
+      --ehcb-gray: #f8fafc;
       --radius-xl: 30px;
       --shadow-main: 0 12px 32px #0006, 0 2px 8px #002d5b10;
     }
@@ -19,12 +20,17 @@
       margin: 0; padding: 0;
       font-family: 'Segoe UI', Arial, sans-serif;
       min-height: 100vh;
-      background: #f8fafc;
+      background: var(--ehcb-gray);
       color: var(--ehcb-blue);
       box-sizing: border-box;
       width: 100vw;
       overflow-x: hidden;
       padding-bottom: 116px;
+      transition: background .28s, color .28s;
+    }
+    body.dark-mode {
+      background: #091b30;
+      color: #fff;
     }
     header {
       text-align: center;
@@ -43,12 +49,19 @@
       letter-spacing: 2px;
       text-shadow: 0 2px 8px #0002;
       margin: 9px auto 0 auto;
+      transition: color .3s;
+    }
+    body.dark-mode .main-title {
+      color: var(--ehcb-yellow);
+      text-shadow: 0 3px 16px #000a;
     }
     .lang-switcher {
       display: flex;
       gap: 0.45rem;
       margin: 18px auto 0 auto;
       justify-content: center;
+      align-items: center;
+      position: relative;
     }
     .lang-btn {
       background: #fff;
@@ -72,6 +85,53 @@
       background: var(--ehcb-red);
       color: #fff;
     }
+    .dark-mode .lang-btn {
+      background: #1b2940;
+      color: var(--ehcb-yellow);
+    }
+    .dark-mode .lang-btn.active,
+    .dark-mode .lang-btn:focus {
+      background: var(--ehcb-yellow);
+      color: var(--ehcb-blue);
+    }
+    /* Dark Mode Toggle */
+    .dark-toggle-wrap {
+      margin-left: 1.2rem;
+      display: flex;
+      align-items: center;
+    }
+    .dark-toggle-label {
+      font-size: 1.15rem;
+      color: var(--ehcb-blue);
+      margin-left: 0.22em;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      transition: color .3s;
+    }
+    .dark-mode .dark-toggle-label { color: var(--ehcb-yellow); }
+    .toggle-switch {
+      width: 44px; height: 24px;
+      border-radius: 14px;
+      background: #bbb;
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+      margin-right: 0.2em;
+      transition: background .18s;
+      vertical-align: middle;
+    }
+    .toggle-switch .slider {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--ehcb-white);
+      position: absolute;
+      top: 1px; left: 1px;
+      box-shadow: 0 1px 4px #0002;
+      transition: left .19s;
+    }
+    .toggle-switch.active { background: var(--ehcb-red);}
+    .toggle-switch.active .slider { left: 21px; background: var(--ehcb-yellow);}
     .form-block {
       background: #fff;
       border-radius: var(--radius-xl);
@@ -87,6 +147,11 @@
       box-sizing: border-box;
       overflow-x: hidden;
       animation: fadeIn .55s;
+      transition: background .3s, border-color .3s;
+    }
+    body.dark-mode .form-block {
+      background: #182742;
+      border-color: var(--ehcb-yellow);
     }
     .main-btn {
       background: var(--ehcb-red);
@@ -105,14 +170,34 @@
       text-align: center;
       text-decoration: none;
       letter-spacing: 0.02em;
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      outline: none;
     }
-    .main-btn:last-child {
-      margin-bottom: 0;
-    }
+    .main-btn:last-child { margin-bottom: 0; }
     .main-btn:hover, .main-btn:focus {
       background: var(--ehcb-blue);
       color: var(--ehcb-yellow);
+    }
+    body.dark-mode .main-btn {
+      background: #20375b;
+      color: var(--ehcb-yellow);
+    }
+    body.dark-mode .main-btn:hover, body.dark-mode .main-btn:focus {
+      background: var(--ehcb-yellow);
+      color: var(--ehcb-blue);
+    }
+    .btn-emoji {
+      font-size: 1.44em;
+      margin-right: 0.2em;
+      margin-left: 0.1em;
+      display: inline-block;
+      width: 1.5em;
+      text-align: center;
+      filter: drop-shadow(0 1px 4px #0001);
+      transition: filter .2s;
     }
     .yellow-slogan {
       background: var(--ehcb-yellow);
@@ -132,6 +217,47 @@
       left: 0; bottom: 44px; /* Footerhöhe */
       z-index: 100;
       border-top: 4px solid #d0021b;
+      transition: background .3s, color .3s;
+    }
+    body.dark-mode .yellow-slogan {
+      background: #111a29;
+      color: var(--ehcb-yellow);
+      border-top: 4px solid var(--ehcb-yellow);
+    }
+    .pwa-install-hint {
+      display: none;
+      position: fixed;
+      bottom: 110px;
+      left: 50%; transform: translateX(-50%);
+      background: var(--ehcb-blue);
+      color: #fff;
+      font-size: 1.06rem;
+      font-weight: 600;
+      border-radius: 13px;
+      box-shadow: 0 2px 16px #0018;
+      padding: 13px 23px;
+      z-index: 200;
+      opacity: 0.98;
+      animation: fadeInHint 0.6s;
+    }
+    .pwa-install-hint.visible { display: block; }
+    .pwa-install-hint .close-hint {
+      margin-left: 17px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.13em;
+      cursor: pointer;
+      vertical-align: middle;
+      opacity: .7;
+    }
+    @keyframes fadeIn {
+      0% { transform: translateY(30px) scale(.96); opacity: 0.3;}
+      100% { transform: none; opacity: 1;}
+    }
+    @keyframes fadeInHint {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: .98; transform: none;}
     }
     footer {
       text-align:center;
@@ -148,10 +274,12 @@
       padding: 11px 0 6px 0;
       z-index: 101;
       border-top: 1.5px solid #e9ecf2;
+      transition: background .3s, color .3s;
     }
-    @keyframes fadeIn {
-      0% { transform: translateY(30px) scale(.96); opacity: 0.3;}
-      100% { transform: none; opacity: 1;}
+    body.dark-mode footer {
+      background: #151e2f;
+      color: #e3e6ec;
+      opacity: .97;
     }
     @media (max-width: 600px) {
       .form-block { 
@@ -177,15 +305,25 @@
     <button class="lang-btn" id="btn-de">DE</button>
     <button class="lang-btn" id="btn-fr">FR</button>
     <button class="lang-btn" id="btn-en">EN</button>
+    <div class="dark-toggle-wrap">
+      <span class="toggle-switch" id="darkToggle" tabindex="0" aria-label="Dark Mode Toggle">
+        <span class="slider"></span>
+      </span>
+      <span class="dark-toggle-label" id="darkToggleLabel" title="Dark Mode">🌙</span>
+    </div>
   </div>
   <div class="form-block" id="mainNav">
-    <a href="kalender.html" class="main-btn" id="btn-kalender">MIH Kalender U18</a>
-    <a href="news.html" class="main-btn" id="btn-news">News & Info</a>
-    <a href="https://noudi72.github.io/Cardio-App-EHCB-U18/" class="main-btn" id="btn-cardio" target="_blank">Cardio-Programme</a>
-    <a href="https://script.google.com/macros/s/AKfycbyA6rW0ENHJSLGbi-6x1jQd6jFemVkT5jZ9_4yd9yl_7lKZpkG4MsZ0VbqIHBLPAtGAsw/exec" class="main-btn" id="btn-sponser" target="_blank">Sponser Sport Food</a>
-    <a href="https://www.ehcb.ch/de/teams/u18-elit" class="main-btn" id="btn-spirit" target="_blank">Spirit Homepage</a>
-    <a href="dashboard.html" class="main-btn" id="btn-dashboard">Spieler Reflexion</a>
-    <a href="tagebuch.html" class="main-btn" id="btn-tagebuch">Mein Tagebuch</a>
+    <a href="kalender.html" class="main-btn" id="btn-kalender"><span class="btn-emoji">📅</span><span id="kalenderTxt">MIH Kalender U18</span></a>
+    <a href="news.html" class="main-btn" id="btn-news"><span class="btn-emoji">📰</span><span id="newsTxt">News & Info</span></a>
+    <a href="https://noudi72.github.io/Cardio-App-EHCB-U18/" class="main-btn" id="btn-cardio" target="_blank"><span class="btn-emoji">❤️</span><span id="cardioTxt">Cardio-Programme</span></a>
+    <a href="https://script.google.com/macros/s/AKfycbyA6rW0ENHJSLGbi-6x1jQd6jFemVkT5jZ9_4yd9yl_7lKZpkG4MsZ0VbqIHBLPAtGAsw/exec" class="main-btn" id="btn-sponser" target="_blank"><span class="btn-emoji">🥤</span><span id="sponserTxt">Sponser Sport Food</span></a>
+    <a href="https://www.ehcb.ch/de/teams/u18-elit" class="main-btn" id="btn-spirit" target="_blank"><span class="btn-emoji">🏒</span><span id="spiritTxt">Spirit Homepage</span></a>
+    <a href="dashboard.html" class="main-btn" id="btn-dashboard"><span class="btn-emoji">📝</span><span id="feedbackTxt">Spieler Reflexion</span></a>
+    <a href="tagebuch.html" class="main-btn" id="btn-tagebuch"><span class="btn-emoji">📔</span><span id="tagebuchTxt">Mein Tagebuch</span></a>
+  </div>
+  <div class="pwa-install-hint" id="pwaInstallHint">
+    <span id="installMsg">Tipp: Füge diese Seite deinem Home-Bildschirm hinzu für Schnellzugriff wie eine App.</span>
+    <button class="close-hint" onclick="hidePwaHint()" aria-label="Schliessen">×</button>
   </div>
   <div class="yellow-slogan" id="slogan">
     "OUR STRENGTH IS OUR UNITY!"
@@ -206,6 +344,7 @@
         feedback: "Spieler Reflexion",
         slogan: "\"OUR STRENGTH IS OUR UNITY!\"",
         tagebuch: "Mein Tagebuch",
+        installHint: "Tipp: Füge diese Seite deinem Home-Bildschirm hinzu für Schnellzugriff wie eine App.",
         coachTagebuch: "Coach: Tagebuch Übersicht"
       },
       fr: {
@@ -218,6 +357,7 @@
         feedback: "Réflexion Joueur",
         slogan: "\"NOTRE FORCE, C'EST NOTRE UNITÉ !\"",
         tagebuch: "Mon journal",
+        installHint: "Astuce : Ajoute cette page à ton écran d'accueil pour un accès rapide comme une app.",
         coachTagebuch: "Coach : Journal joueurs"
       },
       en: {
@@ -230,6 +370,7 @@
         feedback: "Player Reflection",
         slogan: "\"OUR STRENGTH IS OUR UNITY!\"",
         tagebuch: "My Diary",
+        installHint: "Tip: Add this page to your Home Screen for quick access like an app.",
         coachTagebuch: "Coach: Diary Overview"
       }
     };
@@ -247,14 +388,15 @@
       localStorage.setItem('lang', lang);
       const t = translations[lang] || translations.de;
       document.getElementById('main-title').textContent = t.title;
-      document.getElementById('btn-kalender').textContent = t.kalender;
-      document.getElementById('btn-news').textContent = t.news;
-      document.getElementById('btn-cardio').textContent = t.cardio;
-      document.getElementById('btn-sponser').textContent = t.sponser;
-      document.getElementById('btn-spirit').textContent = t.spirit;
-      document.getElementById('btn-dashboard').textContent = t.feedback;
+      document.getElementById('kalenderTxt').textContent = t.kalender;
+      document.getElementById('newsTxt').textContent = t.news;
+      document.getElementById('cardioTxt').textContent = t.cardio;
+      document.getElementById('sponserTxt').textContent = t.sponser;
+      document.getElementById('spiritTxt').textContent = t.spirit;
+      document.getElementById('feedbackTxt').textContent = t.feedback;
       document.getElementById('slogan').textContent = t.slogan;
-      document.getElementById('btn-tagebuch').textContent = t.tagebuch;
+      document.getElementById('tagebuchTxt').textContent = t.tagebuch;
+      document.getElementById('installMsg').textContent = t.installHint;
       if(document.getElementById('btn-coach-tagebuch')) {
         document.getElementById('btn-coach-tagebuch').textContent = t.coachTagebuch;
       }
@@ -272,6 +414,37 @@
         updateActiveLangBtn(btn.id.replace('btn-', ''));
       };
     });
+
+    // Dark Mode Logic
+    const body = document.body;
+    const darkToggle = document.getElementById('darkToggle');
+    const darkToggleLabel = document.getElementById('darkToggleLabel');
+    function setDarkMode(on) {
+      body.classList.toggle('dark-mode', on);
+      darkToggle.classList.toggle('active', on);
+      localStorage.setItem('ehcb_darkmode', on ? '1' : '0');
+      darkToggleLabel.textContent = on ? '☀️' : '🌙';
+    }
+    darkToggle.addEventListener('click', () => setDarkMode(!body.classList.contains('dark-mode')));
+    darkToggle.addEventListener('keypress', e => { if(e.key === ' ' || e.key === 'Enter') setDarkMode(!body.classList.contains('dark-mode')); });
+    darkToggleLabel.addEventListener('click', () => setDarkMode(!body.classList.contains('dark-mode')));
+    // Beim Laden aktuellen Status setzen
+    if(localStorage.getItem('ehcb_darkmode') === '1') setDarkMode(true);
+
+    // PWA Install Hint – nur auf Mobile anzeigen, wenn nicht bereits geschlossen
+    function isMobile() {
+      return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    }
+    function showPwaHint() {
+      if(!isMobile() || localStorage.getItem('ehcb_no_pwahint')) return;
+      document.getElementById('pwaInstallHint').classList.add('visible');
+    }
+    function hidePwaHint() {
+      document.getElementById('pwaInstallHint').classList.remove('visible');
+      localStorage.setItem('ehcb_no_pwahint', '1');
+    }
+    window.hidePwaHint = hidePwaHint;
+    setTimeout(showPwaHint, 1750);
 
     // Init
     const userLang = getUserLang();
