@@ -12,42 +12,47 @@
   --ehcb-yellow-light: #ffe36c;
   --ehcb-white: #fff;
   --ehcb-red: #d0021b;
-  --radius-xl: 30px;
-  --radius-lg: 18px;
-  --shadow-main: 0 12px 32px #0006, 0 2px 8px #002d5b10;
+  --radius-xl: 28px;
+  --radius-lg: 15px;
+  --shadow-main: 0 10px 34px #002d5b22, 0 2px 8px #d0021b0c;
 }
+
 html, body {
   margin: 0; padding: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
   min-height: 100vh;
-  background: var(--ehcb-blue-dark);
-  color: var(--ehcb-white);
+  background: linear-gradient(130deg, #fff 0%, #f8fafb 42%, #e9ecf2 100%);
+  color: var(--ehcb-blue);
   box-sizing: border-box;
   width: 100vw;
   overflow-x: hidden;
 }
+
 body, .app-shell {
   min-height: 100vh; height: 100dvh;
   display: flex; flex-direction: column;
   justify-content: stretch;
 }
+
 header {
   text-align: center;
   padding: 24px 0 4px 0;
   background: transparent;
 }
 .header-logo {
-  max-width: 112px;
+  max-width: 110px;
   display: block;
   margin: 26px auto 10px auto;
+  filter: drop-shadow(0 2px 9px #01163155);
 }
 .main-title {
-  font-size: 2.08rem;
-  color: var(--ehcb-yellow);
+  font-size: 2.18rem;
+  color: var(--ehcb-blue);
   font-weight: 900;
   letter-spacing: 2px;
-  text-shadow: 0 2px 8px #0002;
+  text-shadow: 0 2px 8px #d0021b11;
   margin: 4px auto 0 auto;
+  display: inline-block;
 }
 
 .back-btn {
@@ -55,8 +60,8 @@ header {
   position: fixed;
   top: 22px; left: 20px;
   z-index: 12;
-  background: var(--ehcb-blue);
-  color: var(--ehcb-yellow);
+  background: var(--ehcb-white);
+  color: var(--ehcb-blue);
   padding: 10px 21px 10px 13px;
   font-size: 1.09rem;
   border: 2px solid var(--ehcb-yellow);
@@ -64,11 +69,11 @@ header {
   text-decoration: none;
   font-weight: bold;
   transition: background .2s, color .2s, border .2s;
-  box-shadow: 0 2px 12px #0003;
+  box-shadow: 0 2px 12px #0002;
 }
 .back-btn:hover {
   background: var(--ehcb-yellow);
-  color: var(--ehcb-blue);
+  color: var(--ehcb-blue-dark);
   border-color: var(--ehcb-red);
 }
 
@@ -84,23 +89,23 @@ header {
 }
 
 .form-block {
-  background: var(--ehcb-blue);
+  background: var(--ehcb-white);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-main);
   width: 96vw;
-  max-width: 430px;
-  padding: 32px 5vw 24px 5vw;
+  max-width: 440px;
+  padding: 34px 5vw 28px 5vw;
   margin: 24px auto 22px auto;
   display: flex; flex-direction: column;
   align-items: stretch;
   animation: fadeIn .65s;
-  border: 1.5px solid #11356d;
+  border: 2.2px solid var(--ehcb-red);
   box-sizing: border-box;
   overflow-x: hidden;
 }
 
 @keyframes fadeIn {
-  0% { transform: translateY(25px) scale(.97); opacity: 0.4;}
+  0% { transform: translateY(28px) scale(.97); opacity: 0.4;}
   100% { transform: none; opacity: 1;}
 }
 
@@ -113,13 +118,13 @@ header {
   background: #fff;
   color: #002d5b;
   border: none;
-  border-radius: 8px;
+  border-radius: 9px;
   padding: 7px 35px;
   font-weight: bold;
   font-size: 1.1rem;
   cursor: pointer;
   box-shadow: 0 1px 8px #2222;
-  transition: background 0.18s;
+  transition: background 0.18s, color 0.18s;
   outline: none;
 }
 .lang-btn.active, .lang-btn:focus {
@@ -130,34 +135,44 @@ header {
   background: #d0021b;
   color: #fff;
 }
-@media (max-width: 700px) {
-  .lang-btn { font-size: 1rem; padding: 7px 13vw; }
-  .lang-switcher { gap: 0.18rem; }
-}
 
 input[type="text"], textarea, select {
   width: 100%;
-  border-radius: 14px;
+  border-radius: 15px;
   font-size: 1.15rem;
   margin-bottom: 14px;
   border: 1.7px solid #bbb;
-  background: #f8fafb;
-  color: var(--ehcb-blue);
+  background: #fff;
+  color: #002d5b;
   padding: 16px 15px;
   box-shadow: 0 1px 8px #2221;
   transition: border .19s;
   box-sizing: border-box;
 }
+
 button, .main-btn {
   background: var(--ehcb-yellow); color: var(--ehcb-blue); border: none;
   font-weight: bold; font-size: 1.22rem; padding: 17px 0;
   cursor: pointer; box-shadow: 0 2px 10px #2221;
-  border-radius: 16px; margin-bottom: 7px; margin-top: 10px;
+  border-radius: 18px; margin-bottom: 7px; margin-top: 10px;
   width: 100%;
-  transition: background .18s, color .18s;
+  transition: background .18s, color .18s, box-shadow .17s;
+  border: 2px solid var(--ehcb-yellow);
+}
+button:hover, .main-btn:hover {
+  background: var(--ehcb-red);
+  color: #fff;
+  border-color: var(--ehcb-red);
 }
 
-/* NEU: Slogan auf Desktop volle Breite, kein max-width */
+#diaryForm label {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.06rem;
+  color: #002d5b;
+  font-weight: bold;
+}
+
 .yellow-slogan {
   margin: 2.1rem auto 1.1rem auto;
   background: #ffc700;
@@ -171,89 +186,98 @@ button, .main-btn {
   padding: 0.8rem 1rem 0.7rem 1rem;
   letter-spacing: 1.4px;
   box-shadow: 0 1px 7px #0002;
+  border-top: 4px solid #d0021b;
+  border-bottom: 4px solid #d0021b;
   box-sizing: border-box;
   overflow-x: hidden;
 }
 footer {
-  text-align:center; margin: 18px auto 6px auto; color: #fff;
-  opacity: 0.69; font-size: 1.03rem;
+  text-align:center; margin: 18px auto 6px auto; color: #002d5b;
+  opacity: 0.82; font-size: 1.04rem;
   width: 96vw;
   max-width: 520px;
   box-sizing: border-box;
-}
-#diaryForm label {
-  display: block;
-  margin-top: 10px;
-  font-size: 1.02rem;
-  color: #fff;
+  font-weight: bold;
 }
 
 /* Diary Entries styling */
 #diaryList .diary-card {
-  background: #011631;
-  border-radius: 13px;
-  margin-bottom: 13px;
+  background: #fff;
+  border-radius: 16px;
+  margin-bottom: 18px;
   padding: 16px 13px 10px 13px;
   box-shadow: 0 2px 16px #0018;
-  color: #fff;
+  color: #002d5b;
   animation: fadeIn .5s;
   box-sizing: border-box;
+  border-left: 8px solid #d0021b;
+  border-top: 1.5px solid #ffc700;
 }
+
 .diary-date {
-  font-size: 1.01rem;
-  color: #ffc700;
+  font-size: 1.06rem;
+  color: #d0021b;
+  font-weight: 700;
+  margin-bottom: 5px;
+  letter-spacing: 1.1px;
+}
+.date-str {
+  color: #002d5b;
   font-weight: 600;
-  margin-bottom: 3px;
+  margin-right: 7px;
 }
 .diary-text {
-  font-size: 1.09rem;
+  font-size: 1.12rem;
   margin-bottom: 7px;
-  color: #fff;
+  color: #002d5b;
   white-space: pre-line;
 }
 .diary-actions {
-  display: flex; gap: 7px;
+  display: flex; gap: 9px;
+  margin-top: 6px;
 }
 .diary-actions button {
   background: var(--ehcb-yellow);
   color: var(--ehcb-blue);
-  font-size: 1.04rem;
-  padding: 7px 0;
-  border-radius: 10px;
+  font-size: 1.09rem;
+  padding: 10px 0;
+  border-radius: 11px;
   flex: 1 1 0px;
-  box-shadow: 0 1px 6px #2222;
+  box-shadow: 0 1px 7px #002d5b19;
   font-weight: bold;
-  transition: background .17s, color .17s;
+  border: 2px solid #ffc700;
+  transition: background .17s, color .17s, border .17s;
 }
 .diary-actions button:hover {
   background: var(--ehcb-red);
   color: #fff;
+  border-color: #d0021b;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 540px) {
   html, body, .app-shell { width: 100vw; }
-  .header-logo { max-width: 86px; margin-top: 11px;}
-  .main-title { font-size: 1.31rem; }
+  .header-logo { max-width: 84px; margin-top: 9px;}
+  .main-title { font-size: 1.19rem; }
   .form-block { 
     padding: 14px 2vw 14px 2vw; 
-    border-radius: 13px; 
+    border-radius: 14px; 
     max-width: 99vw; 
     width: 99vw;
   }
   .yellow-slogan { 
-    font-size: 1.22rem; 
+    font-size: 1.19rem; 
     border-radius: 7px; 
-    padding: 0.7rem 0.5rem; 
+    padding: 0.6rem 0.3rem; 
     max-width: 99vw; 
     width: 99vw;
   }
   .back-btn { 
-    top: 9px; left: 7px; 
-    font-size: 0.97rem; 
-    padding: 7px 14px 7px 9px;
+    top: 7px; left: 7px; 
+    font-size: 0.96rem; 
+    padding: 7px 12px 7px 8px;
   }
   footer { 
-    font-size: 0.91rem; 
+    font-size: 0.89rem; 
     margin-top: 5px; 
     max-width: 99vw; 
     width: 99vw;
@@ -275,13 +299,13 @@ footer {
         <button class="lang-btn" id="btn-en">EN</button>
       </div>
       <section id="loginSection">
-        <h2 id="diaryTitle" class="main-title" style="font-size:1.21rem;">Dein Tagebuch</h2>
         <input type="text" id="playerCode" placeholder="Dein Spieler-Code (z.B. U18-23-012)">
         <button id="btn-login" onclick="loginDiary()">Einloggen</button>
       </section>
       <section id="diarySection" style="display:none;">
         <form id="diaryForm">
           <textarea id="diaryText" placeholder="Schreibe deinen Eintrag..." required></textarea>
+          <label id="labelMoodTitle" for="diaryMood" style="margin-bottom:2px;font-size:1.03rem;color:#fff;font-weight:600;">Wie fühlst du dich heute?</label>
           <select id="diaryMood">
             <option value="🙂">🙂 Normal</option>
             <option value="😃">😃 Gut</option>
@@ -289,10 +313,7 @@ footer {
             <option value="😡">😡 Wütend</option>
             <option value="🤩">🤩 Super</option>
           </select>
-          <label>
-            <input type="checkbox" id="diaryCoachOk" />
-            <span id="labelCoachView">Coach darf diesen Eintrag sehen</span>
-          </label>
+          <!-- Coach checkbox entfernt -->
           <button type="submit" id="btn-save" style="margin-top:13px;">Speichern</button>
         </form>
         <ul id="diaryList" style="list-style:none;padding:0;margin-top:9px;"></ul>
@@ -306,7 +327,7 @@ footer {
     © 2025 EHC Biel-Bienne U18-Elit
   </footer>
   <script>
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbx26Nld52aQijWOTEbTE6EQ9yLQTUF0iRsudCQV_35OS7a9XDF6wMkjxtNGx83lPH7raw/exec';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbycOpF5dlZD6aF9RD8XGLqozYn6Zfhee5Ih5dI1osQcVRDogVdX4JOW6DBFMAu_cPuHQQ/exec';
     let playerCode = '';
     let editId = null;
 
@@ -325,20 +346,18 @@ footer {
           const ul = document.getElementById('diaryList');
           ul.innerHTML = '';
           entries.reverse().forEach(e=>{
+            const id = e.timestamp; // Use timestamp as id everywhere
             const li = document.createElement('li');
             li.className = 'diary-card';
             li.innerHTML = `
-              <div class="diary-date">${
-                e.date && !isNaN(Number(e.date)) && String(e.date).length >= 13
-                  ? new Date(Number(e.date)).toLocaleString()
-                  : "(kein Datum)"
-              } <span class="emoji">${e.mood||""}</span> 
-                ${e.coachOk==="true"||e.coachOk===true?'👀 (Coach darf sehen)':''}
+              <div class="diary-date">
+                ${e.date ? `<span class="date-str">${e.date}</span>` : "(kein Datum)"}
+                <span class="emoji">${e.mood || ""}</span>
               </div>
               <div class="diary-text">${e.text}</div>
               <div class="diary-actions">
-                <button onclick="editDiary('${e.id}','${e.text.replace(/'/g,"&#39;")}','${e.mood}','${e.coachOk}')">Bearbeiten</button>
-                <button onclick="deleteDiary('${e.id}')">Löschen</button>
+                <button onclick="editDiary('${e.timestamp}','${e.text.replace(/'/g,"&#39;")}','${e.mood}')">Bearbeiten</button>
+                <button onclick="deleteDiary('${e.timestamp}')">Löschen</button>
               </div>
             `;
             ul.appendChild(li);
@@ -350,27 +369,23 @@ footer {
       e.preventDefault();
       const text = document.getElementById('diaryText').value;
       const mood = document.getElementById('diaryMood').value;
-      const coachOk = document.getElementById('diaryCoachOk').checked;
       if(editId !== null) {
         fetch(scriptUrl+'?action=edit&id='+editId+'&code='+encodeURIComponent(playerCode)+
-              '&text='+encodeURIComponent(text)+'&mood='+encodeURIComponent(mood)+
-              '&coachOk='+(coachOk?'true':'false'),
+              '&text='+encodeURIComponent(text)+'&mood='+encodeURIComponent(mood),
               {method:'POST'}
         ).then(()=>{ editId=null; this.reset(); loadDiary(); });
       } else {
         fetch(scriptUrl+'?action=add&code='+encodeURIComponent(playerCode)+
-              '&text='+encodeURIComponent(text)+'&mood='+encodeURIComponent(mood)+
-              '&coachOk='+(coachOk?'true':'false'),
+              '&text='+encodeURIComponent(text)+'&mood='+encodeURIComponent(mood),
               {method:'POST'}
         ).then(()=>{ this.reset(); loadDiary(); });
       }
     };
 
-    function editDiary(id, text, mood, coachOk) {
-      editId = id;
+    function editDiary(id, text, mood) {
+      editId = id; // id is timestamp
       document.getElementById('diaryText').value = text.replace(/&#39;/g,"'");
       document.getElementById('diaryMood').value = mood;
-      document.getElementById('diaryCoachOk').checked = coachOk==="true"||coachOk===true;
     }
 
     function deleteDiary(id) {
@@ -386,24 +401,24 @@ footer {
         loginBtn: "Einloggen",
         codePlaceholder: "Dein Spieler-Code (z.B. U18-23-012)",
         saveBtn: "Speichern",
-        coachLabel: "Coach darf diesen Eintrag sehen",
-        slogan: "\"OUR STRENGTH IS OUR UNITY!\""
+        slogan: "\"OUR STRENGTH IS OUR UNITY!\"",
+        moodTitle: "Wie fühlst du dich heute?"
       },
       fr: {
         diaryTitle: "Ton journal",
         loginBtn: "Connexion",
         codePlaceholder: "Code joueur (ex: U18-23-012)",
         saveBtn: "Enregistrer",
-        coachLabel: "Le coach peut voir cette entrée",
-        slogan: "\"NOTRE FORCE EST NOTRE UNITÉ !\""
+        slogan: "\"NOTRE FORCE EST NOTRE UNITÉ !\"",
+        moodTitle: "Comment te sens-tu aujourd'hui ?"
       },
       en: {
         diaryTitle: "Your Diary",
         loginBtn: "Login",
         codePlaceholder: "Your player code (e.g. U18-23-012)",
         saveBtn: "Save",
-        coachLabel: "Coach may see this entry",
-        slogan: "\"OUR STRENGTH IS OUR UNITY!\""
+        slogan: "\"OUR STRENGTH IS OUR UNITY!\"",
+        moodTitle: "How are you feeling today?"
       }
     };
     let diaryLang = localStorage.getItem('diary_lang') || 'de';
@@ -418,8 +433,8 @@ footer {
       document.getElementById('btn-login').textContent = t.loginBtn;
       document.getElementById('playerCode').placeholder = t.codePlaceholder;
       document.getElementById('btn-save').textContent = t.saveBtn;
-      document.getElementById('labelCoachView').textContent = t.coachLabel;
       document.getElementById('slogan').textContent = t.slogan;
+      document.getElementById('labelMoodTitle').textContent = t.moodTitle;
     }
     window.addEventListener('DOMContentLoaded', function() {
       changeDiaryLanguage(diaryLang);
