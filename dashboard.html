@@ -7,303 +7,300 @@
   <link rel="icon" href="ehcb-icon.png" type="image/png" sizes="192x192" />
   <link rel="apple-touch-icon" href="ehcb-icon.png" sizes="192x192" />
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
   <style>
-    :root {
-      --ehcb-blue: #002d5b;
-      --ehcb-yellow: #ffc700;
-      --ehcb-white: #fff;
-      --ehcb-grey: #f5f5f5;
-      --ehcb-red: #d0021b;
-    }
-    html, body {
-      margin: 0; padding: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #073166;
-      color: var(--ehcb-white);
-      min-height: 100vh;
-    }
-    .header-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.2rem;
-      position: relative;
-    }
-    .back-btn {
-      position: absolute;
-      top: 18px; left: 18px; z-index: 10;
-      background: #002b5c;
-      color: #ffd600;
-      font-weight: bold;
-      border: 2px solid #ffd600;
-      border-radius: 10px;
-      padding: 10px 28px 9px 17px;
-      font-size: 1.09rem;
-      text-decoration: none;
-      transition: background .18s, color .18s;
-      box-shadow: 0 2px 14px #0002;
-    }
-    .back-btn:hover { background: #ffd600; color: #002b5c; }
-    .header-logo {
-      width: 120px;
-      margin-bottom: 0.4rem;
-      margin-top: 1.2rem;
-    }
-    .header-title {
-      color: #ffc700;
-      font-size: 2.1rem;
-      font-weight: 900;
-      letter-spacing: 2px;
-      text-shadow: 2px 3px 8px #1a1a1a, 0 1px 0 #222;
-      margin-bottom: 0.25rem;
-      text-align: center;
-    }
-    .lang-switcher {
-      display: flex;
-      gap: 0.45rem;
-      margin-bottom: 0.7rem;
-    }
-    .lang-btn {
-      background: #fff;
-      color: #002d5b;
-      border: none;
-      border-radius: 8px;
-      padding: 7px 35px;
-      font-weight: bold;
-      font-size: 1.1rem;
-      cursor: pointer;
-      box-shadow: 0 1px 8px #2222;
-      transition: background 0.18s;
-      outline: none;
-    }
-    .lang-btn.active, .lang-btn:focus {
-      background: #ffc700;
-      color: #002d5b;
-    }
-    .lang-btn:hover:not(.active) {
-      background: #d0021b;
-      color: #fff;
-    }
-    @media (max-width: 700px) {
-      .header-inner { gap: 0.3rem; }
-      .header-logo { width: 120px; margin-top: 0.4rem; }
-      .header-title { font-size: 1.13rem; }
-      .lang-btn { font-size: 1rem; padding: 7px 13vw; }
-      .lang-switcher { gap: 0.18rem; }
-      .back-btn { top: 7px; left: 6px; font-size: 1rem; padding: 8px 13px 7px 10px; }
-    }
-    .main-content { max-width: 900px; margin: 0 auto; }
-    /* --- Feedback Form --- */
-    .feedback-form-section {
-      background: transparent;
-      max-width: 620px;
-      margin: 2rem auto 2.2rem auto;
-      padding: 2.1rem 1.4rem 1.7rem 1.4rem;
-      border-radius: 12px;
-      text-align: left;
-      box-shadow: 0 1px 12px #0002;
-      border: 3px solid #fff;
-    }
-    .feedback-form-section h2 {
-      color: #ffc700;
-      text-align: center;
-      margin-bottom: 1.2rem;
-      font-size: 1.38rem;
-      letter-spacing: 0.5px;
-    }
-    .feedback-form-section label {
-      color: #ffc700;
-      font-weight: 600;
-      margin-bottom: 0.13rem;
-      display: block;
-      font-size: 1.07rem;
-    }
-    .feedback-form-section input[type="text"],
-    .feedback-form-section textarea {
-      width: 100%;
-      margin-bottom: 1.02rem;
-      padding: 12px;
-      font-size: 1.13rem;
-      border-radius: 7px;
-      border: 1.3px solid #bbb;
-      box-shadow: 0 1px 4px #2221;
-      background: #fff;
-      color: #002d5b;
-      resize: none;
-    }
-    .feedback-form-section button {
-      width: 100%;
-      background: #ffc700;
-      color: #002d5b;
-      font-weight: 700;
-      font-size: 1.13rem;
-      padding: 14px 0;
-      border-radius: 8px;
-      border: none;
-      margin-top: 0.5rem;
-      cursor: pointer;
-      transition: background .16s, color .16s;
-    }
-    .feedback-form-section button:hover { background: #d0021b; color: #fff; }
-    .feedback-form-section #feedback-success {
-      margin-top: 1.1rem;
-      color: #ffc700;
-      font-weight: bold;
-      text-align: center;
-      font-size: 1.06rem;
-    }
-    /* --- Login + Dashboard --- */
-    .login-card {
-      background: transparent;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0;
-      text-align: center;
-      border: none;
-      border-radius: 8px;
-    }
-    .login-card h2 {
-      color: #ffc700;
-      text-align: center;
-      font-size: 1.17rem;
-      margin-bottom: 1.09rem;
-      letter-spacing: 0.5px;
-    }
-    .login-card input[type="password"] {
-      width: 95%;
-      max-width: 620px;
-      margin: 0.6rem auto 0.9rem auto;
-      padding: 14px;
-      font-size: 1.11rem;
-      border-radius: 7px;
-      border: 1.2px solid #bbb;
-      box-shadow: 0 1px 6px #2221;
-      display: block;
-      background: #fff;
-      color: #002d5b;
-    }
-    .login-card button {
-      width: 95%;
-      max-width: 620px;
-      display: block;
-      margin: 0.2rem auto 0.4rem auto;
-      background: #d0021b;
-      color: #fff;
-      border: none;
-      border-radius: 7px;
-      font-weight: 700;
-      font-size: 1.23rem;
-      padding: 12px 0;
-      cursor: pointer;
-      transition: background .15s;
-    }
-    .login-card button:hover { background: #ffc700; color: #002d5b; }
-    .yellow-slogan {
-      margin: 2.1rem auto 1.1rem auto;
-      background: #ffc700;
-      color: #002d5b;
-      text-align: center;
-      font-size: 2.1rem;
-      font-weight: bold;
-      border-radius: 0.2rem;
-      max-width: 100vw;
-      padding: 0.8rem 1rem 0.7rem 1rem;
-      letter-spacing: 1.4px;
-      box-shadow: 0 1px 7px #0002;
-    }
-    .feedback-list {
-      margin-top: 2.3rem;
-      margin-bottom: 2.7rem;
-    }
-    .feedback-card {
-      background: #fff;
-      color: #002d5b;
-      border-radius: 9px;
-      box-shadow: 0 2px 10px #0002;
-      padding: 1.2rem 1.4rem;
-      margin-bottom: 2.2rem; /* Abstand zwischen den Karten */
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .feedback-card .f-header {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.3rem;
-      align-items: baseline;
-      margin-bottom: 0.7rem;
-      font-weight: bold;
-    }
-    .feedback-card .f-name {
-      font-size: 1.21rem;
-      font-weight: 700;
-      margin-right: 1.2rem;
-    }
-    .feedback-card .f-date {
-      color: #7a7a7a;
-      font-size: 0.97rem;
-    }
-    .feedback-card .f-row {
-      margin-bottom: 0.21rem;
-      font-size: 1.08rem;
-    }
-    .feedback-card .f-label {
-      font-weight: bold;
-      margin-right: 0.41rem;
-    }
-    @media (max-width: 700px) {
-      .feedback-card { padding: 1rem 0.7rem; }
-      .feedback-list { margin-top: 1.2rem; }
-    }
-    footer {
-      text-align: center;
-      color: #fff;
-      font-size: 1.04rem;
-      margin-bottom: 0.6rem;
-      margin-top: 2.2rem;
-      opacity: 0.93;
-    }
-  </style>
-  <style>
-    #ehcb-loader-bg {
-      position: fixed; inset: 0; z-index: 9999; background: rgba(0,36,80,0.25); display: flex; align-items: center; justify-content: center;
-      transition: opacity .3s;
-    }
-    #ehcb-loader-spinner {
-      width: 74px; height: 74px;
-      display: block;
-      background: none;
-    }
-    #ehcb-loader-spinner svg { width: 74px; height: 74px; display: block; }
-    @media (max-width: 700px) {
-      #ehcb-loader-spinner, #ehcb-loader-spinner svg { width: 50px; height: 50px; }
-    }
+:root {
+  --ehcb-blue: #002d5b;
+  --ehcb-blue-dark: #011631;
+  --ehcb-yellow: #ffc700;
+  --ehcb-yellow-light: #ffe36c;
+  --ehcb-white: #fff;
+  --ehcb-red: #d0021b;
+  --radius-xl: 28px;
+  --radius-lg: 15px;
+  --shadow-main: 0 10px 34px #002d5b22, 0 2px 8px #d0021b0c;
+}
+html, body {
+  margin: 0; padding: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(130deg, #fff 0%, #f8fafb 42%, #e9ecf2 100%);
+  color: var(--ehcb-blue);
+  box-sizing: border-box;
+  width: 100vw;
+  overflow-x: hidden;
+}
+body { padding-bottom: 118px !important; }
+body, .app-shell {
+  min-height: 100vh; height: 100dvh;
+  display: flex; flex-direction: column;
+  justify-content: stretch;
+}
+header {
+  text-align: center;
+  padding: 24px 0 4px 0;
+  background: transparent;
+}
+.header-logo {
+  max-width: 110px;
+  display: block;
+  margin: 26px auto 10px auto;
+  filter: drop-shadow(0 2px 9px #01163155);
+}
+.header-title {
+  font-size: 2.18rem;
+  color: var(--ehcb-blue);
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 8px #d0021b11;
+  margin: 4px auto 0 auto;
+  display: inline-block;
+}
+.back-btn {
+  display: inline-block;
+  position: fixed;
+  top: 22px; left: 20px;
+  z-index: 12;
+  background: var(--ehcb-white);
+  color: var(--ehcb-blue);
+  padding: 10px 21px 10px 13px;
+  font-size: 1.09rem;
+  border: 2px solid var(--ehcb-yellow);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  font-weight: bold;
+  transition: background .2s, color .2s, border .2s;
+  box-shadow: 0 2px 12px #0002;
+}
+.back-btn:hover {
+  background: var(--ehcb-yellow);
+  color: var(--ehcb-blue-dark);
+  border-color: var(--ehcb-red);
+}
+.main-content {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.lang-switcher {
+  display: flex;
+  gap: 0.45rem;
+  margin-bottom: 0.7rem;
+  justify-content: center;
+  width: 100vw;
+  max-width: 540px;
+  margin: 0 auto 1.4rem auto;
+}
+.lang-btn {
+  background: #fff;
+  color: #002d5b;
+  border: none;
+  border-radius: 9px;
+  padding: 15px 0;
+  flex: 1 1 0;
+  font-weight: bold;
+  font-size: 1.17rem;
+  cursor: pointer;
+  box-shadow: 0 1px 8px #2222;
+  transition: background 0.18s, color 0.18s;
+  outline: none;
+  margin: 0;
+}
+.lang-btn.active, .lang-btn:focus {
+  background: #ffc700;
+  color: #002d5b;
+}
+.lang-btn:hover:not(.active) {
+  background: #d0021b;
+  color: #fff;
+}
+.form-block, .login-card, .feedback-list {
+  background: var(--ehcb-white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-main);
+  width: 96vw;
+  max-width: 540px;
+  padding: 34px 5vw 28px 5vw;
+  margin: 16px auto 22px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border: 2.2px solid var(--ehcb-red);
+  box-sizing: border-box;
+}
+input[type="text"], input[type="password"], textarea, select {
+  width: 100%;
+  border-radius: 15px;
+  font-size: 1.15rem;
+  margin-bottom: 14px;
+  border: 1.7px solid #bbb;
+  background: #fff;
+  color: #002d5b;
+  padding: 16px 15px;
+  box-shadow: 0 1px 8px #2221;
+  transition: border .19s;
+  box-sizing: border-box;
+}
+button, .main-btn {
+  background: var(--ehcb-yellow); color: var(--ehcb-blue); border: none;
+  font-weight: bold; font-size: 1.22rem; padding: 17px 0;
+  cursor: pointer; box-shadow: 0 2px 10px #2221;
+  border-radius: 18px; margin-bottom: 7px; margin-top: 10px;
+  width: 100%;
+  transition: background .18s, color .18s, box-shadow .17s;
+  border: 2px solid var(--ehcb-yellow);
+}
+button:hover, .main-btn:hover {
+  background: var(--ehcb-red);
+  color: #fff;
+  border-color: var(--ehcb-red);
+}
+label {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.06rem;
+  color: #002d5b;
+  font-weight: bold;
+}
+/* Footer/Slogan styles */
+.main-footer {
+  position: fixed;
+  left: 0; bottom: 0; width: 100vw;
+  z-index: 100;
+  box-sizing: border-box;
+}
+.yellow-slogan {
+  margin: 0;
+  background: #ffc700;
+  color: #002d5b;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border-radius: 0;
+  width: 100vw;
+  max-width: none;
+  padding: 0.6rem 1rem 0.55rem 1rem;
+  letter-spacing: 1.2px;
+  box-shadow: 0 1px 7px #0002;
+  border-top: 4px solid #d0021b;
+  border-bottom: none;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+.copyright-footer {
+  background: #fff;
+  color: #002d5b;
+  text-align: center;
+  font-size: 1.02rem;
+  font-weight: bold;
+  padding: 7px 0 10px 0;
+  box-shadow: 0 -2px 9px #0001;
+  border-bottom: 1px solid #e9ecf2;
+}
+@media (max-width: 540px) {
+  .yellow-slogan { font-size: 1.02rem; padding: 0.5rem 0.3rem; }
+  .copyright-footer { font-size: 0.93rem; }
+}
+.feedback-list .feedback-card {
+  background: #fff;
+  border-radius: 16px;
+  margin-bottom: 18px;
+  padding: 16px 13px 10px 13px;
+  box-shadow: 0 2px 16px #0018;
+  color: #002d5b;
+  animation: fadeIn .5s;
+  box-sizing: border-box;
+  border-left: 8px solid #d0021b;
+  border-top: 1.5px solid #ffc700;
+}
+.feedback-card .f-header {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.feedback-card .f-name {
+  font-size: 1.11rem;
+  font-weight: 700;
+  margin-right: 1.1rem;
+  color: #002d5b;
+}
+.feedback-card .f-date {
+  color: #d0021b;
+  font-size: 1.01rem;
+  font-weight: 600;
+}
+.feedback-card .f-label {
+  font-weight: bold;
+  color: #002d5b;
+  margin-right: 0.41rem;
+}
+.feedback-card .f-value {
+  color: #002d5b;
+}
+.feedback-card .f-grid {
+  display: grid;
+  grid-template-columns: minmax(120px, 180px) 1fr;
+  row-gap: 0.19rem;
+  column-gap: 1.1rem;
+  font-size: 1.07rem;
+}
+@media (max-width: 700px) {
+  .lang-btn { font-size: 1rem; padding: 13px 0; }
+  .lang-switcher { gap: 0.18rem; }
+}
+@media (max-width: 540px) {
+  html, body, .app-shell { width: 100vw; }
+  .header-logo { max-width: 84px; margin-top: 9px;}
+  .header-title { font-size: 1.19rem; }
+  .form-block, .login-card, .feedback-list { 
+    padding: 14px 2vw 14px 2vw; 
+    border-radius: 14px; 
+    max-width: 99vw; 
+    width: 99vw;
+  }
+  .yellow-slogan { 
+    font-size: 1.19rem; 
+    border-radius: 7px; 
+    padding: 0.6rem 0.3rem; 
+    max-width: 99vw; 
+    width: 99vw;
+  }
+  .back-btn { 
+    top: 7px; left: 7px; 
+    font-size: 0.96rem; 
+    padding: 7px 12px 7px 8px;
+  }
+  footer { 
+    font-size: 0.89rem; 
+    margin-top: 8px; 
+    max-width: 99vw; 
+    width: 99vw;
+  }
+}
+@keyframes fadeIn {
+  0% { transform: translateY(28px) scale(.97); opacity: 0.4;}
+  100% { transform: none; opacity: 1;}
+}
   </style>
 </head>
 <body>
-  <div id="ehcb-loader-bg"><span id="ehcb-loader-spinner">
-    <svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" fill="none" stroke="#ffc700" stroke-width="5" stroke-linecap="round" stroke-dasharray="90" stroke-dashoffset="60">
-      <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.8s" repeatCount="indefinite"/></circle></svg>
-  </span></div>
+  <a class="back-btn" id="backBtn" href="index.html">← Zurück</a>
   <header>
-    <div class="header-inner">
-      <a class="back-btn" href="index.html" id="backBtn">← Back</a>
-      <img src="wikinger.png" class="header-logo" alt="Logo" />
-      <div class="header-title" id="main-title">EHC BIEL-BIENNE U18-ELIT</div>
-      <div class="lang-switcher">
-        <button class="lang-btn" id="btn-de">DE</button>
-        <button class="lang-btn" id="btn-fr">FR</button>
-        <button class="lang-btn" id="btn-en">EN</button>
-      </div>
-    </div>
+    <img src="wikinger.png" class="header-logo" alt="Logo" />
+    <div class="header-title" id="main-title">EHC BIEL-BIENNE U18-ELIT</div>
   </header>
+  <div class="lang-switcher" id="lang-switcher">
+    <button class="lang-btn" id="btn-de" type="button">DE</button>
+    <button class="lang-btn" id="btn-fr" type="button">FR</button>
+    <button class="lang-btn" id="btn-en" type="button">EN</button>
+  </div>
   <div class="main-content">
-    <!-- Feedback Formular für Spieler (sichtbar wenn nicht eingeloggt) -->
-    <section class="feedback-form-section" id="feedback-form-section">
+    <!-- Feedback Formular für Spieler -->
+    <section class="form-block" id="feedback-form-section">
       <form id="feedbackForm" autocomplete="off">
-        <h2 id="feedbackFormTitle">Spieler Reflexion</h2>
+        <label id="feedbackFormTitle" style="font-size:1.27rem;text-align:center;margin-bottom:1.2rem;color:#ffc700;">Spieler Reflexion</label>
         <label id="labelName">Name*</label>
         <input type="text" id="name" name="name" required>
         <label id="labelFeeling" for="feeling">🧠 Stimmung</label>
@@ -322,16 +319,14 @@
     </section>
     <!-- Admin Login -->
     <section class="login-card" id="login-section">
-      <h2 id="loginTitle">🔐 Coach Dashboard Login</h2>
+      <label id="loginTitle" style="font-size:1.18rem;text-align:center;margin-bottom:1.09rem;color:#ffc700;">🔐 Coach Dashboard Login</label>
       <input type="password" id="password" placeholder="Admin Passwort eingeben" autocomplete="current-password" />
       <button onclick="checkPassword()" id="loginBtn">Login</button>
       <div id="login-msg"></div>
     </section>
     <!-- Dashboard Content (hidden by default) -->
-    <div id="dashboard-section" style="display:none;">
-      <!-- SUCHFELD -->
+    <div class="feedback-list" id="dashboard-section" style="display:none;">
       <input type="text" id="feedbackSearch" placeholder="Feedback durchsuchen..." style="width:100%;max-width:400px;margin:0 auto 1.3rem auto;display:block;padding:12px;font-size:1.09rem;border-radius:7px;border:1.2px solid #bbb;background:#fff;color:#002d5b;box-shadow:0 1px 6px #2221;">
-      <!-- SORTIERFELD -->
       <div style="width:100%;max-width:400px;margin:0 auto 1.0rem auto;display:flex;gap:0.5rem;">
         <select id="sortField" style="flex:1;padding:10px;border-radius:7px;border:1.2px solid #bbb;">
           <option value="date_desc">⏳ Neueste zuerst</option>
@@ -340,447 +335,305 @@
           <option value="name_za">🔤 Name Z–A</option>
         </select>
       </div>
-      <div class="feedback-list" id="feedback-list"></div>
+      <div id="feedback-list"></div>
     </div>
   </div>
-  <section class="yellow-slogan" id="slogan">
-    "OUR STRENGTH IS OUR UNITY!"
-  </section>
-  <footer>
-    © 2025 EHC Biel-Bienne U18-Elit
+  <footer class="main-footer">
+    <div class="yellow-slogan" id="slogan">
+      "OUR STRENGTH IS OUR UNITY!"
+    </div>
+    <div class="copyright-footer">
+      © 2025 EHC Biel-Bienne U18-Elit
+    </div>
   </footer>
   <script>
-    // Übersetzungen & Dropdowns
     const translations = {
       de: {
-        mainTitle: "EHC BIEL-BIENNE U18-ELIT",
         feedbackFormTitle: "Spieler Reflexion",
         labelName: "Name*",
-        labelFeeling: "Wie hast du dich gefühlt?",
-        labelEnergy: "Energie-Level",
-        labelIntensity: "Intensität Training/Spiel",
-        labelPerformance: "Eigene Leistung",
-        labelComment: "Kommentar-Feedback",
+        labelFeeling: "🧠 Stimmung",
+        labelEnergy: "⚡ Energie-Level",
+        labelIntensity: "🔥 Intensität Training/Spiel",
+        labelPerformance: "🎯 Eigene Leistung",
+        labelComment: "💬 Kommentar",
         submitBtn: "Absenden",
         loginTitle: "🔐 Coach Dashboard Login",
+        passwordPlaceholder: "Admin Passwort eingeben",
         loginBtn: "Login",
-        slogan: "\"OUR STRENGTH IS OUR UNITY!\"",
-        back: "← Back",
-        noFeedbacks: "Keine Feedbacks vorhanden.",
-        feedbackSuccess: "✔️ Feedback erfolgreich übermittelt!",
-        feelingOptions: [
-          {value:"", text:"Bitte wählen..."},
-          {value:"🟢 Top", text:"🟢 Top"},
-          {value:"🟡 Okay", text:"🟡 Okay"},
-          {value:"🔴 Tired", text:"🔴 Müde"}
-        ],
-        energyOptions: [
-          {value:"", text:"Bitte wählen..."},
-          {value:"1", text:"1 – 😴 sehr müde"},
-          {value:"2", text:"2"},
-          {value:"3", text:"3"},
-          {value:"4", text:"4"},
-          {value:"5", text:"5"},
-          {value:"6", text:"6"},
-          {value:"7", text:"7"},
-          {value:"8", text:"8"},
-          {value:"9", text:"9"},
-          {value:"10", text:"10 – ⚡️ voller Power"}
-        ],
-        intensityOptions: [
-          {value:"", text:"Bitte wählen..."},
-          {value:"1", text:"1 – sehr locker"},
-          {value:"2", text:"2"},
-          {value:"3", text:"3"},
-          {value:"4", text:"4"},
-          {value:"5", text:"5 – mittel"},
-          {value:"6", text:"6"},
-          {value:"7", text:"7"},
-          {value:"8", text:"8"},
-          {value:"9", text:"9"},
-          {value:"10", text:"10 – maximal"}
-        ],
-        performanceOptions: [
-          {value:"", text:"Bitte wählen..."},
-          {value:"1", text:"1 – ausbaufähig"},
-          {value:"2", text:"2 – mässig"},
-          {value:"3", text:"3 – okay"},
-          {value:"4", text:"4 – solide"},
-          {value:"5", text:"5 – gut"},
-          {value:"6", text:"6 – sehr gut"},
-          {value:"7", text:"7 – stark"},
-          {value:"8", text:"8 – super"},
-          {value:"9", text:"9 – fast optimal"},
-          {value:"10", text:"10 – top"}
-        ]
+        feedbackSearchPlaceholder: "Feedback durchsuchen...",
+        sortDateDesc: "⏳ Neueste zuerst",
+        sortDateAsc: "⏳ Älteste zuerst",
+        sortNameAZ: "🔤 Name A–Z",
+        sortNameZA: "🔤 Name Z–A",
+        feedbackSuccess: "Feedback erfolgreich gesendet!",
+        loginFailed: "Falsches Passwort!",
       },
       fr: {
-        mainTitle: "EHC BIEL-BIENNE U18-ÉLITE",
-        feedbackFormTitle: "Réflexion Joueur",
+        feedbackFormTitle: "Réflexion du joueur",
         labelName: "Nom*",
-        labelFeeling: "Comment tu t'es senti?",
-        labelEnergy: "Niveau d'énergie",
-        labelIntensity: "Intensité entraînement/match",
-        labelPerformance: "Performance personnelle",
-        labelComment: "Commentaires-Retours",
+        labelFeeling: "🧠 Humeur",
+        labelEnergy: "⚡ Niveau d'énergie",
+        labelIntensity: "🔥 Intensité entraînement/jeu",
+        labelPerformance: "🎯 Performance personnelle",
+        labelComment: "💬 Commentaire",
         submitBtn: "Envoyer",
-        loginTitle: "🔐 Connexion Dashboard Coach",
+        loginTitle: "🔐 Connexion tableau de bord coach",
+        passwordPlaceholder: "Entrez le mot de passe admin",
         loginBtn: "Connexion",
-        slogan: "\"NOTRE FORCE EST NOTRE UNITÉ !\"",
-        back: "← Retour",
-        noFeedbacks: "Aucun feedback disponible.",
-        feedbackSuccess: "✔️ Feedback transmis avec succès !",
-        feelingOptions: [
-          { value: "", label: "Veuillez choisir..." },
-          { value: "Top", label: "🟢 Top" },
-          { value: "Bien", label: "🟡 Bien" },
-          { value: "Fatigué", label: "🔴 Fatigué" }
-        ],
-        energyOptions: [
-          { value: "", label: "Veuillez choisir..." },
-          { value: "1", label: "1 – 😴 très fatigué" },
-          { value: "2", label: "2" },
-          { value: "3", label: "3" },
-          { value: "4", label: "4" },
-          { value: "5", label: "5" },
-          { value: "6", label: "6" },
-          { value: "7", label: "7" },
-          { value: "8", label: "8" },
-          { value: "9", label: "9" },
-          { value: "10", label: "10 – ⚡️ plein d'énergie" }
-        ],
-        intensityOptions: [
-          { value: "", label: "Veuillez choisir..." },
-          { value: "1", label: "1 – très facile" },
-          { value: "2", label: "2" },
-          { value: "3", label: "3" },
-          { value: "4", label: "4" },
-          { value: "5", label: "5" },
-          { value: "6", label: "6" },
-          { value: "7", label: "7" },
-          { value: "8", label: "8" },
-          { value: "9", label: "9" },
-          { value: "10", label: "10 – maximale" }
-        ],
-        performanceOptions: [
-          { value: "", label: "Veuillez choisir..." },
-          { value: "1", label: "1 – à améliorer" },
-          { value: "2", label: "2" },
-          { value: "3", label: "3" },
-          { value: "4", label: "4" },
-          { value: "5", label: "5" },
-          { value: "6", label: "6" },
-          { value: "7", label: "7" },
-          { value: "8", label: "8" },
-          { value: "9", label: "9" },
-          { value: "10", label: "10 – top" }
-        ]
+        feedbackSearchPlaceholder: "Rechercher dans les feedbacks...",
+        sortDateDesc: "⏳ Plus récents en premier",
+        sortDateAsc: "⏳ Plus anciens en premier",
+        sortNameAZ: "🔤 Nom A–Z",
+        sortNameZA: "🔤 Nom Z–A",
+        feedbackSuccess: "Feedback envoyé avec succès!",
+        loginFailed: "Mot de passe incorrect!",
       },
       en: {
-        mainTitle: "EHC BIEL-BIENNE U18-ELITE",
         feedbackFormTitle: "Player Reflection",
         labelName: "Name*",
-        labelFeeling: "How did you feel?",
-        labelEnergy: "Energy Level",
-        labelIntensity: "Training/Game Intensity",
-        labelPerformance: "Own Performance",
-        labelComment: "Comment-Feedback",
+        labelFeeling: "🧠 Mood",
+        labelEnergy: "⚡ Energy Level",
+        labelIntensity: "🔥 Training/Game Intensity",
+        labelPerformance: "🎯 Own Performance",
+        labelComment: "💬 Comment",
         submitBtn: "Submit",
         loginTitle: "🔐 Coach Dashboard Login",
+        passwordPlaceholder: "Enter admin password",
         loginBtn: "Login",
-        slogan: "\"OUR STRENGTH IS OUR UNITY!\"",
-        back: "← Back",
-        noFeedbacks: "No feedbacks yet.",
-        feedbackSuccess: "✔️ Feedback submitted successfully!",
-        feelingOptions: [
-          { value: "", label: "Please select..." },
-          { value: "Top", label: "🟢 Top" },
-          { value: "Okay", label: "🟡 Okay" },
-          { value: "Tired", label: "🔴 Tired" }
-        ],
-        energyOptions: [
-          { value: "", label: "Please select..." },
-          { value: "1", label: "1 – 😴 very tired" },
-          { value: "2", label: "2" },
-          { value: "3", label: "3" },
-          { value: "4", label: "4" },
-          { value: "5", label: "5" },
-          { value: "6", label: "6" },
-          { value: "7", label: "7" },
-          { value: "8", label: "8" },
-          { value: "9", label: "9" },
-          { value: "10", label: "10 – ⚡️ full power" }
-        ],
-        intensityOptions: [
-          { value: "", label: "Please select..." },
-          { value: "1", label: "1 – very easy" },
-          { value: "2", label: "2" },
-          { value: "3", label: "3" },
-          { value: "4", label: "4" },
-          { value: "5", label: "5" },
-          { value: "6", label: "6" },
-          { value: "7", label: "7" },
-          { value: "8", label: "8" },
-          { value: "9", label: "9" },
-          { value: "10", label: "10 – maximal" }
-        ],
-        performanceOptions: [
-          { value: "", label: "Please select..." },
-          { value: "1", label: "1 – needs work" },
-          { value: "2", label: "2" },
-          { value: "3", label: "3" },
-          { value: "4", label: "4" },
-          { value: "5", label: "5" },
-          { value: "6", label: "6" },
-          { value: "7", label: "7" },
-          { value: "8", label: "8" },
-          { value: "9", label: "9" },
-          { value: "10", label: "10 – top" }
-        ]
+        feedbackSearchPlaceholder: "Search feedback...",
+        sortDateDesc: "⏳ Newest first",
+        sortDateAsc: "⏳ Oldest first",
+        sortNameAZ: "🔤 Name A–Z",
+        sortNameZA: "🔤 Name Z–A",
+        feedbackSuccess: "Feedback submitted successfully!",
+        loginFailed: "Wrong password!",
       }
     };
-    let currentLang = localStorage.getItem('dashboard_lang') || 'de';
-    let _feedbacksRaw = [];
-    let currentSort = 'date_desc';
 
-    function fillDropdowns(lang) {
-      const t = translations[lang];
-      function fillSelect(selectId, options) {
-        const sel = document.getElementById(selectId);
-        if (!sel) return;
-        sel.innerHTML = "";
-        options.forEach(opt => {
-          const o = document.createElement('option');
-          o.value = opt.value;
-          o.textContent = typeof opt.text === "string" ? opt.text : (typeof opt.label === "string" ? opt.label : "");
-          sel.appendChild(o);
-        });
-      }
-      fillSelect("feeling", t.feelingOptions);
-      fillSelect("energy", t.energyOptions);
-      fillSelect("intensity", t.intensityOptions);
-      fillSelect("performance", t.performanceOptions);
+    const feelingOptions = {
+      de: ["Sehr schlecht", "Schlecht", "Neutral", "Gut", "Sehr gut"],
+      fr: ["Très mal", "Mal", "Neutre", "Bien", "Très bien"],
+      en: ["Very bad", "Bad", "Neutral", "Good", "Very good"]
+    };
+    const energyOptions = {
+      de: ["Sehr niedrig", "Niedrig", "Mittel", "Hoch", "Sehr hoch"],
+      fr: ["Très faible", "Faible", "Moyen", "Élevé", "Très élevé"],
+      en: ["Very low", "Low", "Medium", "High", "Very high"]
+    };
+    const intensityOptions = {
+      de: ["Sehr niedrig", "Niedrig", "Mittel", "Hoch", "Sehr hoch"],
+      fr: ["Très faible", "Faible", "Moyen", "Élevé", "Très élevé"],
+      en: ["Very low", "Low", "Medium", "High", "Very high"]
+    };
+    const performanceOptions = {
+      de: ["Sehr schlecht", "Schlecht", "Durchschnittlich", "Gut", "Sehr gut"],
+      fr: ["Très mauvais", "Mauvais", "Moyen", "Bon", "Très bon"],
+      en: ["Very bad", "Bad", "Average", "Good", "Very good"]
+    };
+
+    let currentLang = 'de';
+
+    function setLangActive(lang) {
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      const btn = document.getElementById('btn-' + lang);
+      if(btn) btn.classList.add('active');
+    }
+
+    function fillSelectOptions(selectElem, options) {
+      selectElem.innerHTML = "";
+      options.forEach(opt => {
+        const option = document.createElement("option");
+        option.value = opt;
+        option.textContent = opt;
+        selectElem.appendChild(option);
+      });
     }
 
     function changeLanguage(lang) {
       currentLang = lang;
-      localStorage.setItem('dashboard_lang', lang);
-      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById('btn-' + lang).classList.add('active');
+      setLangActive(lang);
+
       const t = translations[lang];
-      document.getElementById('main-title').textContent = t.mainTitle;
-      document.getElementById('loginTitle').textContent = t.loginTitle;
-      document.getElementById('loginBtn').textContent = t.loginBtn;
-      document.getElementById('backBtn').textContent = t.back;
-      document.getElementById('slogan').textContent = t.slogan;
+
+      // Update text content for labels and buttons
       document.getElementById('feedbackFormTitle').textContent = t.feedbackFormTitle;
       document.getElementById('labelName').textContent = t.labelName;
-      document.getElementById('labelFeeling').textContent = "🧠 " + t.labelFeeling;
-      document.getElementById('labelEnergy').textContent = "⚡ " + t.labelEnergy;
-      document.getElementById('labelIntensity').textContent = "🔥 " + t.labelIntensity;
-      document.getElementById('labelPerformance').textContent = "🎯 " + t.labelPerformance;
-      document.getElementById('labelComment').textContent = "💬 " + t.labelComment;
+      document.getElementById('labelFeeling').textContent = t.labelFeeling;
+      document.getElementById('labelEnergy').textContent = t.labelEnergy;
+      document.getElementById('labelIntensity').textContent = t.labelIntensity;
+      document.getElementById('labelPerformance').textContent = t.labelPerformance;
+      document.getElementById('labelComment').textContent = t.labelComment;
       document.getElementById('submitBtn').textContent = t.submitBtn;
-      fillDropdowns(lang);
-      renderFeedbacks(_feedbacksRaw);
-      // Suchfeld-Placeholder
-      if(document.getElementById('feedbackSearch')) {
-        document.getElementById('feedbackSearch').placeholder = {
-          de: "Feedback durchsuchen...",
-          fr: "Rechercher dans les feedbacks...",
-          en: "Search feedbacks..."
-        }[lang] || "Feedback durchsuchen...";
-      }
-      // Sortieroptionen übersetzen
-      if(document.getElementById('sortField')) {
-        const options = {
-          de: ["⏳ Neueste zuerst","⏳ Älteste zuerst","🔤 Name A–Z","🔤 Name Z–A"],
-          fr: ["⏳ Les plus récents","⏳ Les plus anciens","🔤 Nom A–Z","🔤 Nom Z–A"],
-          en: ["⏳ Newest first","⏳ Oldest first","🔤 Name A–Z","🔤 Name Z–A"]
-        }[lang] || options['de'];
-        Array.from(document.getElementById('sortField').options).forEach((opt,i)=>{opt.textContent=options[i]});
-      }
+      document.getElementById('loginTitle').textContent = t.loginTitle;
+      document.getElementById('password').placeholder = t.passwordPlaceholder;
+      document.getElementById('loginBtn').textContent = t.loginBtn;
+      document.getElementById('feedbackSearch').placeholder = t.feedbackSearchPlaceholder;
+
+      // Update sort options
+      const sortField = document.getElementById('sortField');
+      sortField.innerHTML = `
+        <option value="date_desc">${t.sortDateDesc}</option>
+        <option value="date_asc">${t.sortDateAsc}</option>
+        <option value="name_az">${t.sortNameAZ}</option>
+        <option value="name_za">${t.sortNameZA}</option>
+      `;
+
+      // Fill selects with appropriate options
+      fillSelectOptions(document.getElementById('feeling'), feelingOptions[lang]);
+      fillSelectOptions(document.getElementById('energy'), energyOptions[lang]);
+      fillSelectOptions(document.getElementById('intensity'), intensityOptions[lang]);
+      fillSelectOptions(document.getElementById('performance'), performanceOptions[lang]);
+
+      // Clear success and error messages
+      document.getElementById('feedback-success').textContent = "";
+      document.getElementById('login-msg').textContent = "";
     }
 
-    window.addEventListener('DOMContentLoaded', () => { changeLanguage(currentLang); });
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.onclick = () => changeLanguage(btn.id.replace('btn-',''));
-    });
+    // Feedback storage (in-memory)
+    let feedbackEntries = [];
 
-    // Admin Login
-    const correctPassword = "Coach7274";
-    function checkPassword() {
-      const input = document.getElementById("password").value;
-      const msg = document.getElementById("login-msg");
-      if (input === correctPassword) {
-        msg.textContent = '';
-        document.getElementById("dashboard-section").style.display = "block";
-        document.getElementById("login-section").style.display = "none";
-        document.getElementById("feedback-form-section").style.display = "none";
-        setDashboardListeners(); // <-- Event Listener jetzt setzen!
-        loadFeedbacks();
-      } else {
-        msg.textContent = "❌ Wrong password.";
-      }
-    }
-    document.getElementById('password').addEventListener('keyup', function(e){
-      if(e.key === "Enter") checkPassword();
-    });
+    function renderFeedbackList() {
+      const listDiv = document.getElementById('feedback-list');
+      const searchTerm = document.getElementById('feedbackSearch').value.toLowerCase();
+      const sortValue = document.getElementById('sortField').value;
 
-    // Feedbacks laden & anzeigen (mit Sortierung und Suchfunktion)
-    function loadFeedbacks() {
-      const apiUrl = "https://script.google.com/macros/s/AKfycbzb-b7BmMtV2qGtmYyg6xte2o1lRKlt4BCPbU0PcfuGDdN95TBgHYtPxmNWs5VEASTn0w/exec?action=list";
-      fetch(apiUrl)
-        .then(r => r.json())
-        .then(data => {
-          if (data && Array.isArray(data.feedbacks)) {
-            _feedbacksRaw = data.feedbacks.map(fb => ({
-              name: fb.name,
-              feeling: fb.feeling,
-              energy: fb.energy,
-              intensity: fb.intensity,
-              performance: fb.performance,
-              comment: fb.comment,
-              timestamp: Number(fb.timestamp || Date.now())
-            }));
-            renderFeedbacks(_feedbacksRaw);
-          } else {
-            _feedbacksRaw = [];
-            renderFeedbacks([]);
-          }
-        })
-        .catch(() => renderFeedbacks([]));
-    }
-
-    function safeIncludes(val, search) {
-      if (typeof val === "string") return val.toLowerCase().includes(search);
-      if (typeof val === "number") return val.toString().toLowerCase().includes(search);
-      return false;
-    }
-
-    function renderFeedbacks(feedbacks) {
-      let search = (document.getElementById('feedbackSearch')?.value || '').toLowerCase();
-      let sort = (document.getElementById('sortField')?.value || 'date_desc');
-      let listToShow = feedbacks.filter(fb =>
-        safeIncludes(fb.name, search) ||
-        safeIncludes(fb.comment, search) ||
-        safeIncludes(fb.feeling, search) ||
-        safeIncludes(fb.energy, search) ||
-        safeIncludes(fb.intensity, search) ||
-        safeIncludes(fb.performance, search)
+      // Filter by search term (name and comment)
+      let filtered = feedbackEntries.filter(entry =>
+        entry.name.toLowerCase().includes(searchTerm) ||
+        (entry.comment && entry.comment.toLowerCase().includes(searchTerm))
       );
-      // Sortieren nach Auswahl:
-      listToShow = listToShow.slice();
-      if (sort === 'date_desc') {
-        listToShow.sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
-      } else if (sort === 'date_asc') {
-        listToShow.sort((a, b) => Number(a.timestamp) - Number(b.timestamp));
-      } else if (sort === 'name_az') {
-        listToShow.sort((a, b) => (a.name || '').localeCompare(b.name || '', undefined, {sensitivity:'base'}));
-      } else if (sort === 'name_za') {
-        listToShow.sort((a, b) => (b.name || '').localeCompare(a.name || '', undefined, {sensitivity:'base'}));
-      }
-      const t = translations[currentLang];
-      const list = document.getElementById('feedback-list');
-      list.innerHTML = '';
-      if (!listToShow.length) {
-        const p = document.createElement('p');
-        p.textContent = t.noFeedbacks;
-        p.style.color = "#ffc700";
-        p.style.textAlign = "center";
-        p.style.fontWeight = "bold";
-        list.appendChild(p);
+
+      // Sort
+      filtered.sort((a,b) => {
+        switch(sortValue) {
+          case 'date_asc': return a.date - b.date;
+          case 'date_desc': return b.date - a.date;
+          case 'name_az': return a.name.localeCompare(b.name);
+          case 'name_za': return b.name.localeCompare(a.name);
+          default: return 0;
+        }
+      });
+
+      // Clear list
+      listDiv.innerHTML = "";
+
+      if(filtered.length === 0) {
+        listDiv.textContent = currentLang === 'de' ? "Keine Einträge gefunden." : currentLang === 'fr' ? "Aucune entrée trouvée." : "No entries found.";
         return;
       }
-      listToShow.forEach(fb => {
+
+      filtered.forEach(entry => {
         const card = document.createElement('div');
-        card.className = "feedback-card";
-        const head = document.createElement('div');
-        head.className = "f-header";
-        const name = document.createElement('span');
-        name.className = "f-name";
-        name.textContent = fb.name || "-";
-        const date = document.createElement('span');
-        date.className = "f-date";
-        const dt = fb.timestamp ? new Date(fb.timestamp) : null;
-        date.textContent = dt ? dt.toLocaleDateString(currentLang, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'}) : "";
-        head.appendChild(name);
-        head.appendChild(date);
-        card.appendChild(head);
-        card.innerHTML += `
-          <div class="f-grid">
-            <div class="f-label">🧠 ${t.labelFeeling}:</div><div class="f-value">${fb.feeling || "-"}</div>
-            <div class="f-label">⚡ ${t.labelEnergy}:</div><div class="f-value">${fb.energy || "-"}</div>
-            <div class="f-label">🔥 ${t.labelIntensity}:</div><div class="f-value">${fb.intensity || "-"}</div>
-            <div class="f-label">🎯 ${t.labelPerformance}:</div><div class="f-value">${fb.performance || "-"}</div>
-            <div class="f-label">💬 ${t.labelComment}:</div><div class="f-value">${fb.comment || "-"}</div>
-          </div>
-        `;
-        list.appendChild(card);
-      });
-    }
+        card.className = 'feedback-card';
 
-    // Feedback Formular Senden (wie gehabt)
-    document.getElementById('feedbackForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const t = translations[currentLang];
-      const fb = {
-        name: document.getElementById('name').value,
-        feeling: document.getElementById('feeling').value,
-        energy: document.getElementById('energy').value,
-        intensity: document.getElementById('intensity').value,
-        performance: document.getElementById('performance').value,
-        comment: document.getElementById('comment').value,
-        timestamp: Date.now()
-      };
-      const formData = new FormData();
-      Object.entries(fb).forEach(([k, v]) => formData.append(k, v));
-      fetch("https://script.google.com/macros/s/AKfycbyQtoffTq0b87Dor8wC6E1P4_ZQUHSJAOL9FNZxphz0k09YXMeI6g_C3ieyAiS4kFZ2qQ/exec", {
-        method: "POST",
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === "success") {
-          document.getElementById('feedback-success').textContent = t.feedbackSuccess;
-          document.getElementById('feedbackForm').reset();
-          fillDropdowns(currentLang);
-          setTimeout(() => { document.getElementById('feedback-success').textContent = ""; }, 2500);
-        } else {
-          document.getElementById('feedback-success').textContent = "Fehler beim Speichern!";
+        const header = document.createElement('div');
+        header.className = 'f-header';
+
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'f-name';
+        nameSpan.textContent = entry.name;
+
+        const dateSpan = document.createElement('span');
+        dateSpan.className = 'f-date';
+        dateSpan.textContent = new Date(entry.date).toLocaleDateString(currentLang);
+
+        header.appendChild(nameSpan);
+        header.appendChild(dateSpan);
+        card.appendChild(header);
+
+        const grid = document.createElement('div');
+        grid.className = 'f-grid';
+
+        function addField(label, value) {
+          const lbl = document.createElement('div');
+          lbl.className = 'f-label';
+          lbl.textContent = label + ":";
+          const val = document.createElement('div');
+          val.className = 'f-value';
+          val.textContent = value || "-";
+          grid.appendChild(lbl);
+          grid.appendChild(val);
         }
-      })
-      .catch(() => {
-        document.getElementById('feedback-success').textContent = "Fehler beim Speichern!";
-      });
-    });
 
-    function setDashboardListeners() {
-      const input = document.getElementById('feedbackSearch');
-      if(input && !input.dataset.listenerSet) {
-        input.addEventListener('input', function() {
-          renderFeedbacks(_feedbacksRaw);
-        });
-        input.dataset.listenerSet = "1";
-      }
-      const sort = document.getElementById('sortField');
-      if(sort && !sort.dataset.listenerSet) {
-        sort.addEventListener('change', function() {
-          renderFeedbacks(_feedbacksRaw);
-        });
-        sort.dataset.listenerSet = "1";
+        const t = translations[currentLang];
+
+        addField(t.labelFeeling, entry.feeling);
+        addField(t.labelEnergy, entry.energy);
+        addField(t.labelIntensity, entry.intensity);
+        addField(t.labelPerformance, entry.performance);
+        addField(t.labelComment, entry.comment);
+
+        card.appendChild(grid);
+
+        listDiv.appendChild(card);
+      });
+    }
+
+    function checkPassword() {
+      const pwInput = document.getElementById('password');
+      const msgDiv = document.getElementById('login-msg');
+      const pw = pwInput.value.trim();
+      const correctPassword = "ehcb2025"; // example password
+
+      if(pw === correctPassword) {
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('dashboard-section').style.display = 'block';
+        msgDiv.textContent = "";
+        pwInput.value = "";
+        renderFeedbackList();
+      } else {
+        msgDiv.textContent = translations[currentLang].loginFailed;
+        msgDiv.style.color = 'var(--ehcb-red)';
       }
     }
-  </script>
-  <script>
-  // EHCB Loader entfernen, sobald geladen
-  window.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-      const loader = document.getElementById('ehcb-loader-bg');
-      if (loader) loader.style.opacity = '0';
-      setTimeout(() => { if(loader) loader.remove(); }, 350);
-    }, 800);
-  });
+
+    window.addEventListener('DOMContentLoaded', function() {
+      let lang = localStorage.getItem('dashboard_lang') || 'de';
+      changeLanguage(lang);
+
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.onclick = function() {
+          lang = this.id.replace('btn-','');
+          localStorage.setItem('dashboard_lang', lang);
+          changeLanguage(lang);
+        };
+      });
+
+      // Handle form submission
+      const form = document.getElementById('feedbackForm');
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const name = form.name.value.trim();
+        const feeling = form.feeling.value;
+        const energy = form.energy.value;
+        const intensity = form.intensity.value;
+        const performance = form.performance.value;
+        const comment = form.comment.value.trim();
+
+        if(!name || !feeling || !energy) {
+          alert(currentLang === 'de' ? "Bitte alle Pflichtfelder ausfüllen." : currentLang === 'fr' ? "Veuillez remplir tous les champs obligatoires." : "Please fill all required fields.");
+          return;
+        }
+
+        const entry = {
+          name, feeling, energy, intensity, performance, comment,
+          date: Date.now()
+        };
+
+        feedbackEntries.push(entry);
+
+        form.reset();
+        document.getElementById('feedback-success').textContent = translations[currentLang].feedbackSuccess;
+        setTimeout(() => {
+          document.getElementById('feedback-success').textContent = "";
+        }, 4000);
+      });
+
+      // Search and sort listeners
+      document.getElementById('feedbackSearch').addEventListener('input', renderFeedbackList);
+      document.getElementById('sortField').addEventListener('change', renderFeedbackList);
+    });
   </script>
 </body>
 </html>
