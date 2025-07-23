@@ -14,128 +14,161 @@
       --ehcb-blue: #002d5b;
       --ehcb-yellow: #ffc700;
       --ehcb-white: #fff;
+      --ehcb-bg: #f8fafc;
       --ehcb-red: #d0021b;
+      --ehcb-shadow: 0 2px 16px rgba(0,0,0,0.09), 0 1.5px 2.5px #0001;
     }
     html, body {
       margin: 0; padding: 0;
       font-family: 'Segoe UI', Arial, sans-serif;
-      background: #073166;
-      color: var(--ehcb-white);
+      background: var(--ehcb-bg);
+      color: var(--ehcb-blue);
       min-height: 100vh;
+      width: 100%;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: var(--ehcb-bg);
+      box-shadow: none;
+      border: none;
+      width: 100%;
+      margin: 0 0 0 0;
+      padding: 0;
     }
     .header-inner {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.2rem;
+      gap: 0.4rem;
+      max-width: 540px;
+      margin: 0 auto 0.5rem auto;
       position: relative;
+      padding: 1.1rem 0 0.5rem 0;
     }
-    .back-btn {
-      position: absolute;
-      top: 18px; left: 18px; z-index: 10;
-      background: #002b5c;
-      color: #ffd600;
-      font-weight: bold;
-      border: 2px solid #ffd600;
-      border-radius: 10px;
-      padding: 10px 28px 9px 17px;
-      font-size: 1.09rem;
-      text-decoration: none;
-      transition: background .18s, color .18s;
-      box-shadow: 0 2px 14px #0002;
-    }
-    .back-btn:hover { background: #ffd600; color: #002b5c; }
     .header-logo {
-      width: 120px;
-      margin-top: 1.2rem;
-      margin-bottom: 0.4rem;
+      width: 110px;
+      margin: 0.8rem auto 0.2rem auto;
+      display: block;
     }
     .header-title {
-      color: #ffc700;
-      font-size: 2.1rem;
+      color: var(--ehcb-blue);
+      font-size: 2rem;
       font-weight: 900;
-      letter-spacing: 2px;
-      text-shadow: 2px 3px 8px #1a1a1a, 0 1px 0 #222;
-      margin-bottom: 0.25rem;
+      letter-spacing: 1.5px;
+      margin-bottom: 0.1rem;
       text-align: center;
+      text-shadow: none;
     }
     .lang-switcher {
       display: flex;
-      gap: 0.45rem;
-      margin-bottom: 0.7rem;
+      justify-content: center;
+      align-items: center;
+      gap: 0.4rem;
+      margin: 0.3rem 0 0.2rem 0;
+      width: 100%;
     }
     .lang-btn {
-      background: #fff;
-      color: #002d5b;
-      border: none;
-      border-radius: 8px;
-      padding: 7px 35px;
+      background: var(--ehcb-white);
+      color: var(--ehcb-blue);
+      border: 2px solid var(--ehcb-blue);
+      border-radius: 10px;
+      padding: 7px 32px;
       font-weight: bold;
-      font-size: 1.1rem;
+      font-size: 1.08rem;
       cursor: pointer;
-      box-shadow: 0 1px 8px #2222;
-      transition: background 0.18s;
+      box-shadow: 0 1.5px 8px #002d5b0e;
+      transition: background 0.18s, color 0.18s, border 0.18s;
       outline: none;
     }
     .lang-btn.active, .lang-btn:focus {
-      background: #ffc700;
-      color: #002d5b;
+      background: var(--ehcb-yellow);
+      color: var(--ehcb-blue);
+      border: 2px solid var(--ehcb-yellow);
     }
     .lang-btn:hover:not(.active) {
-      background: #d0021b;
+      background: var(--ehcb-red);
       color: #fff;
+      border: 2px solid var(--ehcb-red);
     }
-    @media (max-width: 700px) {
-      .header-inner { gap: 0.3rem; }
-      .header-logo {
-        width: 120px;
-        margin-top: 0.4rem;
-        margin-bottom: 0.4rem;
-        display: block;
-      }
-      .header-title { font-size: 1.13rem; }
-      .lang-btn { font-size: 1rem; padding: 7px 13vw; }
-      .lang-switcher { gap: 0.18rem; }
-      .back-btn { top: 7px; left: 6px; font-size: 1rem; padding: 8px 13px 7px 10px; }
+    .back-btn {
+      position: absolute;
+      top: 10px; left: 10px; z-index: 10;
+      background: var(--ehcb-white);
+      color: var(--ehcb-blue);
+      font-weight: bold;
+      border: 2px solid var(--ehcb-red);
+      border-radius: 10px;
+      padding: 8px 22px 8px 13px;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background .16s, color .16s, border .16s;
+      box-shadow: 0 2px 10px #002d5b0d;
     }
-    .main-content { max-width: 900px; margin: 0 auto; }
-    .news-section {
-      background: transparent;
-      max-width: 800px;
-      margin: 2rem auto 2rem auto;
-      padding: 2rem 1.1rem 1.1rem 1.1rem;
-      border-radius: 12px;
+    .back-btn:hover { background: var(--ehcb-yellow); color: var(--ehcb-blue); border: 2px solid var(--ehcb-yellow);}
+    .main-content {
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto 0 auto;
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 6.5rem;
+    }
+    .ehcb-card {
+      background: var(--ehcb-white);
+      border: 2px solid var(--ehcb-red);
+      border-radius: 18px;
+      box-shadow: var(--ehcb-shadow);
+      padding: 1.7rem 1.2rem 1.2rem 1.2rem;
+      margin: 1.1rem 0;
+      width: 100%;
+      max-width: 540px;
+      box-sizing: border-box;
       text-align: left;
-      box-shadow: 0 1px 12px #0002;
-      border: 3px solid #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
     }
-    .news-section h2 {
-      color: #ffc700;
+    .ehcb-card h2, .ehcb-card h3 {
+      color: var(--ehcb-blue);
       text-align: center;
-      margin-bottom: 1.2rem;
-      font-size: 1.38rem;
+      margin-bottom: 1.1rem;
+      margin-top: 0;
       letter-spacing: 0.5px;
+      font-weight: 800;
     }
     .filter-sort-bar {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 0.8rem 1.2rem;
+      gap: 0.7rem 1.1rem;
       margin-bottom: 1.2rem;
+      justify-content: center;
     }
     .filter-sort-bar input,
     .filter-sort-bar select {
-      background: #fff;
-      color: #002d5b;
-      border: 1.3px solid #bbb;
-      border-radius: 5px;
+      background: var(--ehcb-white);
+      color: var(--ehcb-blue);
+      border: 1.5px solid var(--ehcb-blue);
+      border-radius: 7px;
       font-size: 1rem;
-      padding: 0.4rem 0.8rem;
+      padding: 0.45rem 0.9rem;
       margin-right: 0;
+      outline: none;
+      transition: border 0.14s;
+      box-shadow: 0 1px 6px #002d5b0a;
+    }
+    .filter-sort-bar input:focus,
+    .filter-sort-bar select:focus {
+      border: 1.5px solid var(--ehcb-red);
     }
     .filter-sort-bar input::placeholder {
-      color: #999;
+      color: #8ca0b3;
       opacity: 1;
     }
     .news-list {
@@ -144,167 +177,284 @@
       gap: 1.1rem;
     }
     .news-card {
-      background: #fff;
-      border-radius: 9px;
-      box-shadow: 0 2px 10px #0002;
-      padding: 1.2rem 1.4rem;
-      color: #002d5b;
-      margin-bottom: 1.1rem;
+      background: var(--ehcb-white);
+      border-radius: 15px;
+      box-shadow: var(--ehcb-shadow);
+      padding: 1.12rem 1.1rem 1.02rem 1.1rem;
+      color: var(--ehcb-blue);
+      margin-bottom: 0.6rem;
+      border: 1.7px solid #e4e8ee;
+      font-size: 1.06rem;
+      word-break: break-word;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
     }
     .news-card .title {
       font-weight: bold;
-      font-size: 1.12rem;
-      margin-bottom: 0.2rem;
-      color: #002d5b;
+      font-size: 1.14rem;
+      margin-bottom: 0.1rem;
+      color: var(--ehcb-blue);
+      letter-spacing: 0.2px;
     }
     .news-card .date {
-      color: #7a7a7a;
-      font-size: 0.97rem;
+      color: #6b7a8a;
+      font-size: 0.95rem;
       margin-bottom: 0.2rem;
     }
-    .news-card .comment { color: #002d5b; font-size: 1rem; }
+    .news-card .comment {
+      color: var(--ehcb-blue);
+      font-size: 1.01rem;
+      margin-bottom: 0.15rem;
+    }
     .news-card img {
       max-width: 100%;
       height: auto;
-      margin-top: 0.5rem;
-      border-radius: 5px;
+      margin: 0.43rem 0 0.35rem 0;
+      border-radius: 8px;
       background: #fff;
+      border: 1px solid #e4e8ee;
+      box-shadow: 0 1px 6px #002d5b0a;
+      display: block;
     }
     .news-card .download-link, .news-card .preview-link {
-      color: #d0021b;
-      font-weight: 600;
+      color: var(--ehcb-red);
+      font-weight: 700;
       margin-right: 1.1rem;
       text-decoration: underline;
       font-size: 1rem;
+      transition: color 0.15s;
+    }
+    .news-card .download-link:hover, .news-card .preview-link:hover {
+      color: var(--ehcb-blue);
     }
     .news-card .delete-btn {
-      background: #e53935;
+      background: var(--ehcb-red);
       color: #fff;
       border: none;
-      border-radius: 4px;
-      padding: 0.3em 0.9em;
+      border-radius: 6px;
+      padding: 0.32em 0.96em;
       margin-top: 0.6em;
       font-size: 1rem;
       cursor: pointer;
+      font-weight: 600;
+      align-self: flex-end;
+      transition: background 0.18s;
+      box-shadow: 0 1.5px 8px #002d5b0e;
     }
-    .news-card .delete-btn:hover { background: #c62828; }
+    .news-card .delete-btn:hover { background: #b90014; }
     /* Upload/Admin Login Section */
     .upload-section {
-      margin: 2.2rem auto 1.4rem auto;
-      max-width: 600px;
+      margin: 0 auto 1.4rem auto;
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .upload-box {
-      background: #fff;
-      border-radius: 10px;
-      padding: 2.2rem 1.3rem 1.5rem 1.3rem;
-      box-shadow: 0 2px 14px 0 rgba(23,103,215,0.09);
-      color: #002d5b;
-      border: 1.5px solid #d0021b;
+      background: var(--ehcb-white);
+      border-radius: 18px;
+      padding: 1.6rem 1.2rem 1.2rem 1.2rem;
+      box-shadow: var(--ehcb-shadow);
+      color: var(--ehcb-blue);
+      border: 2px solid var(--ehcb-red);
       text-align: left;
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
     }
     .upload-box h3,
     .upload-box label,
     .upload-box button,
     .upload-box #uploadInstr {
-      color: #002d5b !important;
+      color: var(--ehcb-blue) !important;
     }
     .upload-form input[type="text"],
     .upload-form textarea {
       width: 100%;
-      border: 1.3px solid #d0021b;
-      border-radius: 4px;
-      background: #f6f8fd;
-      color: #002d5b;
+      border: 1.7px solid var(--ehcb-red);
+      border-radius: 7px;
+      background: #f8fafc;
+      color: var(--ehcb-blue);
       padding: 0.4rem 0.7rem;
       font-size: 1rem;
       margin-bottom: 0.7rem;
+      outline: none;
+      transition: border 0.16s;
+      box-shadow: 0 1px 6px #002d5b0a;
+    }
+    .upload-form input[type="text"]:focus,
+    .upload-form textarea:focus {
+      border: 1.7px solid var(--ehcb-blue);
     }
     .progress-bar {
       background: #e2e6f2;
-      border-radius: 5px;
+      border-radius: 7px;
       height: 8px;
       width: 100%;
       margin: 0.5em 0 1em 0;
       overflow: hidden;
     }
     .progress-bar-inner {
-      background: #ffc700;
+      background: var(--ehcb-yellow);
       height: 100%;
       width: 0%;
-      border-radius: 5px;
+      border-radius: 7px;
       transition: width 0.25s;
     }
     .upload-form button[type="button"],
     .upload-form button[type="submit"] {
-      background: #ffc700;
-      color: #002d5b;
+      background: var(--ehcb-yellow);
+      color: var(--ehcb-blue);
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
       font-size: 1rem;
       padding: 0.35em 1.2em;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       margin-top: 0.2em;
+      transition: background 0.18s, color 0.18s;
+      box-shadow: 0 1.5px 8px #002d5b0e;
     }
     .upload-form button[type="button"]:hover,
     .upload-form button[type="submit"]:hover {
-      background: #d0021b;
+      background: var(--ehcb-red);
       color: #fff;
     }
     .logout-btn {
       display: block;
-      margin: 1.1rem auto 2.2rem auto;
-      background: #fff;
-      color: #002d5b;
-      border: 1.5px solid #d0021b;
-      border-radius: 4px;
+      margin: 1.2rem auto 2.2rem auto;
+      background: var(--ehcb-white);
+      color: var(--ehcb-blue);
+      border: 2px solid var(--ehcb-red);
+      border-radius: 9px;
       font-size: 1rem;
-      padding: 0.35em 1.2em;
-      font-weight: 600;
+      padding: 0.35em 1.3em;
+      font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s, color 0.2s;
+      transition: background 0.18s, color 0.18s, border 0.18s;
+      box-shadow: 0 1.5px 8px #002d5b0e;
     }
-    .logout-btn:hover { background: #d0021b; color: #fff; }
+    .logout-btn:hover { background: var(--ehcb-red); color: #fff; border: 2px solid var(--ehcb-red);}
     /* Admin Login Form */
     .admin-login-form {
-      background: #fff;
-      border-radius: 10px;
-      padding: 1.5rem 1.1rem 1.2rem 1.1rem;
-      box-shadow: 0 2px 14px 0 rgba(23,103,215,0.09);
-      color: #002d5b;
+      background: var(--ehcb-white);
+      border-radius: 18px;
+      padding: 1.2rem 1.2rem 1.1rem 1.2rem;
+      box-shadow: var(--ehcb-shadow);
+      color: var(--ehcb-blue);
       text-align: left;
-      border: 1.5px solid #ffc700;
-      max-width: 600px;
-      margin: 0 auto 2.2rem auto;
+      border: 2px solid var(--ehcb-yellow);
+      max-width: 540px;
+      margin: 1.1rem auto 0.7rem auto;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
     }
-    .admin-login-form label { color: #002d5b; font-weight: 500; }
+    .admin-login-form label {
+      color: var(--ehcb-blue);
+      font-weight: 600;
+    }
     .admin-login-form input[type="password"] {
       width: 100%;
-      border: 1.3px solid #ffc700;
-      border-radius: 4px;
-      background: #fff;
-      color: #002d5b;
+      border: 1.7px solid var(--ehcb-yellow);
+      border-radius: 7px;
+      background: var(--ehcb-white);
+      color: var(--ehcb-blue);
       padding: 0.4rem 0.7rem;
       font-size: 1rem;
       margin-bottom: 0.7rem;
+      outline: none;
+      transition: border 0.16s;
+      box-shadow: 0 1px 6px #002d5b0a;
+    }
+    .admin-login-form input[type="password"]:focus {
+      border: 1.7px solid var(--ehcb-red);
     }
     .admin-login-form button[type="submit"] {
-      background: #ffc700;
-      color: #002d5b;
+      background: var(--ehcb-yellow);
+      color: var(--ehcb-blue);
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
       font-size: 1rem;
       padding: 0.35em 1.2em;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       margin-top: 0.5em;
+      transition: background 0.18s, color 0.18s;
+      box-shadow: 0 1.5px 8px #002d5b0e;
     }
-    .admin-login-form button[type="submit"]:hover { background: #d0021b; color: #fff; }
+    .admin-login-form button[type="submit"]:hover { background: var(--ehcb-red); color: #fff; }
+    .yellow-slogan {
+      background: var(--ehcb-yellow);
+      color: var(--ehcb-blue);
+      text-align: center;
+      font-size: 1.29rem;
+      font-weight: bold;
+      border-radius: 0;
+      width: 100vw;
+      max-width: none;
+      padding: 0.85rem 1rem 0.79rem 1rem;
+      letter-spacing: 1.4px;
+      box-shadow: 0 1px 7px #0002;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      position: fixed;
+      left: 0; bottom: 44px; /* Footerhöhe */
+      z-index: 100;
+      border-top: 4px solid #d0021b;
+      transition: background .3s, color .3s;
+    }
+    footer {
+      text-align:center;
+      margin: 0 auto;
+      color: #002d5b;
+      background: #fff;
+      opacity: 0.69;
+      font-size: 1.03rem;
+      width: 100vw;
+      max-width: none;
+      box-sizing: border-box;
+      position: fixed;
+      left: 0; bottom: 0;
+      padding: 11px 0 6px 0;
+      z-index: 101;
+      border-top: 1.5px solid #e9ecf2;
+      transition: background .3s, color .3s;
+    }
+    @media (max-width: 600px) {
+      .yellow-slogan { font-size: 1.05rem; padding: 0.7rem 0.2rem; }
+      footer { font-size: 0.87rem; }
+    }
+    /* Dragover effect for upload */
+    #uploadArea.dragover .upload-box {
+      border: 2.5px dashed var(--ehcb-yellow) !important;
+      background: #fffbe6;
+      transition: border 0.18s, background 0.18s;
+    }
+    /* Responsive/mobile */
     @media (max-width: 700px) {
-      .main-content, .news-section, .admin-login-form, .upload-section { max-width: 100%; }
-      .news-card { padding: 1rem 0.7rem; }
-      .news-section { padding: 1.2rem 0.3rem; }
-      .upload-box { padding: 1.2rem 0.5rem 1.1rem 0.5rem; }
+      .header-inner {
+        gap: 0.2rem;
+        padding: 0.7rem 0 0.2rem 0;
+      }
+      .header-logo { width: 75px; margin: 0.5rem auto 0.1rem auto; }
+      .header-title { font-size: 1.09rem; }
+      .lang-btn { font-size: 0.99rem; padding: 7px 9vw; }
+      .lang-switcher { gap: 0.13rem; }
+      .back-btn { top: 4px; left: 6px; font-size: 0.97rem; padding: 7px 13px 7px 9px; }
+      .main-content { max-width: 100vw; padding-bottom: 7.1rem;}
+      .ehcb-card, .admin-login-form, .upload-box { max-width: 99vw; border-radius: 10px; padding: 1.05rem 0.3rem 0.9rem 0.3rem;}
+      .news-card { padding: 0.8rem 0.4rem; border-radius: 8px;}
+      .news-list { gap: 0.7rem; }
+      .upload-section { max-width: 99vw; }
+      .yellow-slogan { font-size: 0.99rem; padding: 0.7rem 0 0.65rem 0;}
     }
   </style>
 </head>
@@ -330,7 +480,7 @@
     </div>
   </header>
   <div class="main-content">
-    <section class="news-section">
+    <section class="ehcb-card" style="margin-top: 1.5rem;">
       <h2 id="allNewsLabel">Trainings – Infos – News</h2>
       <div class="filter-sort-bar">
         <input id="newsSearchInput" type="text" placeholder="Suche nach Titel oder Kommentar..." autocomplete="off">
@@ -342,12 +492,14 @@
       </div>
       <div class="news-list" id="newsList"></div>
     </section>
-    <form id="adminLoginForm" class="admin-login-form" autocomplete="off">
-      <div style="color:#002d5b;font-size:1.1rem;font-weight:600;margin-bottom:0.7rem;" id="loginHeadline">Coach-Login (Upload)</div>
-      <label for="adminPassword" id="passwordLabel" style="color:#002d5b;">Passwort</label><br>
-      <input type="password" id="adminPassword" autocomplete="off"><br>
-      <button type="submit" id="loginBtn">Login</button>
-    </form>
+    <div class="ehcb-card" style="margin-top: 0.5rem;">
+      <form id="adminLoginForm" autocomplete="off" style="margin:0;">
+        <div id="loginHeadline" style="font-size:1.1rem;font-weight:700;margin-bottom:0.7rem;">Coach-Login (Upload)</div>
+        <label for="adminPassword" id="passwordLabel">Passwort</label><br>
+        <input type="password" id="adminPassword" autocomplete="off"><br>
+        <button type="submit" id="loginBtn">Login</button>
+      </form>
+    </div>
     <section id="uploadArea" class="upload-section" style="display:none;">
       <div class="upload-box">
         <h3 id="uploadTitle">PDF/Bild-Upload (nur für Admins)</h3>
@@ -368,9 +520,9 @@
     </section>
     <button id="logoutBtn" class="logout-btn" style="display:none;">Logout</button>
   </div>
-  <section class="yellow-slogan" id="slogan">
+  <div class="yellow-slogan" id="slogan">
     "OUR STRENGTH IS OUR UNITY!"
-  </section>
+  </div>
   <footer>
     © 2025 EHC Biel-Bienne U18-Elit
   </footer>
