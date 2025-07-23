@@ -105,23 +105,35 @@ header {
 }
 
 .lang-switcher {
-  display: flex; gap: 0.22rem; justify-content: center; margin-bottom: 1.05rem;
+  display: flex;
+  gap: 0.45rem;
+  margin-bottom: 0.7rem;
 }
 .lang-btn {
-  background: var(--ehcb-yellow); color: var(--ehcb-blue); border: none;
-  font-weight: 800; font-size: 1.16rem; cursor: pointer;
-  transition: background .17s, color .17s;
-  padding: 16px 0; flex: 1 1 0px;
-  border-radius: 18px;
-  margin: 0 5px;
-  box-shadow: 0 2px 6px #0012;
+  background: #fff;
+  color: #002d5b;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 35px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 1px 8px #2222;
+  transition: background 0.18s;
   outline: none;
 }
 .lang-btn.active, .lang-btn:focus {
-  background: var(--ehcb-yellow); color: var(--ehcb-blue);
-  box-shadow: 0 3px 14px #ffc70044;
+  background: #ffc700;
+  color: #002d5b;
 }
-.lang-btn:hover:not(.active) { background: var(--ehcb-red); color: #fff; }
+.lang-btn:hover:not(.active) {
+  background: #d0021b;
+  color: #fff;
+}
+@media (max-width: 700px) {
+  .lang-btn { font-size: 1rem; padding: 7px 13vw; }
+  .lang-switcher { gap: 0.18rem; }
+}
 
 input[type="text"], textarea, select {
   width: 100%;
