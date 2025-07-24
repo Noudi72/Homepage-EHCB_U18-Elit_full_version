@@ -18,6 +18,160 @@
       --ehcb-red: #d0021b;
       --ehcb-shadow: 0 2px 16px rgba(0,0,0,0.09), 0 1.5px 2.5px #0001;
     }
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #091b30;
+      color: #fff;
+    }
+    body.dark-mode .ehcb-card,
+    body.dark-mode .upload-box,
+    body.dark-mode .admin-login-form {
+      background: #182742;
+      color: #fff;
+      border-color: #ffd600;
+    }
+    body.dark-mode .news-card {
+      background: #1b2940;
+      color: #ffd600;
+      border-left: 8px solid #ffd600;
+      border-top: 1.5px solid #d0021b;
+    }
+    body.dark-mode .yellow-slogan {
+      background: #111a29;
+      color: #ffd600;
+      border-top: 4px solid #ffd600;
+    }
+    body.dark-mode footer {
+      background: #151e2f;
+      color: #e3e6ec;
+      opacity: .97;
+    }
+    body.dark-mode .back-btn {
+      background: #222e4a;
+      color: #ffd600;
+      border-color: #ffd600;
+    }
+    body.dark-mode .back-btn:hover {
+      background: #ffd600; color: #002b5c;
+    }
+    body.dark-mode .lang-btn {
+      background: #1b2940;
+      color: #ffd600;
+      border-color: #ffd600;
+    }
+    body.dark-mode .lang-btn.active,
+    body.dark-mode .lang-btn:focus {
+      background: #ffd600;
+      color: #002b5c;
+      border-color: #ffd600;
+    }
+    body.dark-mode .lang-btn:hover:not(.active) {
+      background: #d0021b;
+      color: #fff;
+      border-color: #d0021b;
+    }
+    body.dark-mode .upload-form input[type="text"],
+    body.dark-mode .upload-form textarea,
+    body.dark-mode .admin-login-form input[type="password"] {
+      background: #222e4a;
+      color: #ffd600;
+      border-color: #ffd600;
+    }
+    body.dark-mode .upload-form input[type="text"]:focus,
+    body.dark-mode .upload-form textarea:focus,
+    body.dark-mode .admin-login-form input[type="password"]:focus {
+      border-color: #d0021b;
+    }
+    body.dark-mode .filter-sort-bar input,
+    body.dark-mode .filter-sort-bar select {
+      background: #222e4a;
+      color: #ffd600;
+      border-color: #ffd600;
+    }
+    body.dark-mode .filter-sort-bar input:focus,
+    body.dark-mode .filter-sort-bar select:focus {
+      border-color: #d0021b;
+    }
+    body.dark-mode .progress-bar {
+      background: #2d3d5a;
+    }
+    body.dark-mode .progress-bar-inner {
+      background: #ffd600;
+    }
+    body.dark-mode .news-card .download-link, 
+    body.dark-mode .news-card .preview-link {
+      color: #ffd600;
+    }
+    body.dark-mode .news-card .download-link:hover, 
+    body.dark-mode .news-card .preview-link:hover {
+      color: #fff;
+    }
+    body.dark-mode .news-card .delete-btn,
+    body.dark-mode .logout-btn,
+    body.dark-mode .upload-form button[type="button"],
+    body.dark-mode .upload-form button[type="submit"],
+    body.dark-mode .admin-login-form button[type="submit"] {
+      background: #ffd600;
+      color: #1b2940;
+    }
+    body.dark-mode .news-card .delete-btn:hover,
+    body.dark-mode .logout-btn:hover,
+    body.dark-mode .upload-form button[type="button"]:hover,
+    body.dark-mode .upload-form button[type="submit"]:hover,
+    body.dark-mode .admin-login-form button[type="submit"]:hover {
+      background: #d0021b;
+      color: #fff;
+    }
+    body.dark-mode .header-title {
+      color: #ffd600;
+    }
+    body.dark-mode .header-logo {
+      filter: brightness(0.86) saturate(1.15);
+    }
+
+    /* --- Header dark mode improvements --- */
+    body.dark-mode header {
+      background: #091b30 !important;
+    }
+    body.dark-mode .header-inner {
+      background: #091b30 !important;
+    }
+    body.dark-mode .header-title {
+      color: #ffd600 !important;
+      text-shadow: 0 2px 16px #000a;
+    }
+    body.dark-mode .header-logo {
+      filter: brightness(0.96) saturate(1.18);
+    }
+    body.dark-mode .lang-switcher {
+      background: transparent !important;
+    }
+    body.dark-mode .lang-btn {
+      background: #152743 !important;
+      color: #ffd600 !important;
+      border-color: #ffd600 !important;
+    }
+    body.dark-mode .lang-btn.active,
+    body.dark-mode .lang-btn:focus {
+      background: #ffd600 !important;
+      color: #002b5c !important;
+      border-color: #ffd600 !important;
+    }
+    body.dark-mode .lang-btn:hover:not(.active) {
+      background: #d0021b !important;
+      color: #fff !important;
+      border-color: #d0021b !important;
+    }
+    body.dark-mode .back-btn {
+      background: #152743 !important;
+      color: #ffd600 !important;
+      border-color: #ffd600 !important;
+    }
+    body.dark-mode .back-btn:hover {
+      background: #ffd600 !important;
+      color: #002b5c !important;
+      border-color: #ffd600 !important;
+    }
     html, body {
       margin: 0; padding: 0;
       font-family: 'Segoe UI', Arial, sans-serif;
@@ -439,6 +593,45 @@
       transition: border 0.18s, background 0.18s;
     }
     /* Responsive/mobile */
+    /* Dark mode toggle styles */
+    .dark-toggle-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .toggle-switch {
+      width: 44px; height: 24px;
+      border-radius: 14px;
+      background: #bbb;
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+      margin-right: 0.2em;
+      transition: background .18s;
+      vertical-align: middle;
+    }
+    .toggle-switch .slider {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #fff;
+      position: absolute;
+      top: 1px; left: 1px;
+      box-shadow: 0 1px 4px #0002;
+      transition: left .19s;
+    }
+    .toggle-switch.active { background: #d0021b;}
+    .toggle-switch.active .slider { left: 21px; background: #ffd600;}
+    .dark-toggle-label {
+      font-size: 1.15rem;
+      color: #002b5c;
+      margin-left: 0.22em;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      transition: color .3s;
+    }
+    body.dark-mode .dark-toggle-label { color: #ffd600; }
     @media (max-width: 700px) {
       .header-inner {
         gap: 0.2rem;
@@ -473,9 +666,17 @@
       <img src="wikinger.png" class="header-logo" alt="Logo" />
       <div class="header-title" id="main-title">EHC BIEL-BIENNE U18-ELIT</div>
       <div class="lang-switcher">
-        <button class="lang-btn" id="btn-de">DE</button>
-        <button class="lang-btn" id="btn-fr">FR</button>
-        <button class="lang-btn" id="btn-en">EN</button>
+        <div class="lang-btns-row">
+          <button class="lang-btn" id="btn-de">DE</button>
+          <button class="lang-btn" id="btn-fr">FR</button>
+          <button class="lang-btn" id="btn-en">EN</button>
+        </div>
+        <div class="dark-toggle-wrap">
+          <span class="toggle-switch" id="darkToggle" tabindex="0" aria-label="Dark Mode Toggle">
+            <span class="slider"></span>
+          </span>
+          <span class="dark-toggle-label" id="darkToggleLabel" title="Dark Mode">🌙</span>
+        </div>
       </div>
     </div>
   </header>
@@ -894,6 +1095,89 @@
     window.addEventListener('pageshow', function(event) {
       if (event.persisted) window.location.reload();
     });
+    // Dark Mode Logic
+    const body = document.body;
+    const darkToggle = document.getElementById('darkToggle');
+    const darkToggleLabel = document.getElementById('darkToggleLabel');
+    function setDarkMode(on) {
+      body.classList.toggle('dark-mode', on);
+      darkToggle.classList.toggle('active', on);
+      localStorage.setItem('ehcb_news_darkmode', on ? '1' : '0');
+      darkToggleLabel.textContent = on ? '☀️' : '🌙';
+    }
+    darkToggle.addEventListener('click', () => setDarkMode(!body.classList.contains('dark-mode')));
+    darkToggle.addEventListener('keypress', e => { if(e.key === ' ' || e.key === 'Enter') setDarkMode(!body.classList.contains('dark-mode')); });
+    darkToggleLabel.addEventListener('click', () => setDarkMode(!body.classList.contains('dark-mode')));
+    // Beim Laden aktuellen Status setzen
+    if(localStorage.getItem('ehcb_news_darkmode') === '1') setDarkMode(true);
   </script>
 </body>
 </html>
+  <style>
+    .lang-switcher {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.15rem;
+      margin: 18px auto 0 auto;
+      width: 100%;
+      flex-direction: row;
+      position: relative;
+    }
+    .lang-btns-row {
+      display: flex;
+      flex-direction: row;
+      gap: 0.35rem;
+      width: auto;
+      justify-content: center;
+      margin-bottom: 0;
+    }
+    .dark-toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.15rem;
+      margin-left: 0;
+      margin-bottom: 0;
+      margin-top: 0;
+      height: 100%;
+      min-width: 66px;
+      justify-content: center;
+    }
+    @media (max-width: 600px) {
+      .lang-switcher {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.08rem;
+      }
+      .lang-btns-row {
+        flex-direction: row;
+        gap: 0.31rem;
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 0.23em;
+      }
+      .dark-toggle-wrap {
+        margin-top: 0.14em;
+        margin-bottom: 0.08em;
+      }
+    }
+    @media (max-width: 430px) {
+      .lang-switcher {
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+      }
+      .lang-btns-row {
+        display: flex;
+        flex-direction: row;
+        gap: 0.27rem;
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 0.21em;
+      }
+      .dark-toggle-wrap {
+        margin-top: 0.21em;
+        margin-bottom: 0.1em;
+      }
+    }
+  </style>
