@@ -414,26 +414,51 @@ footer {
       }
     };
 
-    const feelingOptions = {
-      de: ["Sehr schlecht", "Schlecht", "Neutral", "Gut", "Sehr gut"],
-      fr: ["Très mal", "Mal", "Neutre", "Bien", "Très bien"],
-      en: ["Very bad", "Bad", "Neutral", "Good", "Very good"]
-    };
-    const energyOptions = {
-      de: ["Sehr niedrig", "Niedrig", "Mittel", "Hoch", "Sehr hoch"],
-      fr: ["Très faible", "Faible", "Moyen", "Élevé", "Très élevé"],
-      en: ["Very low", "Low", "Medium", "High", "Very high"]
-    };
-    const intensityOptions = {
-      de: ["Sehr niedrig", "Niedrig", "Mittel", "Hoch", "Sehr hoch"],
-      fr: ["Très faible", "Faible", "Moyen", "Élevé", "Très élevé"],
-      en: ["Very low", "Low", "Medium", "High", "Very high"]
-    };
-    const performanceOptions = {
-      de: ["Sehr schlecht", "Schlecht", "Durchschnittlich", "Gut", "Sehr gut"],
-      fr: ["Très mauvais", "Mauvais", "Moyen", "Bon", "Très bon"],
-      en: ["Very bad", "Bad", "Average", "Good", "Very good"]
-    };
+    const feelingOptions = [
+      {value:"", text:"Bitte wählen..."},
+      {value:"🟢 Top", text:"🟢 Top"},
+      {value:"🟡 Okay", text:"🟡 Okay"},
+      {value:"🔴 Tired", text:"🔴 Müde"}
+    ];
+    const energyOptions = [
+      {value:"", text:"Bitte wählen..."},
+      {value:"1", text:"1 – 😴 sehr müde"},
+      {value:"2", text:"2"},
+      {value:"3", text:"3"},
+      {value:"4", text:"4"},
+      {value:"5", text:"5"},
+      {value:"6", text:"6"},
+      {value:"7", text:"7"},
+      {value:"8", text:"8"},
+      {value:"9", text:"9"},
+      {value:"10", text:"10 – ⚡️ voller Power"}
+    ];
+    const intensityOptions = [
+      {value:"", text:"Bitte wählen..."},
+      {value:"1", text:"1 – sehr locker"},
+      {value:"2", text:"2"},
+      {value:"3", text:"3"},
+      {value:"4", text:"4"},
+      {value:"5", text:"5 – mittel"},
+      {value:"6", text:"6"},
+      {value:"7", text:"7"},
+      {value:"8", text:"8"},
+      {value:"9", text:"9"},
+      {value:"10", text:"10 – maximal"}
+    ];
+    const performanceOptions = [
+      {value:"", text:"Bitte wählen..."},
+      {value:"1", text:"1 – ausbaufähig"},
+      {value:"2", text:"2 – mässig"},
+      {value:"3", text:"3 – okay"},
+      {value:"4", text:"4 – solide"},
+      {value:"5", text:"5 – gut"},
+      {value:"6", text:"6 – sehr gut"},
+      {value:"7", text:"7 – stark"},
+      {value:"8", text:"8 – super"},
+      {value:"9", text:"9 – fast optimal"},
+      {value:"10", text:"10 – top"}
+    ];
 
     let currentLang = 'de';
 
@@ -447,8 +472,8 @@ footer {
       selectElem.innerHTML = "";
       options.forEach(opt => {
         const option = document.createElement("option");
-        option.value = opt;
-        option.textContent = opt;
+        option.value = opt.value;
+        option.textContent = opt.text;
         selectElem.appendChild(option);
       });
     }
@@ -483,10 +508,10 @@ footer {
       `;
 
       // Fill selects with appropriate options
-      fillSelectOptions(document.getElementById('feeling'), feelingOptions[lang]);
-      fillSelectOptions(document.getElementById('energy'), energyOptions[lang]);
-      fillSelectOptions(document.getElementById('intensity'), intensityOptions[lang]);
-      fillSelectOptions(document.getElementById('performance'), performanceOptions[lang]);
+      fillSelectOptions(document.getElementById('feeling'), feelingOptions);
+      fillSelectOptions(document.getElementById('energy'), energyOptions);
+      fillSelectOptions(document.getElementById('intensity'), intensityOptions);
+      fillSelectOptions(document.getElementById('performance'), performanceOptions);
 
       // Clear success and error messages
       document.getElementById('feedback-success').textContent = "";
